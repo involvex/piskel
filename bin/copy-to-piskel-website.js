@@ -18,7 +18,7 @@ function onCopy(err) {
   console.log("Copied static files to piskel-website...");
   var previousPartialPath = path.resolve(
     PISKELAPP_PATH,
-    "templates/editor/main-partial.html",
+    "templates/editor/main-partial.html"
   );
   fs.access(previousPartialPath, fs.constants.F_OK, function (err) {
     if (err) {
@@ -42,10 +42,10 @@ function onDeletePreviousPartial(err) {
   fse.copy(
     path.resolve(
       PISKELAPP_PATH,
-      "static/editor/piskelapp-partials/main-partial.html",
+      "static/editor/piskelapp-partials/main-partial.html"
     ),
     path.resolve(PISKELAPP_PATH, "templates/editor/main-partial.html"),
-    onCopyNewPartial,
+    onCopyNewPartial
   );
 }
 
@@ -58,7 +58,7 @@ function onCopyNewPartial(err) {
   console.log("Main partial copied...");
   rmdir(
     path.resolve(PISKELAPP_PATH, "static/editor/piskelapp-partials/"),
-    onDeleteTempPartial,
+    onDeleteTempPartial
   );
 }
 
@@ -73,7 +73,7 @@ function onDeleteTempPartial(err) {
   fs.writeFile(
     path.resolve(PISKELAPP_PATH, "static/editor/VERSION"),
     pjson.version,
-    onVersionFileCreated,
+    onVersionFileCreated
   );
 }
 
@@ -90,5 +90,5 @@ function onVersionFileCreated(err) {
 fse.copy(
   path.resolve(PISKEL_PATH, "dest/prod"),
   path.resolve(PISKELAPP_PATH, "static/editor"),
-  onCopy,
+  onCopy
 );

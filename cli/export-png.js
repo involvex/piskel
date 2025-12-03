@@ -45,7 +45,7 @@ function onPageEvaluate(window, options, piskel) {
   var pngExportController =
     new pskl.controller.settings.exportimage.PngExportController(
       piskelController,
-      exportController,
+      exportController
     );
 
   // Mock getColumns and getRows to use values from cli arguments
@@ -54,7 +54,7 @@ function onPageEvaluate(window, options, piskel) {
 
     if (options.rows) {
       return Math.ceil(
-        piskelController.getFrameCount() / pngExportController.getRows_(),
+        piskelController.getFrameCount() / pngExportController.getRows_()
       );
     } else {
       return pngExportController.getBestFit_();
@@ -64,7 +64,7 @@ function onPageEvaluate(window, options, piskel) {
   pngExportController.getRows_ = function () {
     if (options.columns && !options.rows) {
       return Math.ceil(
-        piskelController.getFrameCount() / pngExportController.getColumns_(),
+        piskelController.getFrameCount() / pngExportController.getColumns_()
       );
     }
 
@@ -86,7 +86,7 @@ function onPageEvaluate(window, options, piskel) {
         canvas,
         canvas.width * zoom,
         canvas.height * zoom,
-        false,
+        false
       );
     }
   } else {
@@ -98,7 +98,7 @@ function onPageEvaluate(window, options, piskel) {
   window.document.body.appendChild(canvas);
 
   // Prepare return data
-  const returnData = {
+  var returnData = {
     width: canvas.width,
     height: canvas.height,
   };
@@ -118,7 +118,7 @@ function onPageExit(page, options, data) {
 
   console.log("\n" + "Generated file(s):");
 
-  const dest = options.dest.replace(".png", "") + ".png";
+  var dest = options.dest.replace(".png", "") + ".png";
 
   // Render page to the output image
   page.render(dest);
@@ -126,9 +126,9 @@ function onPageExit(page, options, data) {
   console.log(" " + dest);
 
   if (options.dataUri) {
-    const dataUriPath = options.dest + ".datauri";
+    var dataUriPath = options.dest + ".datauri";
 
-    const dataUri = "data:image/png;base64," + page.renderBase64("PNG");
+    var dataUri = "data:image/png;base64," + page.renderBase64("PNG");
 
     // Write data-uri to file
     fs.write(dataUriPath, dataUri, "w");

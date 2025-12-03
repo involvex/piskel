@@ -82,7 +82,7 @@ var childArgs = [
 if (args.debug) {
   childArgs.unshift(
     "--remote-debugger-port=9035",
-    "--remote-debugger-autorun=yes",
+    "--remote-debugger-autorun=yes"
   );
 }
 
