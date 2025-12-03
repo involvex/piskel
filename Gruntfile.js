@@ -392,7 +392,15 @@ module.exports = function (grunt) {
   });
 
   // TEST TASKS
-  grunt.registerTask("test", ["karma:unit"]);
+  grunt.registerTask('test', 'Run tests', function() {
+    var done = this.async();
+    var exec = require('child_process').exec;
+    exec('npm test', function(error, stdout, stderr) {
+      console.log(stdout);
+      console.error(stderr);
+      done(!error);
+    });
+  });
   // Run linting
   grunt.registerTask("lint", ["eslint", "leadingIndent:css"]);
 
