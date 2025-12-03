@@ -69,7 +69,7 @@
         document.removeEventListener(
           "DOMContentLoaded",
           DOMContentLoaded,
-          false,
+          false
         );
         jQuery.ready();
       } else if (document.readyState === "complete") {
@@ -259,7 +259,7 @@
       return this.pushStack(
         core_slice.apply(this, arguments),
         "slice",
-        core_slice.call(arguments).join(","),
+        core_slice.call(arguments).join(",")
       );
     },
 
@@ -267,7 +267,7 @@
       return this.pushStack(
         jQuery.map(this, function (elem, i) {
           return callback.call(elem, i, elem);
-        }),
+        })
       );
     },
 
@@ -514,7 +514,7 @@
       return jQuery.merge(
         [],
         (parsed.cacheable ? jQuery.clone(parsed.fragment) : parsed.fragment)
-          .childNodes,
+          .childNodes
       );
     },
 
@@ -538,7 +538,7 @@
           data
             .replace(rvalidescape, "@")
             .replace(rvalidtokens, "]")
-            .replace(rvalidbraces, ""),
+            .replace(rvalidbraces, "")
         )
       ) {
         return new Function("return " + data)();
@@ -860,7 +860,7 @@
               elems[i],
               key,
               exec ? value.call(elems[i], i, fn(elems[i], key)) : value,
-              pass,
+              pass
             );
           }
         }
@@ -946,7 +946,7 @@
     "Boolean Number String Function Array Date RegExp Object".split(" "),
     function (i, name) {
       class2type["[object " + name + "]"] = name.toLowerCase();
-    },
+    }
   );
 
   // All jQuery objects should point back to these
@@ -1187,11 +1187,11 @@
                           } else {
                             newDefer[action + "With"](
                               this === deferred ? newDefer : this,
-                              [returned],
+                              [returned]
                             );
                           }
                         }
-                      : newDefer[action],
+                      : newDefer[action]
                   );
                 });
                 fns = null;
@@ -1229,7 +1229,7 @@
               // [ reject_list | resolve_list ].disable; progress_list.lock
             },
             tuples[i ^ 1][2].disable,
-            tuples[2][2].lock,
+            tuples[2][2].lock
           );
         }
 
@@ -1429,7 +1429,7 @@
           // Cloning a node shouldn't copy over any
           // bound event handlers (IE does this)
           support.noCloneEvent = false;
-        }),
+        })
       );
       div.cloneNode(true).fireEvent("onclick");
       div.detachEvent("onclick", clickFn);
@@ -1556,7 +1556,7 @@
         div.style.width = "1px";
         div.appendChild(marginDiv);
         support.reliableMarginRight = !parseFloat(
-          (window.getComputedStyle(marginDiv, null) || {}).marginRight,
+          (window.getComputedStyle(marginDiv, null) || {}).marginRight
         );
       }
 
@@ -1882,7 +1882,7 @@
         value,
         arguments.length > 1,
         null,
-        false,
+        false
       );
     },
 
@@ -2109,7 +2109,7 @@
         jQuery.attr,
         name,
         value,
-        arguments.length > 1,
+        arguments.length > 1
       );
     },
 
@@ -2125,7 +2125,7 @@
         jQuery.prop,
         name,
         value,
-        arguments.length > 1,
+        arguments.length > 1
       );
     },
 
@@ -2214,7 +2214,7 @@
         return this.each(function (i) {
           jQuery(this).toggleClass(
             value.call(this, i, this.className, stateVal),
-            stateVal,
+            stateVal
           );
         });
       }
@@ -2891,7 +2891,7 @@
             selector: selector,
             namespace: namespaces.join("."),
           },
-          handleObjIn,
+          handleObjIn
         );
 
         // Init the event handler queue if we're the first
@@ -2981,7 +2981,7 @@
           ? new RegExp(
               "(^|\\.)" +
                 namespaces.split(".").sort().join("\\.(?:.*\\.|)") +
-                "(\\.|$)",
+                "(\\.|$)"
             )
           : null;
 
@@ -3345,7 +3345,7 @@
     // *** attrChange attrName relatedNode srcElement  are not normalized, non-W3C, deprecated, will be removed in 1.8 ***
     props:
       "attrChange attrName relatedNode srcElement altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(
-        " ",
+        " "
       ),
 
     fixHooks: {},
@@ -3366,7 +3366,7 @@
     mouseHooks: {
       props:
         "button buttons clientX clientY fromElement offsetX offsetY pageX pageY screenX screenY toElement".split(
-          " ",
+          " "
         ),
       filter: function (event, original) {
         var eventDoc,
@@ -3638,7 +3638,7 @@
           return ret;
         },
       };
-    },
+    }
   );
 
   // IE submit delegation
@@ -3764,7 +3764,7 @@
             fix,
             event.target,
             jQuery.event.fix(event),
-            true,
+            true
           );
         };
 
@@ -3851,7 +3851,7 @@
             ? handleObj.origType + "." + handleObj.namespace
             : handleObj.origType,
           handleObj.selector,
-          handleObj.handler,
+          handleObj.handler
         );
         return this;
       }
@@ -3970,7 +3970,7 @@
       if (rmouseEvent.test(name)) {
         jQuery.event.fixHooks[name] = jQuery.event.mouseHooks;
       }
-    },
+    }
   );
   /*!
    * Sizzle CSS Selector Engine
@@ -4035,7 +4035,7 @@
       // Leading and non-escaped trailing whitespace, capturing some non-whitespace characters preceding the latter
       rtrim = new RegExp(
         "^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$",
-        "g",
+        "g"
       ),
       rcombinators = new RegExp("^" + combinators),
       // All simple (non-comma) selectors, excluding insignifant trailing whitespace
@@ -4049,12 +4049,12 @@
           groups +
           ")*?|" +
           whitespace +
-          "*(.*?))(\\)|$)",
+          "*(.*?))(\\)|$)"
       ),
       // All combinators and selector components (attribute test, tag, pseudo, etc.), the latter appearing together when consecutive
       rtokens = new RegExp(
         groups.slice(19, -6) + "\\x20\\t\\r\\n\\f>+~])+|" + combinators,
-        "g",
+        "g"
       ),
       // Easily-parseable/retrievable ID or TAG or CLASS selectors
       rquickExpr = /^(?:#([\w\-]+)|(\w+)|\.([\w\-]+))$/,
@@ -4080,7 +4080,7 @@
             "*(\\d+)|))" +
             whitespace +
             "*\\)|)",
-          "i",
+          "i"
         ),
         POS: new RegExp(pos, "ig"),
         // For use in libraries implementing .is()
@@ -4236,7 +4236,7 @@
           } else if (match[2]) {
             push.apply(
               results,
-              slice.call(context.getElementsByTagName(selector), 0),
+              slice.call(context.getElementsByTagName(selector), 0)
             );
             return results;
 
@@ -4248,7 +4248,7 @@
           ) {
             push.apply(
               results,
-              slice.call(context.getElementsByClassName(m), 0),
+              slice.call(context.getElementsByClassName(m), 0)
             );
             return results;
           }
@@ -4392,7 +4392,7 @@
           ) {
             match[0] = match[0].slice(
               0,
-              argument[0].length - unquoted.length - 1,
+              argument[0].length - unquoted.length - 1
             );
             unquoted = argument[0].slice(0, -1);
           }
@@ -4439,7 +4439,7 @@
           var pattern = classCache[className];
           if (!pattern) {
             pattern = classCache[className] = new RegExp(
-              "(^|" + whitespace + ")" + className + "(" + whitespace + "|$)",
+              "(^|" + whitespace + ")" + className + "(" + whitespace + "|$)"
             );
             cachedClasses.push(className);
             // Avoid too large of a cache
@@ -4452,7 +4452,7 @@
               elem.className ||
                 (typeof elem.getAttribute !== strundefined &&
                   elem.getAttribute("class")) ||
-                "",
+                ""
             );
           };
         },
@@ -4655,7 +4655,7 @@
           return function (elem) {
             return (
               (elem.textContent || elem.innerText || getText(elem)).indexOf(
-                text,
+                text
               ) > -1
             );
           };
@@ -5056,7 +5056,7 @@
       argument,
       contexts,
       seed,
-      not,
+      not
     ) {
       var results,
         fn = Expr.setFilters[posfilter.toLowerCase()];
@@ -5087,7 +5087,7 @@
         // This is generated here in case matchExpr["POS"] is extended
         rposgroups = new RegExp(
           "^" + rpos.source + "(?!" + whitespace + ")",
-          "i",
+          "i"
         ),
         // This is for making sure non-participating
         // matching groups are represented cross-browser (IE6-8)
@@ -5135,7 +5135,7 @@
               match[2],
               currentContexts,
               elements,
-              not,
+              not
             );
           }
         }
@@ -5151,7 +5151,7 @@
                 part,
                 context,
                 results,
-                seed ? seed.concat(elements) : elements,
+                seed ? seed.concat(elements) : elements
               );
             }
           } else {
@@ -5297,7 +5297,7 @@
           token.captures.push(context, xml);
           matcher = addMatcher(
             matcher,
-            Expr.filter[token.part].apply(null, token.captures),
+            Expr.filter[token.part].apply(null, token.captures)
           );
         }
       }
@@ -5414,7 +5414,7 @@
             elements = Expr.find[type](
               (match[1] || "").replace(rbackslash, ""),
               findContext,
-              xml,
+              xml
             );
 
             if (elements == null) {
@@ -5444,7 +5444,7 @@
         if (elements == null) {
           elements = Expr.find["TAG"](
             "*",
-            (rsibling.test(selector) && context.parentNode) || context,
+            (rsibling.test(selector) && context.parentNode) || context
           );
         }
         for (i = 0; (elem = elements[i]); i++) {
@@ -5486,7 +5486,7 @@
             rbuggyQSA.push(
               "\\[" +
                 whitespace +
-                "*(?:checked|disabled|ismap|multiple|readonly|selected|value)",
+                "*(?:checked|disabled|ismap|multiple|readonly|selected|value)"
             );
           }
 
@@ -5525,7 +5525,7 @@
               try {
                 push.apply(
                   results,
-                  slice.call(context.querySelectorAll(selector), 0),
+                  slice.call(context.querySelectorAll(selector), 0)
                 );
                 return results;
               } catch (qsaError) {}
@@ -5553,10 +5553,10 @@
                   results,
                   slice.call(
                     newContext.querySelectorAll(
-                      selector.replace(rgroups, "[id='" + nid + "'] $&"),
+                      selector.replace(rgroups, "[id='" + nid + "'] $&")
                     ),
-                    0,
-                  ),
+                    0
+                  )
                 );
                 return results;
               } catch (qsaError) {
@@ -5587,7 +5587,7 @@
 
           // rbuggyMatches always contains :active, so no need for a length check
           rbuggyMatches = /* rbuggyMatches.length && */ new RegExp(
-            rbuggyMatches.join("|"),
+            rbuggyMatches.join("|")
           );
 
           Sizzle.matchesSelector = function (elem, expr) {
@@ -5774,7 +5774,7 @@
       return jQuery.inArray(
         // If it receives a jQuery object, the first element is used
         elem.jquery ? elem[0] : elem,
-        this,
+        this
       );
     },
 
@@ -5783,20 +5783,20 @@
           typeof selector === "string"
             ? jQuery(selector, context)
             : jQuery.makeArray(
-                selector && selector.nodeType ? [selector] : selector,
+                selector && selector.nodeType ? [selector] : selector
               ),
         all = jQuery.merge(this.get(), set);
 
       return this.pushStack(
         isDisconnected(set[0]) || isDisconnected(all[0])
           ? all
-          : jQuery.unique(all),
+          : jQuery.unique(all)
       );
     },
 
     addBack: function (selector) {
       return this.add(
-        selector == null ? this.prevObject : this.prevObject.filter(selector),
+        selector == null ? this.prevObject : this.prevObject.filter(selector)
       );
     },
   });
@@ -5880,7 +5880,7 @@
 
         return this.pushStack(ret, name, core_slice.call(arguments).join(","));
       };
-    },
+    }
   );
 
   jQuery.extend({
@@ -6023,13 +6023,13 @@
             ? jQuery.text(this)
             : this.empty().append(
                 ((this[0] && this[0].ownerDocument) || document).createTextNode(
-                  value,
-                ),
+                  value
+                )
               );
         },
         null,
         value,
-        arguments.length,
+        arguments.length
       );
     },
 
@@ -6240,7 +6240,7 @@
         },
         null,
         value,
-        arguments.length,
+        arguments.length
       );
     },
 
@@ -6278,7 +6278,7 @@
         ? this.pushStack(
             jQuery(jQuery.isFunction(value) ? value() : value),
             "replaceWith",
-            value,
+            value
           )
         : this;
     },
@@ -6340,7 +6340,7 @@
               table && jQuery.nodeName(this[i], "table")
                 ? findOrAppend(this[i], "tbody")
                 : this[i],
-              i === iNoClone ? fragment : jQuery.clone(fragment, true, true),
+              i === iNoClone ? fragment : jQuery.clone(fragment, true, true)
             );
           }
         }
@@ -6367,8 +6367,8 @@
               jQuery.globalEval(
                 (elem.text || elem.textContent || elem.innerHTML || "").replace(
                   rcleanScript,
-                  "",
-                ),
+                  ""
+                )
               );
             }
 
@@ -6582,7 +6582,7 @@
           return this.pushStack(ret, name, insert.selector);
         }
       };
-    },
+    }
   );
 
   function getAll(elem) {
@@ -6754,7 +6754,7 @@
             ) {
               div.insertBefore(
                 context.createTextNode(rleadingWhitespace.exec(elem)[0]),
-                div.firstChild,
+                div.firstChild
               );
             }
 
@@ -6800,7 +6800,7 @@
             // Return truthy to indicate that it has been handled
             return scripts
               ? scripts.push(
-                  elem.parentNode ? elem.parentNode.removeChild(elem) : elem,
+                  elem.parentNode ? elem.parentNode.removeChild(elem) : elem
                 )
               : fragment.appendChild(elem);
           }
@@ -6815,7 +6815,7 @@
               // handleScript alters the DOM, so use jQuery.merge to ensure snapshot iteration
               jsTags = jQuery.grep(
                 jQuery.merge([], elem.getElementsByTagName("script")),
-                handleScript,
+                handleScript
               );
 
               // Splice the scripts into ret after their former ancestor and advance our index beyond them
@@ -7024,7 +7024,7 @@
           values[index] = jQuery._data(
             elem,
             "olddisplay",
-            css_defaultDisplay(elem.nodeName),
+            css_defaultDisplay(elem.nodeName)
           );
         }
       } else {
@@ -7062,7 +7062,7 @@
         },
         name,
         value,
-        arguments.length > 1,
+        arguments.length > 1
       );
     },
     show: function () {
@@ -7426,7 +7426,7 @@
         elem,
         name,
         extra || (isBorderBox ? "border" : "content"),
-        valueIsBorderBox,
+        valueIsBorderBox
       ) +
       "px"
     );
@@ -7452,7 +7452,7 @@
             frameBorder: 0,
             width: 0,
             height: 0,
-          }),
+          })
       );
 
       // Create a cacheable copy of the iframe document on first call.
@@ -7500,9 +7500,9 @@
                 name,
                 extra,
                 jQuery.support.boxSizing &&
-                  jQuery.css(elem, "boxSizing") === "border-box",
+                  jQuery.css(elem, "boxSizing") === "border-box"
               )
-            : 0,
+            : 0
         );
       },
     };
@@ -7515,7 +7515,7 @@
         return ropacity.test(
           (computed && elem.currentStyle
             ? elem.currentStyle.filter
-            : elem.style.filter) || "",
+            : elem.style.filter) || ""
         )
           ? 0.01 * parseFloat(RegExp.$1) + ""
           : computed
@@ -7639,7 +7639,7 @@
       if (!rmargin.test(prefix)) {
         jQuery.cssHooks[prefix + suffix].set = setPositiveNumber;
       }
-    },
+    }
   );
   var r20 = /%20/g,
     rbracket = /\[\]$/,
@@ -7735,7 +7735,7 @@
             prefix + "[" + (typeof v === "object" ? i : "") + "]",
             v,
             traditional,
-            add,
+            add
           );
         }
       });
@@ -7841,7 +7841,7 @@
     originalOptions,
     jqXHR,
     dataType /* internal */,
-    inspected /* internal */,
+    inspected /* internal */
   ) {
     dataType = dataType || options.dataTypes[0];
     inspected = inspected || {};
@@ -7869,7 +7869,7 @@
             originalOptions,
             jqXHR,
             selection,
-            inspected,
+            inspected
           );
         }
       }
@@ -7883,7 +7883,7 @@
         originalOptions,
         jqXHR,
         "*",
-        inspected,
+        inspected
       );
     }
     // unnecessary when only executing (prefilters)
@@ -7953,7 +7953,7 @@
           if (callback) {
             self.each(
               callback,
-              response || [jqXHR.responseText, status, jqXHR],
+              response || [jqXHR.responseText, status, jqXHR]
             );
           }
         },
@@ -7974,7 +7974,7 @@
                 // Locate the specified elements
                 .find(selector)
             : // If not, just inject the full result
-              responseText,
+              responseText
         );
       });
 
@@ -7988,7 +7988,7 @@
       jQuery.fn[o] = function (f) {
         return this.on(o, f);
       };
-    },
+    }
   );
 
   jQuery.each(["get", "post"], function (i, method) {
@@ -8304,7 +8304,7 @@
         if (fireGlobals) {
           globalEventContext.trigger(
             "ajax" + (isSuccess ? "Success" : "Error"),
-            [jqXHR, s, isSuccess ? success : error],
+            [jqXHR, s, isSuccess ? success : error]
           );
         }
 
@@ -8433,7 +8433,7 @@
         if (jQuery.lastModified[ifModifiedKey]) {
           jqXHR.setRequestHeader(
             "If-Modified-Since",
-            jQuery.lastModified[ifModifiedKey],
+            jQuery.lastModified[ifModifiedKey]
           );
         }
         if (jQuery.etag[ifModifiedKey]) {
@@ -8447,7 +8447,7 @@
         s.dataTypes[0] && s.accepts[s.dataTypes[0]]
           ? s.accepts[s.dataTypes[0]] +
               (s.dataTypes[0] !== "*" ? ", " + allTypes + "; q=0.01" : "")
-          : s.accepts["*"],
+          : s.accepts["*"]
       );
 
       // Check for headers option
@@ -9151,7 +9151,7 @@
         var currentTime = fxNow || createFxNow(),
           remaining = Math.max(
             0,
-            animation.startTime + animation.duration - currentTime,
+            animation.startTime + animation.duration - currentTime
           ),
           percent = 1 - (remaining / animation.duration || 0),
           index = 0,
@@ -9185,7 +9185,7 @@
             animation.opts,
             prop,
             end,
-            animation.opts.specialEasing[prop] || animation.opts.easing,
+            animation.opts.specialEasing[prop] || animation.opts.easing
           );
           animation.tweens.push(tween);
           return tween;
@@ -9219,7 +9219,7 @@
         animation,
         elem,
         props,
-        animation.opts,
+        animation.opts
       );
       if (result) {
         return result;
@@ -9237,7 +9237,7 @@
         anim: animation,
         queue: animation.opts.queue,
         elem: elem,
-      }),
+      })
     );
 
     // attach callbacks from options
@@ -9471,7 +9471,7 @@
         this.options.duration * percent,
         0,
         1,
-        this.options.duration,
+        this.options.duration
       );
       this.now = (this.end - this.start) * eased + this.start;
 
@@ -9670,7 +9670,7 @@
       jQuery.fn[name] = function (speed, easing, callback) {
         return this.animate(props, speed, easing, callback);
       };
-    },
+    }
   );
 
   jQuery.speed = function (speed, easing, fn) {
@@ -9959,7 +9959,7 @@
             if (win) {
               win.scrollTo(
                 !top ? val : jQuery(win).scrollLeft(),
-                top ? val : jQuery(win).scrollTop(),
+                top ? val : jQuery(win).scrollTop()
               );
             } else {
               elem[method] = val;
@@ -9968,10 +9968,10 @@
           method,
           val,
           arguments.length,
-          null,
+          null
         );
       };
-    },
+    }
   );
 
   function getWindow(elem) {
@@ -10017,7 +10017,7 @@
                   doc["scroll" + name],
                   elem.body["offset" + name],
                   doc["offset" + name],
-                  doc["client" + name],
+                  doc["client" + name]
                 );
               }
 
@@ -10029,10 +10029,10 @@
             },
             type,
             chainable ? margin : undefined,
-            chainable,
+            chainable
           );
         };
-      },
+      }
     );
   });
   // Expose jQuery to the global object

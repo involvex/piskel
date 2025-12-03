@@ -18,7 +18,7 @@ $().ready(function () {
         {
           scrollLeft: -100 + 100 * index,
         },
-        300,
+        300
       );
     }
   };

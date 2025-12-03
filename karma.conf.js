@@ -21,7 +21,7 @@ module.exports = function (config) {
     frameworks: ["jasmine"],
 
     // list of files / patterns to load in the browser
-    files: [...piskelScripts],
+    files: [piskelScripts.concat(piskelScripts)],
 
     // list of files to exclude
     exclude: [],
