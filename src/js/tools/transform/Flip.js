@@ -5,9 +5,9 @@
     this.toolId = 'tool-flip';
     this.helpText = 'Flip horizontally';
     this.tooltipDescriptors = [
-      {key : 'alt', description : 'Flip vertically'},
-      {key : 'ctrl', description : 'Apply to all layers'},
-      {key : 'shift', description : 'Apply to all frames'}
+      { key: 'alt', description: 'Flip vertically' },
+      { key: 'ctrl', description: 'Apply to all layers' },
+      { key: 'shift', description: 'Apply to all frames' }
     ];
   };
 
@@ -24,5 +24,4 @@
 
     ns.TransformUtils.flip(frame, axis);
   };
-
 })();

@@ -8,12 +8,17 @@
    * @param {Array} classList array of strings to use for css classes
    */
   ns.CachedFrameRenderer = function (container, renderingOptions, classList) {
-    pskl.rendering.frame.FrameRenderer.call(this, container, renderingOptions, classList);
+    pskl.rendering.frame.FrameRenderer.call(
+      this,
+      container,
+      renderingOptions,
+      classList);
     this.serializedFrame = '';
   };
 
-  pskl.utils.inherit(pskl.rendering.frame.CachedFrameRenderer, pskl.rendering.frame.FrameRenderer);
-
+  pskl.utils.inherit(
+    pskl.rendering.frame.CachedFrameRenderer,
+    pskl.rendering.frame.FrameRenderer);
   /**
    * Only call display size if provided values are different from current values.
    * FrameRenderer:setDisplaySize destroys the underlying canvas
@@ -38,8 +43,10 @@
       this.getGridColor(),
       pskl.UserSettings.get('SEAMLESS_MODE'),
       pskl.UserSettings.get('SEAMLESS_OPACITY'),
-      offset.x, offset.y,
-      size.width, size.height,
+      offset.x,
+      offset.y,
+      size.width,
+      size.height,
       frame.getHash()
     ].join('-');
 

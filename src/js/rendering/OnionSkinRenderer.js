@@ -11,14 +11,22 @@
     this.hash = '';
   };
 
-  ns.OnionSkinRenderer.createInContainer = function (container, renderingOptions, piskelController) {
+  ns.OnionSkinRenderer.createInContainer = function (
+    container,
+    renderingOptions,
+    piskelController
+  ) {
     // Do not use CachedFrameRenderers here, caching is performed in the render method
-    var renderer = new pskl.rendering.frame.FrameRenderer(container, renderingOptions, ['onion-skin-canvas']);
+    var renderer = new pskl.rendering.frame.FrameRenderer(
+      container,
+      renderingOptions,
+      ['onion-skin-canvas']);
     return new ns.OnionSkinRenderer(renderer, piskelController);
   };
 
-  pskl.utils.inherit(pskl.rendering.OnionSkinRenderer, pskl.rendering.CompositeRenderer);
-
+  pskl.utils.inherit(
+    pskl.rendering.OnionSkinRenderer,
+    pskl.rendering.CompositeRenderer);
   ns.OnionSkinRenderer.prototype.render = function () {
     var frames = this.getOnionFrames_();
     var hash = this.computeHash_(frames);
@@ -64,9 +72,11 @@
       offset.y,
       size.width,
       size.height,
-      frames.map(function (f) {
-        return f.getHash();
-      }).join('-'),
+      frames
+        .map(function (f) {
+          return f.getHash();
+        })
+        .join('-'),
       layers.length
     ].join('-');
   };

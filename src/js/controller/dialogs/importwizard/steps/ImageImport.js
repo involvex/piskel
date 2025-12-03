@@ -15,25 +15,38 @@
     // This step is only used if rawFiles contains a single image.
     this.file_ = this.mergeData.rawFiles[0];
 
-    this.importPreview = this.container.querySelector('.import-section-preview');
+    this.importPreview = this.container.querySelector(
+      '.import-section-preview'
+    );
 
-    this.fileNameContainer = this.container.querySelector('.import-image-file-name');
+    this.fileNameContainer = this.container.querySelector(
+      '.import-image-file-name'
+    );
 
-    this.singleImportType = this.container.querySelector('[name=import-type][value=single]');
-    this.sheetImportType = this.container.querySelector('[name=import-type][value=sheet]');
-
+    this.singleImportType = this.container.querySelector(
+      '[name=import-type][value=single]'
+    );
+    this.sheetImportType = this.container.querySelector(
+      '[name=import-type][value=sheet]'
+    );
     this.resizeWidth = this.container.querySelector('[name=resize-width]');
     this.resizeHeight = this.container.querySelector('[name=resize-height]');
-    this.smoothResize =  this.container.querySelector('[name=smooth-resize-checkbox]');
-
+    this.smoothResize = this.container.querySelector(
+      '[name=smooth-resize-checkbox]'
+    );
     this.frameSizeX = this.container.querySelector('[name=frame-size-x]');
     this.frameSizeY = this.container.querySelector('[name=frame-size-y]');
     this.frameOffsetX = this.container.querySelector('[name=frame-offset-x]');
     this.frameOffsetY = this.container.querySelector('[name=frame-offset-y]');
 
-    this.addEventListener(this.singleImportType, 'change', this.onImportTypeChange_);
-    this.addEventListener(this.sheetImportType, 'change', this.onImportTypeChange_);
-
+    this.addEventListener(
+      this.singleImportType,
+      'change',
+      this.onImportTypeChange_);
+    this.addEventListener(
+      this.sheetImportType,
+      'change',
+      this.onImportTypeChange_);
     this.addEventListener(this.resizeWidth, 'keyup', this.onResizeInputKeyUp_);
     this.addEventListener(this.resizeHeight, 'keyup', this.onResizeInputKeyUp_);
     this.addEventListener(this.frameSizeX, 'keyup', this.onFrameInputKeyUp_);
@@ -41,8 +54,9 @@
     this.addEventListener(this.frameOffsetX, 'keyup', this.onFrameInputKeyUp_);
     this.addEventListener(this.frameOffsetY, 'keyup', this.onFrameInputKeyUp_);
 
-    pskl.utils.FileUtils.readImageFile(this.file_, this.onImageLoaded_.bind(this));
-
+    pskl.utils.FileUtils.readImageFile(
+      this.file_,
+      this.onImageLoaded_.bind(this));
     if (this.piskelController.isEmpty()) {
       this.nextButton.textContent = 'import';
     }
@@ -50,13 +64,17 @@
 
   ns.ImageImport.prototype.onNextClick = function () {
     this.container.classList.add('import-image-loading');
-    this.createPiskelFromImage().then(function (piskel) {
-      this.mergeData.mergePiskel = piskel;
-      this.container.classList.remove('import-image-loading');
-      this.superclass.onNextClick.call(this);
-    }.bind(this)).catch(function (e) {
-      console.error(e);
-    });
+    this.createPiskelFromImage()
+      .then(
+        function (piskel) {
+          this.mergeData.mergePiskel = piskel;
+          this.container.classList.remove('import-image-loading');
+          this.superclass.onNextClick.call(this);
+        }.bind(this)
+      )
+      .catch(function (e) {
+        console.error(e);
+      });
   };
 
   ns.ImageImport.prototype.onShow = function () {
@@ -73,17 +91,20 @@
       this.importedImage_,
       {
         importType: this.getImportType_(),
-        frameSizeX: this.getImportType_() === 'single' ?
-          this.resizeWidth.value : this.sanitizeInputValue_(this.frameSizeX, 1),
-        frameSizeY: this.getImportType_() === 'single' ?
-          this.resizeHeight.value : this.sanitizeInputValue_(this.frameSizeY, 1),
+        frameSizeX:
+          this.getImportType_() === 'single' ?
+            this.resizeWidth.value :
+            this.sanitizeInputValue_(this.frameSizeX, 1),
+        frameSizeY:
+          this.getImportType_() === 'single' ?
+            this.resizeHeight.value :
+            this.sanitizeInputValue_(this.frameSizeY, 1),
         frameOffsetX: this.sanitizeInputValue_(this.frameOffsetX, 0),
         frameOffsetY: this.sanitizeInputValue_(this.frameOffsetY, 0),
         smoothing: !!this.smoothResize.checked,
         name: name
       },
-      deferred.resolve
-    );
+      deferred.resolve);
     return deferred.promise;
   };
 
@@ -126,9 +147,9 @@
     this.singleImportType.checked = true;
 
     if (from === 'resize-width') {
-      this.resizeHeight.value = Math.round(value * height / width);
+      this.resizeHeight.value = Math.round((value * height) / width);
     } else {
-      this.resizeWidth.value = Math.round(value * width / height);
+      this.resizeWidth.value = Math.round((value * width) / height);
     }
   };
 
@@ -151,7 +172,7 @@
     this.drawFrameGrid_(frameOffsetX, frameOffsetY, frameSizeX, frameSizeY);
   };
 
-  ns.ImageImport.prototype.sanitizeInputValue_ = function(input, minValue) {
+  ns.ImageImport.prototype.sanitizeInputValue_ = function (input, minValue) {
     var value = parseInt(input.value, 10);
     if (value <= minValue || isNaN(value)) {
       input.value = minValue;
@@ -214,7 +235,12 @@
     return parts[parts.length - 1];
   };
 
-  ns.ImageImport.prototype.drawFrameGrid_ = function (frameX, frameY, frameW, frameH) {
+  ns.ImageImport.prototype.drawFrameGrid_ = function (
+    frameX,
+    frameY,
+    frameW,
+    frameH
+  ) {
     if (!this.importedImage_) {
       return;
     }
@@ -251,13 +277,21 @@
       var maxHeight = countY * frameH + frameY;
 
       // Draw the vertical lines
-      for (var x = frameX + 0.5; x < maxWidth + 1 && x < width + 1; x += frameW) {
+      for (
+        var x = frameX + 0.5;
+        x < maxWidth + 1 && x < width + 1;
+        x += frameW
+      ) {
         context.moveTo(x * scaleX, frameY * scaleY);
         context.lineTo(x * scaleX, maxHeight * scaleY);
       }
 
       // Draw the horizontal lines
-      for (var y = frameY + 0.5; y < maxHeight + 1 && y < height + 1; y += frameH) {
+      for (
+        var y = frameY + 0.5;
+        y < maxHeight + 1 && y < height + 1;
+        y += frameH
+      ) {
         context.moveTo(frameX * scaleX, y * scaleY);
         context.lineTo(maxWidth * scaleX, y * scaleY);
       }
@@ -273,7 +307,7 @@
     }
   };
 
-  ns.ImageImport.prototype.hideFrameGrid_ = function() {
+  ns.ImageImport.prototype.hideFrameGrid_ = function () {
     var canvas = this.importPreview.querySelector('canvas');
     if (canvas) {
       canvas.style.display = 'none';

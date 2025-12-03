@@ -38,13 +38,19 @@
   };
 
   ns.SelectSession.prototype.update = function () {
-    pskl.app.backupService.list().then(function (sessions) {
-      var html = this.getMarkupForSessions_(sessions);
-      this.container.querySelector('.session-list').innerHTML = html;
-    }.bind(this)).catch(function () {
-      var html = pskl.utils.Template.get('session-list-error');
-      this.container.querySelector('.session-list').innerHTML = html;
-    }.bind(this));
+    pskl.app.backupService
+      .list()
+      .then(
+        function (sessions) {
+          var html = this.getMarkupForSessions_(sessions);
+          this.container.querySelector('.session-list').innerHTML = html;
+        }.bind(this)
+      )
+      .catch(
+        function () {
+          var html = pskl.utils.Template.get('session-list-error');
+          this.container.querySelector('.session-list').innerHTML = html;
+        }.bind(this));
   };
 
   ns.SelectSession.prototype.getMarkupForSessions_ = function (sessions) {
@@ -62,8 +68,12 @@
         id: session.id,
         name: session.name,
         description: session.description ? '- ' + session.description : '',
-        date: pskl.utils.DateUtils.format(session.endDate, 'the {{Y}}/{{M}}/{{D}} at {{H}}:{{m}}'),
-        count: session.count === 1 ? '1 snapshot' : session.count + ' snapshots'
+        date: pskl.utils.DateUtils.format(
+          session.endDate,
+          'the {{Y}}/{{M}}/{{D}} at {{H}}:{{m}}'
+        ),
+        count:
+          session.count === 1 ? '1 snapshot' : session.count + ' snapshots'
       };
       return previous + pskl.utils.Template.replace(sessionItemTemplate, view);
     }, '');
@@ -90,12 +100,12 @@
           pskl.app.backupService.deleteSession(sessionId),
           // Wait for 500ms for the .hide opacity transition.
           wait(DELETE_TRANSITION_DURATION)
-        ]).then(function () {
-          // Refresh the list of sessions
-          this.update();
-        }.bind(this));
+        ]).then(
+          function () {
+            // Refresh the list of sessions
+            this.update();
+          }.bind(this));
       }
     }
   };
-
 })();

@@ -29,11 +29,13 @@
 
   ns.Wizard.prototype.init = function () {
     // Prepare all steps and add them in the wrapper.
-    Object.keys(this.steps).forEach(function (stepName) {
-      var step = this.steps[stepName];
-      step.el.classList.add('wizard-step');
-      this.wrapper.appendChild(step.el);
-    }.bind(this));
+    Object.keys(this.steps).forEach(
+      function (stepName) {
+        var step = this.steps[stepName];
+        step.el.classList.add('wizard-step');
+        this.wrapper.appendChild(step.el);
+      }.bind(this)
+    );
     this.container.appendChild(this.wrapper);
   };
 
@@ -66,12 +68,15 @@
       // Update classes to trigger animation.
       this.currentStep.el.classList.add('current-step-in');
 
-      window.setTimeout(function () {
-        // Cleanup transition classes after animation.
-        this.currentStep.el.classList.remove('current-step-in');
-        previousStep.el.classList.remove('current-step');
-        this.currentStep.el.classList.add('current-step');
-      }.bind(this), TRANSITION_DURATION);
+      window.setTimeout(
+        function () {
+          // Cleanup transition classes after animation.
+          this.currentStep.el.classList.remove('current-step-in');
+          previousStep.el.classList.remove('current-step');
+          this.currentStep.el.classList.add('current-step');
+        }.bind(this),
+        TRANSITION_DURATION
+      );
     } else {
       this.currentStep.el.classList.add('current-step');
     }
@@ -99,9 +104,12 @@
     backedStep.el.classList.remove('current-step');
     this.currentStep.el.classList.add('current-step');
 
-    window.setTimeout(function () {
-      // Cleanup transition classes after animation.
-      backedStep.el.classList.remove('current-step-out');
-    }.bind(this), TRANSITION_DURATION);
+    window.setTimeout(
+      function () {
+        // Cleanup transition classes after animation.
+        backedStep.el.classList.remove('current-step-out');
+      }.bind(this),
+      TRANSITION_DURATION
+    );
   };
 })();

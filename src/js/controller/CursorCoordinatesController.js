@@ -5,8 +5,8 @@
     this.piskelController = piskelController;
     this.origin = null;
     this.coordinates = {
-      x : -1,
-      y : -1
+      x: -1,
+      y: -1
     };
   };
 
@@ -42,18 +42,28 @@
     }
 
     if (pskl.app.drawingController) {
-      var zoom = pskl.app.drawingController.compositeRenderer.getZoom().toFixed(2);
+      var zoom = pskl.app.drawingController.compositeRenderer
+        .getZoom()
+        .toFixed(2);
       html += '<div class="drawing-zoom">x' + zoom + '</div>';
     }
 
-    this.coordinatesContainer.innerHTML = this.getFrameSizeHTML_() + html + this.getCurrentFrameIndexHTML_();
+    this.coordinatesContainer.innerHTML =
+      this.getFrameSizeHTML_() + html + this.getCurrentFrameIndexHTML_();
   };
 
-  ns.CursorCoordinatesController.prototype.getCurrentFrameIndexHTML_ = function () {
-    var currentFrameIndex = this.piskelController.getCurrentFrameIndex() + 1;
-    var frameCount = this.piskelController.getFrameCount();
-    return '<div class="frame-info">' + currentFrameIndex + '/' + frameCount + '</div>';
-  };
+  ns.CursorCoordinatesController.prototype.getCurrentFrameIndexHTML_ =
+    function () {
+      var currentFrameIndex = this.piskelController.getCurrentFrameIndex() + 1;
+      var frameCount = this.piskelController.getFrameCount();
+      return (
+        '<div class="frame-info">' +
+        currentFrameIndex +
+        '/' +
+        frameCount +
+        '</div>'
+      );
+    };
 
   ns.CursorCoordinatesController.prototype.getFrameSizeHTML_ = function () {
     var w = this.piskelController.getWidth();
@@ -61,18 +71,26 @@
     return '[' + w + 'x' + h + '] ';
   };
 
-  ns.CursorCoordinatesController.prototype.onCursorMoved_ = function (event, x, y) {
+  ns.CursorCoordinatesController.prototype.onCursorMoved_ = function (
+    event,
+    x,
+    y
+  ) {
     this.coordinates = {
-      x : x,
-      y : y
+      x: x,
+      y: y
     };
     this.redraw();
   };
 
-  ns.CursorCoordinatesController.prototype.onDragStart_ = function (event, x, y) {
+  ns.CursorCoordinatesController.prototype.onDragStart_ = function (
+    event,
+    x,
+    y
+  ) {
     this.origin = {
-      x : x,
-      y : y
+      x: x,
+      y: y
     };
     this.redraw();
   };

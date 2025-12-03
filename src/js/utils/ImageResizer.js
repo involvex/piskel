@@ -2,12 +2,20 @@
   var ns = $.namespace('pskl.utils');
 
   ns.ImageResizer = {
-    scale : function (image, factor, smoothingEnabled) {
-      return ns.ImageResizer.resize(image, image.width * factor, image.height * factor, smoothingEnabled);
+    scale: function (image, factor, smoothingEnabled) {
+      return ns.ImageResizer.resize(
+        image,
+        image.width * factor,
+        image.height * factor,
+        smoothingEnabled
+      );
     },
 
-    resize : function (image, targetWidth, targetHeight, smoothingEnabled) {
-      var canvas = pskl.utils.CanvasUtils.createCanvas(targetWidth, targetHeight);
+    resize: function (image, targetWidth, targetHeight, smoothingEnabled) {
+      var canvas = pskl.utils.CanvasUtils.createCanvas(
+        targetWidth,
+        targetHeight
+      );
       var context = canvas.getContext('2d');
       context.save();
 

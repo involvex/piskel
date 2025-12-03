@@ -2,7 +2,11 @@
   var ns = $.namespace('pskl.controller.settings');
   ns.AbstractSettingController = function () {};
 
-  ns.AbstractSettingController.prototype.addEventListener = function (el, type, callback) {
+  ns.AbstractSettingController.prototype.addEventListener = function (
+    el,
+    type,
+    callback
+  ) {
     pskl.utils.Event.addEventListener(el, type, callback, this);
   };
 

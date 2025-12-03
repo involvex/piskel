@@ -7,7 +7,12 @@
 
   ns.SizePicker.prototype.init = function (container) {
     this.container = container;
-    pskl.utils.Event.addEventListener(this.container, 'click', this.onSizeOptionClick_, this);
+    pskl.utils.Event.addEventListener(
+      this.container,
+      'click',
+      this.onSizeOptionClick_,
+      this
+    );
   };
 
   ns.SizePicker.prototype.destroy = function () {

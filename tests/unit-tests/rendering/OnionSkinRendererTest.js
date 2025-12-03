@@ -1,28 +1,35 @@
-describe("Onion Skin Renderer test", function() {
-  var BLACK = '#000000';
-  var WHITE = '#ffffff';
+describe("Onion Skin Renderer test", function () {
+  var BLACK = "#000000";
+  var WHITE = "#ffffff";
   var TRANS = Constants.TRANSPARENT_COLOR;
 
-  beforeEach(function() {});
-  afterEach(function() {});
+  beforeEach(function () {});
+  afterEach(function () {});
 
-  it("renders correctly :)", function() {
+  it("renders correctly :)", function () {
     var fakeRenderer = createMockRenderer();
     var layer = createMockLayer();
     var piskelController = createMockPiskelController();
     piskelController.currentLayer_ = layer;
 
-    var onionSkinRenderer = new pskl.rendering.OnionSkinRenderer(fakeRenderer, piskelController);
+    var onionSkinRenderer = new pskl.rendering.OnionSkinRenderer(
+      fakeRenderer,
+      piskelController
+    );
     // create frame
-    var previousFrame = pskl.model.Frame.fromPixelGrid(test.testutils.toFrameGrid([
-      [BLACK, TRANS],
-      [TRANS, TRANS]
-    ]));
+    var previousFrame = pskl.model.Frame.fromPixelGrid(
+      test.testutils.toFrameGrid([
+        [BLACK, TRANS],
+        [TRANS, TRANS],
+      ])
+    );
 
-    var nextFrame = pskl.model.Frame.fromPixelGrid(test.testutils.toFrameGrid([
-      [TRANS, TRANS],
-      [TRANS, BLACK]
-    ]));
+    var nextFrame = pskl.model.Frame.fromPixelGrid(
+      test.testutils.toFrameGrid([
+        [TRANS, TRANS],
+        [TRANS, BLACK],
+      ])
+    );
 
     piskelController.currentFrameIndex_ = 1;
     layer.frames = [previousFrame, {}, nextFrame];
@@ -37,7 +44,7 @@ describe("Onion Skin Renderer test", function() {
     expect(fakeRenderer.renderCounter_).toBe(1);
     test.testutils.frameEqualsGrid(fakeRenderer.renderedFrame_, [
       [BLACK, TRANS],
-      [TRANS, BLACK]
+      [TRANS, BLACK],
     ]);
 
     // Second rendering, nothing changed, should not clear or render
@@ -52,7 +59,7 @@ describe("Onion Skin Renderer test", function() {
     expect(fakeRenderer.renderCounter_).toBe(2);
     test.testutils.frameEqualsGrid(fakeRenderer.renderedFrame_, [
       [BLACK, TRANS],
-      [TRANS, TRANS]
+      [TRANS, TRANS],
     ]);
 
     // remove the other frame
@@ -66,55 +73,55 @@ describe("Onion Skin Renderer test", function() {
 
   var createMockLayer = function () {
     return {
-      frames : [],
-      getFrameAt : function (index) {
+      frames: [],
+      getFrameAt: function (index) {
         return this.frames[index];
-      }
+      },
     };
   };
 
-  var createMockPiskelController = function () {
+  var createMockPiskelController = function () {
     return {
-      currentFrameIndex_ : 1,
-      currentLayer_ : null,
-      getLayers : function () {
+      currentFrameIndex_: 1,
+      currentLayer_: null,
+      getLayers: function () {
         return [this.currentLayer_];
       },
 
-      getCurrentFrameIndex : function () {
+      getCurrentFrameIndex: function () {
         return this.currentFrameIndex_;
       },
 
-      getCurrentLayer : function () {
+      getCurrentLayer: function () {
         return this.currentLayer_;
-      }
+      },
     };
   };
 
   var createMockRenderer = function () {
     return {
-      clearCounter_ : 0,
-      clear : function () {
+      clearCounter_: 0,
+      clear: function () {
         this.clearCounter_++;
       },
-      renderedFrame_ : null,
-      renderCounter_ : 0,
-      render : function (frame) {
+      renderedFrame_: null,
+      renderCounter_: 0,
+      render: function (frame) {
         this.renderCounter_++;
         this.renderedFrame_ = frame;
       },
-      getZoom : function () {
+      getZoom: function () {
         return 1;
       },
-      getGridWidth : function () {
+      getGridWidth: function () {
         return 0;
       },
-      getOffset : function () {
-        return {x:0,y:0};
+      getOffset: function () {
+        return { x: 0, y: 0 };
       },
-      getDisplaySize : function () {
-        return {width:10,height:10};
-      }
+      getDisplaySize: function () {
+        return { width: 10, height: 10 };
+      },
     };
   };
 });

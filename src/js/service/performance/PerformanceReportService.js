@@ -1,7 +1,10 @@
 (function () {
   var ns = $.namespace('pskl.service.performance');
 
-  ns.PerformanceReportService = function (piskelController, currentColorsService) {
+  ns.PerformanceReportService = function (
+    piskelController,
+    currentColorsService
+  ) {
     this.piskelController = piskelController;
     this.currentColorsService = currentColorsService;
 
@@ -16,7 +19,6 @@
     var report = new ns.PerformanceReport(
       this.piskelController.getPiskel(),
       this.currentColorsService.getCurrentColors().length);
-
     if (!report.equals(this.currentReport)) {
       $.publish(Events.PERFORMANCE_REPORT_CHANGED, [report]);
       this.currentReport = report;

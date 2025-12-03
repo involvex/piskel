@@ -16,7 +16,7 @@
   };
 
   ns.FileUtilsDesktop = {
-    chooseFilenameDialog : function (nwsaveas, accept) {
+    chooseFilenameDialog: function (nwsaveas, accept) {
       var deferred = Q.defer();
       var fileInputElement = getFileInputElement(nwsaveas, accept);
       var changeListener = function (evt) {
@@ -46,12 +46,17 @@
      * @param {string} filename - fill path to the file
      * @callback callback
      */
-    saveToFile : function(content, filename) {
+    saveToFile: function (content, filename) {
       var deferred = Q.defer();
       var fs = window.require('fs');
       fs.writeFile(filename, content, function (err) {
         if (err) {
-          deferred.reject('FileUtilsDesktop::savetoFile() - error saving file: ' + filename + ' Error: ' + err);
+          deferred.reject(
+            'FileUtilsDesktop::savetoFile() - error saving file: ' +
+              filename +
+              ' Error: ' +
+              err
+          );
         } else {
           deferred.resolve();
         }
@@ -60,13 +65,18 @@
       return deferred.promise;
     },
 
-    readFile : function(filename) {
+    readFile: function (filename) {
       var deferred = Q.defer();
       var fs = window.require('fs');
       // NOTE: currently loading everything as utf8, which may not be desirable in future
       fs.readFile(filename, 'utf8', function (err, data) {
         if (err) {
-          deferred.reject('FileUtilsDesktop::readFile() - error reading file: ' + filename + ' Error: ' + err);
+          deferred.reject(
+            'FileUtilsDesktop::readFile() - error reading file: ' +
+              filename +
+              ' Error: ' +
+              err
+          );
         } else {
           deferred.resolve(data);
         }

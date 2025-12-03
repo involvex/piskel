@@ -6,8 +6,8 @@
   };
 
   ns.SelectMode.MODES = {
-    REPLACE : 'replace',
-    MERGE : 'merge'
+    REPLACE: 'replace',
+    MERGE: 'merge'
   };
 
   pskl.utils.inherit(ns.SelectMode, ns.AbstractImportStep);
@@ -15,7 +15,9 @@
   ns.SelectMode.prototype.init = function () {
     this.superclass.init.call(this);
 
-    var replaceButton = this.container.querySelector('.import-mode-replace-button');
+    var replaceButton = this.container.querySelector(
+      '.import-mode-replace-button'
+    );
     var mergeButton = this.container.querySelector('.import-mode-merge-button');
 
     this.addEventListener(replaceButton, 'click', this.onReplaceButtonClick_);

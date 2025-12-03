@@ -69,8 +69,8 @@
     var currentOffset = this.drawingController.getOffset();
 
     var offset = {
-      x : currentOffset.x - MULTIPLIER * (coords.x - this.origin.x),
-      y : currentOffset.y - MULTIPLIER * (coords.y - this.origin.y)
+      x: currentOffset.x - MULTIPLIER * (coords.x - this.origin.x),
+      y: currentOffset.y - MULTIPLIER * (coords.y - this.origin.y)
     };
 
     return offset;

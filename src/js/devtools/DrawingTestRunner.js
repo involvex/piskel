@@ -7,11 +7,13 @@
   };
 
   ns.DrawingTestRunner.prototype.start = function () {
-    pskl.utils.Xhr.get(this.testName, function (response) {
-      var res = response.responseText;
-      var recordPlayer = new ns.DrawingTestPlayer(JSON.parse(res));
-      recordPlayer.start();
-    }.bind(this));
+    pskl.utils.Xhr.get(
+      this.testName,
+      function (response) {
+        var res = response.responseText;
+        var recordPlayer = new ns.DrawingTestPlayer(JSON.parse(res));
+        recordPlayer.start();
+      }.bind(this));
   };
 
   ns.DrawingTestRunner.prototype.onTestRecordEnd_ = function (evt, success) {

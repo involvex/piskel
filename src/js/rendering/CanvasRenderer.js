@@ -1,5 +1,4 @@
 (function () {
-
   var ns = $.namespace('pskl.rendering');
   ns.CanvasRenderer = function (frame, zoom) {
     this.frame = frame;
@@ -21,12 +20,15 @@
     this.opacity_ = opacity;
   };
 
-  ns.CanvasRenderer.prototype.render = function  () {
+  ns.CanvasRenderer.prototype.render = function () {
     var canvas = this.createCanvas_();
 
     // Draw in canvas
-    pskl.utils.FrameUtils.drawToCanvas(this.frame, canvas, this.transparentColor_, this.opacity_);
-
+    pskl.utils.FrameUtils.drawToCanvas(
+      this.frame,
+      canvas,
+      this.transparentColor_,
+      this.opacity_);
     var scaledCanvas = this.createCanvas_(this.zoom);
     var scaledContext = scaledCanvas.getContext('2d');
     pskl.utils.CanvasUtils.disableImageSmoothing(scaledCanvas);

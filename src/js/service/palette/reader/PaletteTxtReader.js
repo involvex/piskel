@@ -4,7 +4,12 @@
   var RE_COLOR_LINE = /^[A-F0-9]{2}([A-F0-9]{2})([A-F0-9]{2})([A-F0-9]{2})/;
 
   ns.PaletteTxtReader = function (file, onSuccess, onError) {
-    this.superclass.constructor.call(this, file, onSuccess, onError, RE_COLOR_LINE);
+    this.superclass.constructor.call(
+      this,
+      file,
+      onSuccess,
+      onError,
+      RE_COLOR_LINE);
   };
 
   pskl.utils.inherit(ns.PaletteTxtReader, ns.AbstractPaletteFileReader);

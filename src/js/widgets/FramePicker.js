@@ -4,11 +4,11 @@
   var WIDGET_MARKUP =
     '<div class="frame-viewer"></div>' +
     '<div class="frame-nav">' +
-      '<button class="button frame-nav-first">&lt;&lt;</button>' +
-      '<button class="button frame-nav-previous">&lt;</button>' +
-      '<input class="textfield frame-nav-input" type="text">' +
-      '<button class="button frame-nav-next">&gt;</button>' +
-      '<button class="button frame-nav-last">&gt;&gt;</button>' +
+    '<button class="button frame-nav-first">&lt;&lt;</button>' +
+    '<button class="button frame-nav-previous">&lt;</button>' +
+    '<input class="textfield frame-nav-input" type="text">' +
+    '<button class="button frame-nav-next">&gt;</button>' +
+    '<button class="button frame-nav-last">&gt;&gt;</button>' +
     '</div>';
 
   /**
@@ -43,7 +43,11 @@
 
     // Attach event listeners
     this.addEventListener(this.firstButton, 'click', this.onFirstClicked_);
-    this.addEventListener(this.previousButton, 'click', this.onPreviousClicked_);
+    this.addEventListener(
+      this.previousButton,
+      'click',
+      this.onPreviousClicked_
+    );
     this.addEventListener(this.nextButton, 'click', this.onNextClicked_);
     this.addEventListener(this.lastButton, 'click', this.onLastClicked_);
     this.addEventListener(this.input, 'change', this.onInputChange_);
@@ -138,7 +142,10 @@
       return new Image();
     }
 
-    var frame = pskl.utils.LayerUtils.mergeFrameAt(this.piskel.getLayers(), frameIndex - 1);
+    var frame = pskl.utils.LayerUtils.mergeFrameAt(
+      this.piskel.getLayers(),
+      frameIndex - 1
+    );
     var zoom = this.getZoomLevel_();
     return pskl.utils.FrameUtils.toImage(frame, zoom);
   };

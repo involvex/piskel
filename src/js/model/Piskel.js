@@ -18,7 +18,10 @@
       this.fps = fps;
       this.hiddenFrames = [];
     } else {
-      throw 'Missing arguments in Piskel constructor : ' + Array.prototype.join.call(arguments, ',');
+      throw (
+        'Missing arguments in Piskel constructor : ' +
+        Array.prototype.join.call(arguments, ',')
+      );
     }
   };
 
@@ -32,7 +35,11 @@
     var piskel = null;
     if (layers.length > 0 && layers[0].size() > 0) {
       var sampleFrame = layers[0].getFrameAt(0);
-      piskel = new pskl.model.Piskel(sampleFrame.getWidth(), sampleFrame.getHeight(), fps, descriptor);
+      piskel = new pskl.model.Piskel(
+        sampleFrame.getWidth(),
+        sampleFrame.getHeight(),
+        fps,
+        descriptor);
       layers.forEach(piskel.addLayer.bind(piskel));
     } else {
       throw 'Piskel.fromLayers expects array of non empty pskl.model.Layer as first argument';
@@ -132,9 +139,10 @@
   };
 
   ns.Piskel.prototype.getHash = function () {
-    return this.layers.map(function (layer) {
-      return layer.getHash();
-    }).join('-');
+    return this.layers
+      .map(function (layer) {
+        return layer.getHash();
+      })
+      .join('-');
   };
-
 })();

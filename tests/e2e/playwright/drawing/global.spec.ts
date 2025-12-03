@@ -1,8 +1,5 @@
-import { executeTest } from './utils';
+import { executeTest } from "./utils";
 
-const globalTestNames = [
-  "frames.fun.json",
-  "history.basic.json"
-];
+const globalTestNames = ["frames.fun.json", "history.basic.json"];
 
 globalTestNames.forEach(executeTest);

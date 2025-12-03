@@ -8,14 +8,18 @@
     this.onSuccess = onSuccess;
     this.onError = onError;
 
-    this.worker = pskl.utils.WorkerUtils.createWorker(ns.FrameColorsWorker, 'frame-colors');
+    this.worker = pskl.utils.WorkerUtils.createWorker(
+      ns.FrameColorsWorker,
+      'frame-colors'
+    );
     this.worker.onmessage = this.onWorkerMessage.bind(this);
   };
 
   ns.FrameColors.prototype.process = function () {
     this.worker.postMessage([
       pskl.utils.colorToInt(Constants.TRANSPARENT_COLOR),
-      Constants.MAX_WORKER_COLORS, this.pixels
+      Constants.MAX_WORKER_COLORS,
+      this.pixels
     ]);
   };
 

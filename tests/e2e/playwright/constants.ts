@@ -1,1 +1,1 @@
-export const EDITOR_PATH = '/';
+export const EDITOR_PATH = "/";

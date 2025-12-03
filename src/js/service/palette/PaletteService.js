@@ -34,7 +34,9 @@
 
     this.savePalettes_(palettes);
 
-    $.publish(Events.SHOW_NOTIFICATION, [{'content': 'Palette ' + palette.name + ' successfully saved !'}]);
+    $.publish(Events.SHOW_NOTIFICATION, [
+      { content: 'Palette ' + palette.name + ' successfully saved !' }
+    ]);
     window.setTimeout($.publish.bind($, Events.HIDE_NOTIFICATION), 2000);
   };
 
@@ -52,14 +54,20 @@
   };
 
   ns.PaletteService.prototype.savePalettes_ = function (palettes) {
-    palettes = palettes.filter(function (palette) {
-      return this.dynamicPalettes.indexOf(palette) === -1;
-    }.bind(this));
-    this.localStorageGlobal.setItem('piskel.palettes', JSON.stringify(palettes));
+    palettes = palettes.filter(
+      function (palette) {
+        return this.dynamicPalettes.indexOf(palette) === -1;
+      }.bind(this));
+    this.localStorageGlobal.setItem(
+      'piskel.palettes',
+      JSON.stringify(palettes));
     $.publish(Events.PALETTE_LIST_UPDATED);
   };
 
-  ns.PaletteService.prototype.findPaletteInArray_ = function (paletteId, palettes) {
+  ns.PaletteService.prototype.findPaletteInArray_ = function (
+    paletteId,
+    palettes
+  ) {
     var match = null;
 
     palettes.forEach(function (palette) {

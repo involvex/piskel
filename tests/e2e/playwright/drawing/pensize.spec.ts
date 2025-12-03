@@ -1,4 +1,4 @@
-import { executeTest } from './utils';
+import { executeTest } from "./utils";
 
 const penSizeTestNames = [
   "pensize.circle.basic.json",
@@ -9,7 +9,7 @@ const penSizeTestNames = [
   "pensize.rectangle.basic.json",
   "pensize.rectangle.undo.json",
   "pensize.stroke.basic.json",
-  "pensize.stroke.undo.json"
+  "pensize.stroke.undo.json",
 ];
 
 penSizeTestNames.forEach(executeTest);

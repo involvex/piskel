@@ -1,20 +1,20 @@
 var callFactory = function (method) {
   return {
-    times : function (times) {
+    times: function (times) {
       var results = [];
-      for (var i = 0 ; i < times ; i++) {
+      for (var i = 0; i < times; i++) {
         results.push(method());
       }
       return results;
     },
-    once : function () {
+    once: function () {
       return method();
-    }
+    },
   };
 };
 
-describe("History Service suite", function() {
-  var SERIALIZED_PISKEL = 'serialized-piskel';
+describe("History Service suite", function () {
+  var SERIALIZED_PISKEL = "serialized-piskel";
   var historyService = null;
 
   var getLastState = function () {
@@ -25,40 +25,46 @@ describe("History Service suite", function() {
     var mockPiskelController = {
       getWrappedPiskelController: function () {
         return {
-          getPiskel : function () {},
-          getFPS : function () {
+          getPiskel: function () {},
+          getFPS: function () {
             return 12;
-          }
-        }
-      }
+          },
+        };
+      },
     };
     var mockShortcutService = {
-      registerShortcuts : function () {},
-      registerShortcut : function () {}
+      registerShortcuts: function () {},
+      registerShortcut: function () {},
     };
-    return new pskl.service.HistoryService(mockPiskelController, mockShortcutService,
-      { deserialize : function () {}},
-      { serialize : function () { return SERIALIZED_PISKEL }}
+    return new pskl.service.HistoryService(
+      mockPiskelController,
+      mockShortcutService,
+      { deserialize: function () {} },
+      {
+        serialize: function () {
+          return SERIALIZED_PISKEL;
+        }
+      }
     );
   };
 
-  it("starts at -1", function() {
+  it("starts at -1", function () {
     historyService = createMockHistoryService();
     expect(historyService.currentIndex).toBe(-1);
   });
 
-  it("is at 0 after init", function() {
+  it("is at 0 after init", function () {
     historyService = createMockHistoryService();
     historyService.init();
     expect(historyService.currentIndex).toBe(0);
   });
 
   var sendSaveEvents = function (type) {
-    return callFactory (function () {
+    return callFactory(function () {
       $.publish(Events.PISKEL_SAVE_STATE, {
-        type : type,
-        scope : {},
-        replay : {}
+        type: type,
+        scope: {},
+        replay: {},
       });
     });
   };
@@ -85,6 +91,5 @@ describe("History Service suite", function() {
 
     // AFTER
     pskl.service.HistoryService.SNAPSHOT_PERIOD = SNAPSHOT_PERIOD_BACKUP;
-
   });
 });

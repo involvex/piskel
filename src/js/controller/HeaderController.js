@@ -1,5 +1,5 @@
 (function () {
-  var ns  = $.namespace('pskl.controller');
+  var ns = $.namespace('pskl.controller');
 
   /**
    * When embedded in piskelapp.com, the page adds a header containing the name of the currently edited sprite
@@ -13,13 +13,23 @@
   ns.HeaderController.prototype.init = function () {
     this.piskelName_ = document.querySelector('.piskel-name');
 
-    $.subscribe(Events.BEFORE_SAVING_PISKEL, this.onBeforeSavingPiskelEvent_.bind(this));
-    $.subscribe(Events.AFTER_SAVING_PISKEL, this.onAfterSavingPiskelEvent_.bind(this));
+    $.subscribe(
+      Events.BEFORE_SAVING_PISKEL,
+      this.onBeforeSavingPiskelEvent_.bind(this)
+    );
+    $.subscribe(
+      Events.AFTER_SAVING_PISKEL,
+      this.onAfterSavingPiskelEvent_.bind(this)
+    );
 
-    $.subscribe(Events.PISKEL_DESCRIPTOR_UPDATED, this.updateHeader_.bind(this));
+    $.subscribe(
+      Events.PISKEL_DESCRIPTOR_UPDATED,
+      this.updateHeader_.bind(this)
+    );
     $.subscribe(Events.PISKEL_RESET, this.updateHeader_.bind(this));
-    $.subscribe(Events.PISKEL_SAVED_STATUS_UPDATE, this.updateHeader_.bind(this));
-
+    $.subscribe(
+      Events.PISKEL_SAVED_STATUS_UPDATE,
+      this.updateHeader_.bind(this));
     this.updateHeader_();
   };
 
@@ -51,5 +61,4 @@
     }
     this.piskelName_.classList.remove('piskel-name-saving');
   };
-
 })();

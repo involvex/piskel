@@ -7,12 +7,14 @@
     this.piskelController = piskelController;
 
     // Do not use CachedFrameRenderers here, since the caching will be performed in the render method of LayersRenderer
-    this.belowRenderer = new pskl.rendering.frame.FrameRenderer(container, renderingOptions,
+    this.belowRenderer = new pskl.rendering.frame.FrameRenderer(
+      container,
+      renderingOptions,
       ['layers-canvas', 'layers-below-canvas']);
-
-    this.aboveRenderer = new pskl.rendering.frame.FrameRenderer(container, renderingOptions,
+    this.aboveRenderer = new pskl.rendering.frame.FrameRenderer(
+      container,
+      renderingOptions,
       ['layers-canvas', 'layers-above-canvas']);
-
     this.add(this.belowRenderer);
     this.add(this.aboveRenderer);
 
@@ -20,14 +22,17 @@
 
     this.stylesheet_ = document.createElement('style');
     document.head.appendChild(this.stylesheet_);
-    this.updateLayersCanvasOpacity_(pskl.UserSettings.get(pskl.UserSettings.LAYER_OPACITY));
-
+    this.updateLayersCanvasOpacity_(
+      pskl.UserSettings.get(pskl.UserSettings.LAYER_OPACITY));
     $.subscribe(Events.PISKEL_RESET, this.flush.bind(this));
-    $.subscribe(Events.USER_SETTINGS_CHANGED, this.onUserSettingsChange_.bind(this));
+    $.subscribe(
+      Events.USER_SETTINGS_CHANGED,
+      this.onUserSettingsChange_.bind(this));
   };
 
-  pskl.utils.inherit(pskl.rendering.layer.LayersRenderer, pskl.rendering.CompositeRenderer);
-
+  pskl.utils.inherit(
+    pskl.rendering.layer.LayersRenderer,
+    pskl.rendering.CompositeRenderer);
   ns.LayersRenderer.prototype.render = function () {
     var offset = this.getOffset();
     var size = this.getDisplaySize();
@@ -56,12 +61,16 @@
       this.clear();
 
       if (belowLayers.length > 0) {
-        var belowFrame = pskl.utils.LayerUtils.mergeFrameAt(belowLayers, frameIndex);
+        var belowFrame = pskl.utils.LayerUtils.mergeFrameAt(
+          belowLayers,
+          frameIndex);
         this.belowRenderer.render(belowFrame);
       }
 
       if (aboveLayers.length > 0) {
-        var aboveFrame = pskl.utils.LayerUtils.mergeFrameAt(aboveLayers, frameIndex);
+        var aboveFrame = pskl.utils.LayerUtils.mergeFrameAt(
+          aboveLayers,
+          frameIndex);
         this.aboveRenderer.render(aboveFrame);
       }
     }
@@ -80,7 +89,11 @@
     }
   };
 
-  ns.LayersRenderer.prototype.onUserSettingsChange_ = function (evt, settingsName, settingsValue) {
+  ns.LayersRenderer.prototype.onUserSettingsChange_ = function (
+    evt,
+    settingsName,
+    settingsValue
+  ) {
     if (settingsName == pskl.UserSettings.LAYER_OPACITY) {
       this.updateLayersCanvasOpacity_(settingsValue);
     }

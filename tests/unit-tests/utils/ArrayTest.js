@@ -1,9 +1,8 @@
-describe("Array utils", function() {
+describe("Array utils", function () {
+  beforeEach(function () {});
+  afterEach(function () {});
 
-  beforeEach(function() {});
-  afterEach(function() {});
-
-  it("chunks correctly", function() {
+  it("chunks correctly", function () {
     // when
     var array = [1, 2, 3, 4];
 

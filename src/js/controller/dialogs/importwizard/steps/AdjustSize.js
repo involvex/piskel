@@ -16,13 +16,22 @@
     this.superclass.init.call(this);
 
     // Create anchor widget
-    var anchorContainer = this.container.querySelector('.import-resize-anchor-container');
-    this.anchorWidget = new pskl.widgets.AnchorWidget(anchorContainer, this.onAnchorChange_.bind(this));
+    var anchorContainer = this.container.querySelector(
+      '.import-resize-anchor-container'
+    );
+    this.anchorWidget = new pskl.widgets.AnchorWidget(
+      anchorContainer,
+      this.onAnchorChange_.bind(this)
+    );
     this.anchorWidget.setOrigin('TOPLEFT');
 
-    this.resizeInfoContainer = this.container.querySelector('.import-resize-info');
-    this.addEventListener(this.resizeInfoContainer, 'change', this.onResizeOptionChange_);
-
+    this.resizeInfoContainer = this.container.querySelector(
+      '.import-resize-info'
+    );
+    this.addEventListener(
+      this.resizeInfoContainer,
+      'change',
+      this.onResizeOptionChange_);
     // By default, set the mode to expand to avoid losing any image content.
     this.mergeData.resize = ns.AdjustSize.OPTIONS.EXPAND;
   };
@@ -46,17 +55,21 @@
     var newSize = this.formatPiskelSize_(this.mergeData.mergePiskel);
     var markup;
     if (isBigger) {
-      markup = pskl.utils.Template.getAndReplace('import-resize-bigger-partial', {
-        size : size,
-        newSize : newSize,
-        keepChecked : keep ? 'checked="checked"' : '',
-        expandChecked : keep ? '' : 'checked="checked"'
-      });
+      markup = pskl.utils.Template.getAndReplace(
+        'import-resize-bigger-partial',
+        {
+          size: size,
+          newSize: newSize,
+          keepChecked: keep ? 'checked="checked"' : '',
+          expandChecked: keep ? '' : 'checked="checked"'
+        });
     } else {
-      markup = pskl.utils.Template.getAndReplace('import-resize-smaller-partial', {
-        size : size,
-        newSize : newSize
-      });
+      markup = pskl.utils.Template.getAndReplace(
+        'import-resize-smaller-partial',
+        {
+          size: size,
+          newSize: newSize
+        });
     }
     this.resizeInfoContainer.innerHTML = markup;
 
@@ -99,8 +112,10 @@
       return false;
     }
 
-    return piskel.width > this.piskelController.getWidth() ||
-           piskel.height > this.piskelController.getHeight();
+    return (
+      piskel.width > this.piskelController.getWidth() ||
+      piskel.height > this.piskelController.getHeight()
+    );
   };
 
   ns.AdjustSize.prototype.formatPiskelSize_ = function (piskel) {

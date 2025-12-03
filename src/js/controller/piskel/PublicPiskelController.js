@@ -40,10 +40,18 @@
     this.saveWrap_('toggleFrameVisibilityAt', true);
 
     var shortcuts = pskl.service.keyboard.Shortcuts;
-    pskl.app.shortcutService.registerShortcut(shortcuts.MISC.PREVIOUS_FRAME, this.selectPreviousFrame.bind(this));
-    pskl.app.shortcutService.registerShortcut(shortcuts.MISC.NEXT_FRAME, this.selectNextFrame.bind(this));
-    pskl.app.shortcutService.registerShortcut(shortcuts.MISC.NEW_FRAME, this.addFrameAtCurrentIndex.bind(this));
-    pskl.app.shortcutService.registerShortcut(shortcuts.MISC.DUPLICATE_FRAME, this.duplicateCurrentFrame.bind(this));
+    pskl.app.shortcutService.registerShortcut(
+      shortcuts.MISC.PREVIOUS_FRAME,
+      this.selectPreviousFrame.bind(this));
+    pskl.app.shortcutService.registerShortcut(
+      shortcuts.MISC.NEXT_FRAME,
+      this.selectNextFrame.bind(this));
+    pskl.app.shortcutService.registerShortcut(
+      shortcuts.MISC.NEW_FRAME,
+      this.addFrameAtCurrentIndex.bind(this));
+    pskl.app.shortcutService.registerShortcut(
+      shortcuts.MISC.DUPLICATE_FRAME,
+      this.duplicateCurrentFrame.bind(this));
   };
 
   ns.PublicPiskelController.prototype.getWrappedPiskelController = function () {
@@ -66,7 +74,7 @@
 
     if (!options || !options.noSnapshot) {
       $.publish(Events.PISKEL_SAVE_STATE, {
-        type : pskl.service.HistoryService.SNAPSHOT
+        type: pskl.service.HistoryService.SNAPSHOT
       });
     }
   };
@@ -79,35 +87,51 @@
   };
 
   ns.PublicPiskelController.prototype.saveWrap_ = function (methodName, reset) {
-    this[methodName] = reset ? function () {
-      var stateInfo = this.getStateInfo_();
-      this.piskelController[methodName].apply(this.piskelController, arguments);
-      this.raiseSaveStateEvent_(this.piskelController[methodName], arguments, stateInfo);
-      $.publish(Events.PISKEL_RESET);
-    } : function () {
-      var stateInfo = this.getStateInfo_();
-      this.piskelController[methodName].apply(this.piskelController, arguments);
-      this.raiseSaveStateEvent_(this.piskelController[methodName], arguments, stateInfo);
-    };
+    this[methodName] = reset ?
+      function () {
+        var stateInfo = this.getStateInfo_();
+        this.piskelController[methodName].apply(
+          this.piskelController,
+          arguments);
+        this.raiseSaveStateEvent_(
+          this.piskelController[methodName],
+          arguments,
+          stateInfo);
+        $.publish(Events.PISKEL_RESET);
+      } :
+      function () {
+        var stateInfo = this.getStateInfo_();
+        this.piskelController[methodName].apply(
+          this.piskelController,
+          arguments);
+        this.raiseSaveStateEvent_(
+          this.piskelController[methodName],
+          arguments,
+          stateInfo);
+      };
   };
 
   ns.PublicPiskelController.prototype.getStateInfo_ = function () {
     var stateInfo = {
-      frameIndex : this.piskelController.currentFrameIndex,
-      layerIndex : this.piskelController.currentLayerIndex
+      frameIndex: this.piskelController.currentFrameIndex,
+      layerIndex: this.piskelController.currentLayerIndex
     };
     return stateInfo;
   };
 
-  ns.PublicPiskelController.prototype.raiseSaveStateEvent_ = function (fn, args, stateInfo) {
+  ns.PublicPiskelController.prototype.raiseSaveStateEvent_ = function (
+    fn,
+    args,
+    stateInfo
+  ) {
     $.publish(Events.PISKEL_SAVE_STATE, {
-      type : pskl.service.HistoryService.REPLAY,
-      scope : this,
-      replay : {
-        fn : fn,
-        args : args
+      type: pskl.service.HistoryService.REPLAY,
+      scope: this,
+      replay: {
+        fn: fn,
+        args: args
       },
-      state : stateInfo
+      state: stateInfo
     });
   };
 

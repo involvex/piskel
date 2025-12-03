@@ -1,6 +1,5 @@
 // TODO(grosbouddha): put under pskl namespace.
 var Events = {
-
   TOOL_SELECTED: 'TOOL_SELECTED',
   SELECT_TOOL: 'SELECT_TOOL',
 
@@ -95,5 +94,5 @@ var Events = {
 
   // A piskel external to the editor has been loaded and attached
   // to window._externalPiskel to be applied.
-  EXTERNAL_PISKEL_READY: 'EXTERNAL_PISKEL_READY',
+  EXTERNAL_PISKEL_READY: 'EXTERNAL_PISKEL_READY'
 };

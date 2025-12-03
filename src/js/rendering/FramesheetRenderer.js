@@ -19,7 +19,7 @@
 
     var canvas = this.createCanvas_(columns, rows);
 
-    for (var i = 0 ; i < this.frames.length ; i++) {
+    for (var i = 0; i < this.frames.length; i++) {
       var frame = this.frames[i];
       var posX = (i % columns) * frame.getWidth();
       var posY = Math.floor(i / columns) * frame.getHeight();
@@ -28,9 +28,16 @@
     return canvas;
   };
 
-  ns.FramesheetRenderer.prototype.drawFrameInCanvas_ = function (frame, canvas, offsetWidth, offsetHeight) {
+  ns.FramesheetRenderer.prototype.drawFrameInCanvas_ = function (
+    frame,
+    canvas,
+    offsetWidth,
+    offsetHeight
+  ) {
     var context = canvas.getContext('2d');
-    var imageData = context.createImageData(frame.getWidth(), frame.getHeight());
+    var imageData = context.createImageData(
+      frame.getWidth(),
+      frame.getHeight());
     var pixels = frame.getPixels();
     var data = new Uint8ClampedArray(pixels.buffer);
     imageData.data.set(data);

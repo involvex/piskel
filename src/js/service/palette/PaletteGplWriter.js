@@ -11,9 +11,10 @@
     lines.push('Name: ' + this.palette.name);
     lines.push('Columns: 0');
     lines.push('#');
-    this.palette.getColors().forEach(function (color) {
-      lines.push(this.writeColorLine(color));
-    }.bind(this));
+    this.palette.getColors().forEach(
+      function (color) {
+        lines.push(this.writeColorLine(color));
+      }.bind(this));
     lines.push('\r\n');
 
     return lines.join('\r\n');
@@ -33,8 +34,7 @@
 
   ns.PaletteGplWriter.prototype.padString = function (str, size) {
     str = str.toString();
-    var pad = (new Array(1 + size - str.length)).join(' ');
+    var pad = new Array(1 + size - str.length).join(' ');
     return pad + str;
   };
-
 })();

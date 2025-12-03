@@ -6,7 +6,7 @@ SETLOCAL
   set PISKEL_HOME=%cd%
   POPD
 
-  set RESOURCE_HACKER_PATH="C:\Program Files (x86)\Resource Hacker"
+  set RESOURCE_HACKER_PATH="C:\Program Files\Resource Hacker"
 
   set MISC_FOLDER=%PISKEL_HOME%\misc
   set RELEASES_FOLDER=%PISKEL_HOME%\dest\desktop

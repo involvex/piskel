@@ -13,7 +13,7 @@
     var ref = pskl.app.piskelController.getCurrentFrame();
     var layer = pskl.app.piskelController.getCurrentLayer();
     layer.getFrames().forEach(function (frame) {
-      if (frame !==  ref) {
+      if (frame !== ref) {
         frame.setPixels(ref.getPixels());
       }
     });

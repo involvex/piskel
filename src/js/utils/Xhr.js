@@ -1,12 +1,12 @@
 (function () {
   var ns = $.namespace('pskl.utils');
   ns.Xhr = {
-    get : function (url, success, error) {
+    get: function (url, success, error) {
       var xhr = ns.Xhr.xhr_(url, 'GET', success, error);
       xhr.send();
     },
 
-    post : function (url, data, success, error) {
+    post: function (url, data, success, error) {
       var xhr = ns.Xhr.xhr_(url, 'POST', success, error);
       var formData = new FormData();
 
@@ -21,7 +21,7 @@
       xhr.send(formData);
     },
 
-    xhr_ : function (url, method, success, error) {
+    xhr_: function (url, method, success, error) {
       success = success || function () {};
       error = error || function () {};
 

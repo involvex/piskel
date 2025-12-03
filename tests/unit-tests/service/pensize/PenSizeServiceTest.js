@@ -1,26 +1,25 @@
-describe("PenSize test suite", function() {
+describe("PenSize test suite", function () {
   var penSizeService;
   var userSettingsBackup;
   var userSettingsPenSize;
 
-  beforeEach(function() {
+  beforeEach(function () {
     userSettingsBackup = pskl.UserSettings;
 
     pskl.UserSettings = {
-      PEN_SIZE : 'PEN_SIZE_TEST_KEY',
-      get : function () {
+      PEN_SIZE: "PEN_SIZE_TEST_KEY",
+      get: function () {
         return userSettingsPenSize;
       },
 
-      set : function (size) {
+      set: function (size) {
         userSettingsPenSize = size;
-      }
+      },
     };
 
-    spyOn(pskl.UserSettings, 'get').and.callThrough();
-    spyOn(pskl.UserSettings, 'set').and.callThrough();
-    spyOn($, 'publish').and.callThrough();
-
+    spyOn(pskl.UserSettings, "get").and.callThrough();
+    spyOn(pskl.UserSettings, "set").and.callThrough();
+    spyOn($, "publish").and.callThrough();
 
     penSizeService = new pskl.service.pensize.PenSizeService();
   });
@@ -29,29 +28,29 @@ describe("PenSize test suite", function() {
     pskl.UserSettings = userSettingsBackup;
   });
 
-  it("gets initial value from user settings", function() {
-    console.log('[PenSizeService] gets initial value from user settings');
+  it("gets initial value from user settings", function () {
+    console.log("[PenSizeService] gets initial value from user settings");
     userSettingsPenSize = 2;
 
     penSizeService.init();
     expect(penSizeService.getPenSize()).toBe(2);
-    expect(pskl.UserSettings.get).toHaveBeenCalledWith('PEN_SIZE_TEST_KEY');
+    expect(pskl.UserSettings.get).toHaveBeenCalledWith("PEN_SIZE_TEST_KEY");
   });
 
-  it("saves valid value to user settings", function() {
-    console.log('[PenSizeService] saves valid value to user settings');
+  it("saves valid value to user settings", function () {
+    console.log("[PenSizeService] saves valid value to user settings");
     userSettingsPenSize = 1;
 
     penSizeService.init();
     penSizeService.setPenSize(3);
     expect(penSizeService.getPenSize()).toBe(3);
 
-    expect(pskl.UserSettings.set).toHaveBeenCalledWith('PEN_SIZE_TEST_KEY', 3);
+    expect(pskl.UserSettings.set).toHaveBeenCalledWith("PEN_SIZE_TEST_KEY", 3);
     expect($.publish).toHaveBeenCalledWith(Events.PEN_SIZE_CHANGED);
   });
 
-  it("skips invalid value (outside of [1, 4])", function() {
-    console.log('[PenSizeService] skips invalid value (outside of [1, 32])');
+  it("skips invalid value (outside of [1, 4])", function () {
+    console.log("[PenSizeService] skips invalid value (outside of [1, 32])");
     userSettingsPenSize = 1;
 
     penSizeService.init();

@@ -2,7 +2,8 @@
   var ns = $.namespace('pskl.controller');
 
   ns.PenSizeController = function () {
-    this.sizePicker = new pskl.widgets.SizePicker(this.onSizePickerChanged_.bind(this));
+    this.sizePicker = new pskl.widgets.SizePicker(
+      this.onSizePickerChanged_.bind(this));
   };
 
   ns.PenSizeController.prototype.init = function () {

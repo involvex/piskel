@@ -8,7 +8,7 @@
   /**
    * @public
    */
-  ns.ShortcutService.prototype.init = function() {
+  ns.ShortcutService.prototype.init = function () {
     document.body.addEventListener('keydown', this.onKeyDown_.bind(this));
   };
 
@@ -17,7 +17,10 @@
    * @param {pskl.service.keyboard.Shortcut} shortcut
    * @param {Function} callback should return true to let the original event perform its default action
    */
-  ns.ShortcutService.prototype.registerShortcut = function (shortcut, callback) {
+  ns.ShortcutService.prototype.registerShortcut = function (
+    shortcut,
+    callback
+  ) {
     if (!(shortcut instanceof ns.Shortcut)) {
       throw 'Invalid shortcut argument, please use instances of pskl.service.keyboard.Shortcut';
     }
@@ -27,8 +30,8 @@
     }
 
     this.shortcuts_.push({
-      shortcut : shortcut,
-      callback : callback
+      shortcut: shortcut,
+      callback: callback
     });
   };
 
@@ -47,25 +50,27 @@
   /**
    * @private
    */
-  ns.ShortcutService.prototype.onKeyDown_ = function(evt) {
+  ns.ShortcutService.prototype.onKeyDown_ = function (evt) {
     var eventKey = ns.KeyUtils.createKeyFromEvent(evt);
     if (this.isInInput_(evt) || !eventKey) {
       return;
     }
 
-    this.shortcuts_.forEach(function (shortcutInfo) {
-      shortcutInfo.shortcut.getKeys().forEach(function (shortcutKey) {
-        if (!ns.KeyUtils.equals(shortcutKey, eventKey)) {
-          return;
-        }
+    this.shortcuts_.forEach(
+      function (shortcutInfo) {
+        shortcutInfo.shortcut.getKeys().forEach(
+          function (shortcutKey) {
+            if (!ns.KeyUtils.equals(shortcutKey, eventKey)) {
+              return;
+            }
 
-        var bubble = shortcutInfo.callback(eventKey.key);
-        if (bubble !== true) {
-          evt.preventDefault();
-        }
-        $.publish(Events.KEYBOARD_EVENT, [evt]);
+            var bubble = shortcutInfo.callback(eventKey.key);
+            if (bubble !== true) {
+              evt.preventDefault();
+            }
+            $.publish(Events.KEYBOARD_EVENT, [evt]);
+          }.bind(this));
       }.bind(this));
-    }.bind(this));
   };
 
   ns.ShortcutService.prototype.isInInput_ = function (evt) {
@@ -90,15 +95,20 @@
     return shortcuts;
   };
 
-  ns.ShortcutService.prototype.updateShortcut = function (shortcut, keyAsString) {
+  ns.ShortcutService.prototype.updateShortcut = function (
+    shortcut,
+    keyAsString
+  ) {
     var key = keyAsString.replace(/\s/g, '');
 
     var isForbiddenKey = ns.Shortcuts.FORBIDDEN_KEYS.indexOf(key) != -1;
     if (isForbiddenKey) {
-      $.publish(Events.SHOW_NOTIFICATION, [{
-        'content': 'Key cannot be remapped (' + keyAsString + ')',
-        'hideDelay' : 5000
-      }]);
+      $.publish(Events.SHOW_NOTIFICATION, [
+        {
+          content: 'Key cannot be remapped (' + keyAsString + ')',
+          hideDelay: 5000
+        }
+      ]);
     } else {
       this.removeKeyFromAllShortcuts_(key);
       shortcut.updateKeys([key]);
@@ -109,10 +119,12 @@
   ns.ShortcutService.prototype.removeKeyFromAllShortcuts_ = function (key) {
     this.getShortcuts().forEach(function (s) {
       if (s.removeKeys([key])) {
-        $.publish(Events.SHOW_NOTIFICATION, [{
-          'content': 'Shortcut key removed for ' + s.getId(),
-          'hideDelay' : 5000
-        }]);
+        $.publish(Events.SHOW_NOTIFICATION, [
+          {
+            content: 'Shortcut key removed for ' + s.getId(),
+            hideDelay: 5000
+          }
+        ]);
       }
     });
   };
@@ -126,5 +138,4 @@
     });
     $.publish(Events.SHORTCUTS_CHANGED);
   };
-
 })();

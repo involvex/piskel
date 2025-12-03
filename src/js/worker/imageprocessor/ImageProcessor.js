@@ -8,7 +8,10 @@
     this.onSuccess = onSuccess;
     this.onError = onError;
 
-    this.worker = pskl.utils.WorkerUtils.createWorker(ns.ImageProcessorWorker, 'image-colors-processor');
+    this.worker = pskl.utils.WorkerUtils.createWorker(
+      ns.ImageProcessorWorker,
+      'image-colors-processor'
+    );
     this.worker.onmessage = this.onWorkerMessage.bind(this);
   };
 
@@ -16,9 +19,9 @@
     var canvas = pskl.utils.CanvasUtils.createFromImage(this.image);
     var imageData = pskl.utils.CanvasUtils.getImageDataFromCanvas(canvas);
     this.worker.postMessage({
-      imageData : imageData,
-      width : this.image.width,
-      height : this.image.height
+      imageData: imageData,
+      width: this.image.width,
+      height: this.image.height
     });
   };
 

@@ -1,6 +1,6 @@
-describe("FrameUtils suite", function() {
-  var black = '#000000';
-  var red = '#ff0000';
+describe("FrameUtils suite", function () {
+  var black = "#000000";
+  var red = "#ff0000";
   var transparent = Constants.TRANSPARENT_COLOR;
 
   // shortcuts
@@ -8,35 +8,40 @@ describe("FrameUtils suite", function() {
   var frameEqualsGrid = test.testutils.frameEqualsGrid;
 
   it("merges 2 frames", function () {
-    var B = black, R = red, T = transparent;
+    var B = black,
+      R = red,
+      T = transparent;
     var frame1 = pskl.model.Frame.fromPixelGrid([
       [B, T],
-      [T, B]
+      [T, B],
     ]);
 
     var frame2 = pskl.model.Frame.fromPixelGrid([
       [T, R],
-      [R, T]
+      [R, T],
     ]);
 
     var mergedFrame = pskl.utils.FrameUtils.merge([frame1, frame2]);
     frameEqualsGrid(mergedFrame, [
       [B, R],
-      [R, B]
+      [R, B],
     ]);
   });
 
   it("returns same frame when merging single frame", function () {
-    var B = black, T = transparent;
-    var frame1 = pskl.model.Frame.fromPixelGrid(toFrameGrid([
-      [B, T],
-      [B, T]
-    ]));
+    var B = black,
+      T = transparent;
+    var frame1 = pskl.model.Frame.fromPixelGrid(
+      toFrameGrid([
+        [B, T],
+        [B, T],
+      ])
+    );
 
     var mergedFrame = pskl.utils.FrameUtils.merge([frame1]);
     frameEqualsGrid(mergedFrame, [
       [B, T],
-      [B, T]
+      [B, T],
     ]);
   });
 
@@ -47,11 +52,12 @@ describe("FrameUtils suite", function() {
     });
   };
 
-  it ("converts an image to a frame", function () {
-    var B = black, T = transparent;
+  it("converts an image to a frame", function () {
+    var B = black,
+      T = transparent;
     var frame1 = pskl.model.Frame.fromPixelGrid([
       [B, T],
-      [T, B]
+      [T, B],
     ]);
 
     var image = pskl.utils.FrameUtils.toImage(frame1);
@@ -70,51 +76,46 @@ describe("FrameUtils suite", function() {
       [B, B, B, T, T, T],
       [T, T, T, B, B, B],
       [T, T, T, B, B, B],
-      [T, T, T, B, B, B]
+      [T, T, T, B, B, B],
     ]);
   });
 
-  it ("[LayerUtils] creates frames from a simple spritesheet", function () {
-    var B = black, R = red;
+  it("[LayerUtils] creates frames from a simple spritesheet", function () {
+    var B = black,
+      R = red;
 
     // original image in 4x2
-    var frame = pskl.model.Frame.fromPixelGrid(toFrameGrid([
-      [B, R, B, R],
-      [R, B, B, R]
-    ]));
+    var frame = pskl.model.Frame.fromPixelGrid(
+      toFrameGrid([
+        [B, R, B, R],
+        [R, B, B, R],
+      ])
+    );
 
     var spritesheet = pskl.utils.FrameUtils.toImage(frame);
 
     // split the spritesheet by 4
-    var frames = pskl.utils.FrameUtils.createFramesFromSpritesheet(spritesheet, 4);
+    var frames = pskl.utils.FrameUtils.createFramesFromSpritesheet(
+      spritesheet,
+      4
+    );
 
     // expect 4 frames of 1x2
     expect(frames.length).toBe(4);
 
     // verify frame content
-    frameEqualsGrid(frames[0], [
-      [B],
-      [R]
-    ]);
-    frameEqualsGrid(frames[1], [
-      [R],
-      [B]
-    ]);
-    frameEqualsGrid(frames[2], [
-      [B],
-      [B]
-    ]);
-    frameEqualsGrid(frames[3], [
-      [R],
-      [R]
-    ]);
+    frameEqualsGrid(frames[0], [[B], [R]]);
+    frameEqualsGrid(frames[1], [[R], [B]]);
+    frameEqualsGrid(frames[2], [[B], [B]]);
+    frameEqualsGrid(frames[3], [[R], [R]]);
   });
 
-  it ("supports null values in frame array", function () {
-    var B = black, T = transparent;
+  it("supports null values in frame array", function () {
+    var B = black,
+      T = transparent;
     var frame = pskl.model.Frame.fromPixelGrid([
       [B, null],
-      [null, B]
+      [null, B],
     ]);
 
     var image = pskl.utils.FrameUtils.toImage(frame);
@@ -123,7 +124,7 @@ describe("FrameUtils suite", function() {
     var testFrame = pskl.utils.FrameUtils.createFromImage(image);
     frameEqualsGrid(testFrame, [
       [B, T],
-      [T, B]
+      [T, B],
     ]);
   });
 });

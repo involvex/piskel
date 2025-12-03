@@ -1,5 +1,4 @@
-describe('PiskelDatabase test', function () {
-
+describe("PiskelDatabase test", function () {
   // Test object.
   var piskelDatabase;
 
@@ -9,7 +8,7 @@ describe('PiskelDatabase test', function () {
       name: name,
       description: description,
       date: date,
-      serialized: serialized
+      serialized: serialized,
     };
   };
 
@@ -23,7 +22,8 @@ describe('PiskelDatabase test', function () {
   var _addPiskels = function (piskels) {
     var _add = function (index) {
       var piskelData = piskels[index];
-      return piskelDatabase.create.apply(piskelDatabase, piskelData)
+      return piskelDatabase.create
+        .apply(piskelDatabase, piskelData)
         .then(function () {
           if (piskels[index + 1]) {
             return _add(index + 1);
@@ -53,106 +53,124 @@ describe('PiskelDatabase test', function () {
     }
   });
 
-  it('initializes the DB and returns a promise', function (done) {
+  it("initializes the DB and returns a promise", function (done) {
     piskelDatabase = new pskl.database.PiskelDatabase();
     piskelDatabase.init().then(done);
   });
 
-  it('can add a piskel and retrieve it', function (done) {
+  it("can add a piskel and retrieve it", function (done) {
     piskelDatabase = new pskl.database.PiskelDatabase();
-    piskelDatabase.init()
+    piskelDatabase
+      .init()
       .then(function (db) {
-        return piskelDatabase.create('name', 'desc', 0, 'serialized');
-      }).then(function () {
-        return piskelDatabase.get('name');
-      }).then(function (piskel) {
-        expect(piskel.name).toBe('name');
-        expect(piskel.description).toBe('desc');
+        return piskelDatabase.create("name", "desc", 0, "serialized");
+      })
+      .then(function () {
+        return piskelDatabase.get("name");
+      })
+      .then(function (piskel) {
+        expect(piskel.name).toBe("name");
+        expect(piskel.description).toBe("desc");
         expect(piskel.date).toBe(0);
-        expect(piskel.serialized).toBe('serialized');
+        expect(piskel.serialized).toBe("serialized");
         done();
       });
   });
 
-  it('can delete piskel by name', function (done) {
+  it("can delete piskel by name", function (done) {
     var piskels = [
-      ['n1', 'd1', 10, 's1'],
-      ['n2', 'd2', 20, 's2'],
-      ['n3', 'd3', 30, 's3'],
+      ["n1", "d1", 10, "s1"],
+      ["n2", "d2", 20, "s2"],
+      ["n3", "d3", 30, "s3"],
     ];
 
     piskelDatabase = new pskl.database.PiskelDatabase();
-    piskelDatabase.init()
+    piskelDatabase
+      .init()
       .then(function (db) {
         return _addPiskels(piskels);
-      }).then(function () {
-        return piskelDatabase.delete('n2');
-      }).then(function () {
-        return piskelDatabase.get('n1');
-      }).then(function (piskelData) {
+      })
+      .then(function () {
+        return piskelDatabase.delete("n2");
+      })
+      .then(function () {
+        return piskelDatabase.get("n1");
+      })
+      .then(function (piskelData) {
         _checkPiskel(piskelData, piskels[0]);
-        return piskelDatabase.get('n3');
-      }).then(function (piskelData) {
+        return piskelDatabase.get("n3");
+      })
+      .then(function (piskelData) {
         _checkPiskel(piskelData, piskels[2]);
-        return piskelDatabase.get('n2');
-      }).then(function (piskelData) {
+        return piskelDatabase.get("n2");
+      })
+      .then(function (piskelData) {
         expect(piskelData).toBe(undefined);
         done();
       });
   });
 
-  it('can list piskels', function (done) {
+  it("can list piskels", function (done) {
     var piskels = [
-      ['n1', 'd1', 10, 's1'],
-      ['n2', 'd2', 20, 's2'],
-      ['n3', 'd3', 30, 's3'],
+      ["n1", "d1", 10, "s1"],
+      ["n2", "d2", 20, "s2"],
+      ["n3", "d3", 30, "s3"],
     ];
 
     piskelDatabase = new pskl.database.PiskelDatabase();
-    piskelDatabase.init()
+    piskelDatabase
+      .init()
       .then(function (db) {
         return _addPiskels(piskels);
-      }).then(function () {
+      })
+      .then(function () {
         return piskelDatabase.list();
-      }).then(function (piskels) {
+      })
+      .then(function (piskels) {
         expect(piskels.length).toBe(3);
         piskels.forEach(function (piskelData) {
           expect(piskelData.name).toMatch(/n[1-3]/);
           expect(piskelData.description).toMatch(/d[1-3]/);
           expect(piskelData.date).toBeDefined();
           expect(piskelData.serialized).not.toBeDefined();
-        })
+        });
         done();
       });
   });
 
-  it('can update piskel with same name', function (done) {
+  it("can update piskel with same name", function (done) {
     var piskels = [
-      ['n1', 'd1', 10, 's1'],
-      ['n2', 'd2', 20, 's2'],
-      ['n3', 'd3', 30, 's3'],
+      ["n1", "d1", 10, "s1"],
+      ["n2", "d2", 20, "s2"],
+      ["n3", "d3", 30, "s3"],
     ];
 
     piskelDatabase = new pskl.database.PiskelDatabase();
-    piskelDatabase.init()
+    piskelDatabase
+      .init()
       .then(function (db) {
         return _addPiskels(piskels);
-      }).then(function () {
-        return piskelDatabase.update('n2', 'd2_updated', 40, 's2_updated');
-      }).then(function (piskels) {
+      })
+      .then(function () {
+        return piskelDatabase.update("n2", "d2_updated", 40, "s2_updated");
+      })
+      .then(function (piskels) {
         return piskelDatabase.list();
-      }).then(function (piskels) {
+      })
+      .then(function (piskels) {
         expect(piskels.length).toBe(3);
-        var p2 = piskels.filter(function (p) { return p.name === 'n2'})[0];
-        expect(p2.name).toBe('n2');
-        expect(p2.description).toBe('d2_updated');
+        var p2 = piskels.filter(function (p) {
+          return p.name === "n2";
+        })[0];
+        expect(p2.name).toBe("n2");
+        expect(p2.description).toBe("d2_updated");
         expect(p2.date).toBe(40);
 
-        return piskelDatabase.get('n2');
-      }).then(function (piskel) {
-        _checkPiskel(piskel, ['n2', 'd2_updated', 40, 's2_updated']);
+        return piskelDatabase.get("n2");
+      })
+      .then(function (piskel) {
+        _checkPiskel(piskel, ["n2", "d2_updated", 40, "s2_updated"]);
         done();
       });
   });
-
 });

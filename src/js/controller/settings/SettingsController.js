@@ -2,29 +2,29 @@
   var ns = $.namespace('pskl.controller.settings');
 
   var settings = {
-    'user' : {
-      template : 'templates/settings/preferences.html',
-      controller : ns.PreferencesController
+    user: {
+      template: 'templates/settings/preferences.html',
+      controller: ns.PreferencesController
     },
-    'resize' : {
-      template : 'templates/settings/resize.html',
-      controller : ns.resize.ResizeController
+    resize: {
+      template: 'templates/settings/resize.html',
+      controller: ns.resize.ResizeController
     },
-    'export' : {
-      template : 'templates/settings/export.html',
-      controller : ns.exportimage.ExportController
+    export: {
+      template: 'templates/settings/export.html',
+      controller: ns.exportimage.ExportController
     },
-    'import' : {
-      template : 'templates/settings/import.html',
-      controller : ns.ImportController
+    import: {
+      template: 'templates/settings/import.html',
+      controller: ns.ImportController
     },
-    'localstorage' : {
-      template : 'templates/settings/localstorage.html',
-      controller : ns.LocalStorageController
+    localstorage: {
+      template: 'templates/settings/localstorage.html',
+      controller: ns.LocalStorageController
     },
-    'save' : {
-      template : 'templates/settings/save.html',
-      controller : ns.SaveController
+    save: {
+      template: 'templates/settings/save.html',
+      controller: ns.SaveController
     }
   };
 
@@ -34,7 +34,8 @@
   ns.SettingsController = function (piskelController) {
     this.piskelController = piskelController;
     this.closeDrawerShortcut = pskl.service.keyboard.Shortcuts.MISC.CLOSE_POPUP;
-    this.settingsContainer = document.querySelector('[data-pskl-controller=settings]');
+    this.settingsContainer = document.querySelector(
+      '[data-pskl-controller=settings]');
     this.drawerContainer = document.getElementById('drawer-container');
     this.isExpanded = false;
     this.currentSetting = null;
@@ -43,10 +44,17 @@
   /**
    * @public
    */
-  ns.SettingsController.prototype.init = function() {
-    pskl.utils.Event.addEventListener(this.settingsContainer, 'click', this.onSettingsContainerClick_, this);
-    pskl.utils.Event.addEventListener(document.body, 'click', this.onBodyClick_, this);
-
+  ns.SettingsController.prototype.init = function () {
+    pskl.utils.Event.addEventListener(
+      this.settingsContainer,
+      'click',
+      this.onSettingsContainerClick_,
+      this);
+    pskl.utils.Event.addEventListener(
+      document.body,
+      'click',
+      this.onBodyClick_,
+      this);
     $.subscribe(Events.CLOSE_SETTINGS_DRAWER, this.closeDrawer_.bind(this));
   };
 
@@ -69,7 +77,9 @@
   ns.SettingsController.prototype.onBodyClick_ = function (evt) {
     var target = evt.target;
 
-    var isInDrawerContainer = pskl.utils.Dom.isParent(target, this.drawerContainer);
+    var isInDrawerContainer = pskl.utils.Dom.isParent(
+      target,
+      this.drawerContainer);
     var isInSettingsIcon = target.dataset.setting;
     var isInSettingsContainer = isInDrawerContainer || isInSettingsIcon;
 
@@ -79,19 +89,22 @@
   };
 
   ns.SettingsController.prototype.loadSetting_ = function (setting) {
-    this.drawerContainer.innerHTML = pskl.utils.Template.get(settings[setting].template);
-
+    this.drawerContainer.innerHTML = pskl.utils.Template.get(
+      settings[setting].template);
     // when switching settings controller, destroy previously loaded controller
     this.destroyCurrentController_();
 
     this.currentSetting = setting;
-    this.currentController = new settings[setting].controller(this.piskelController);
+    this.currentController = new settings[setting].controller(
+      this.piskelController);
     this.currentController.init();
 
-    pskl.app.shortcutService.registerShortcut(this.closeDrawerShortcut, this.closeDrawer_.bind(this));
-
+    pskl.app.shortcutService.registerShortcut(
+      this.closeDrawerShortcut,
+      this.closeDrawer_.bind(this));
     pskl.utils.Dom.removeClass(SEL_SETTING_CLS);
-    var selectedSettingButton = document.querySelector('[data-setting=' + setting + ']');
+    var selectedSettingButton = document.querySelector(
+      '[data-setting=' + setting + ']');
     if (selectedSettingButton) {
       selectedSettingButton.classList.add(SEL_SETTING_CLS);
     }

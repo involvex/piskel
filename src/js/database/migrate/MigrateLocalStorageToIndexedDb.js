@@ -25,9 +25,11 @@
     var migrateSprite = function (index) {
       var data = migrationData[index];
       if (!data) {
-        console.log('Data migration from local storage to indexed db finished.');
+        console.log(
+          'Data migration from local storage to indexed db finished.');
         if (success) {
-          console.log('Local storage piskels successfully migrated. Old copies will be deleted.');
+          console.log(
+            'Local storage piskels successfully migrated. Old copies will be deleted.');
           ns.MigrateLocalStorageToIndexedDb.deleteLocalStoragePiskels();
         }
 
@@ -39,7 +41,8 @@
           })
           .catch(function (e) {
             var success = false;
-            console.error('Failed to migrate local storage sprite for name: ' + data.name);
+            console.error(
+              'Failed to migrate local storage sprite for name: ' + data.name);
             migrateSprite(index + 1);
           });
       }
@@ -51,12 +54,23 @@
     return deferred.promise;
   };
 
-  ns.MigrateLocalStorageToIndexedDb.save_ = function (piskelDatabase, piskelData) {
+  ns.MigrateLocalStorageToIndexedDb.save_ = function (
+    piskelDatabase,
+    piskelData
+  ) {
     return piskelDatabase.get(piskelData.name).then(function (data) {
       if (typeof data !== 'undefined') {
-        return piskelDatabase.update(piskelData.name, piskelData.description, piskelData.date, piskelData.serialized);
+        return piskelDatabase.update(
+          piskelData.name,
+          piskelData.description,
+          piskelData.date,
+          piskelData.serialized);
       } else {
-        return piskelDatabase.create(piskelData.name, piskelData.description, piskelData.date, piskelData.serialized);
+        return piskelDatabase.create(
+          piskelData.name,
+          piskelData.description,
+          piskelData.date,
+          piskelData.serialized);
       }
     });
   };
@@ -72,5 +86,4 @@
     // Remove keys.
     window.localStorage.removeItem('piskel.keys');
   };
-
 })();

@@ -26,6 +26,6 @@
   };
 
   ns.SavedStatusService.prototype.isDirty = function () {
-    return (this.lastSavedStateIndex != this.historyService.getCurrentStateId());
+    return this.lastSavedStateIndex != this.historyService.getCurrentStateId();
   };
 })();

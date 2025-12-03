@@ -5,9 +5,10 @@
     this.toolId = 'tool-rotate';
     this.helpText = 'Counter-clockwise rotation';
     this.tooltipDescriptors = [
-      {key : 'alt', description : 'Clockwise rotation'},
-      {key : 'ctrl', description : 'Apply to all layers'},
-      {key : 'shift', description : 'Apply to all frames'}];
+      { key: 'alt', description: 'Clockwise rotation' },
+      { key: 'ctrl', description: 'Apply to all layers' },
+      { key: 'shift', description: 'Apply to all frames' }
+    ];
   };
 
   pskl.utils.inherit(ns.Rotate, ns.AbstractTransformTool);
@@ -23,5 +24,4 @@
 
     ns.TransformUtils.rotate(frame, direction);
   };
-
 })();

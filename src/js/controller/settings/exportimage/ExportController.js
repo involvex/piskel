@@ -2,32 +2,36 @@
   var ns = $.namespace('pskl.controller.settings.exportimage');
 
   var tabs = {
-    'png' : {
-      template : 'templates/settings/export/png.html',
-      controller : ns.PngExportController
+    png: {
+      template: 'templates/settings/export/png.html',
+      controller: ns.PngExportController
     },
-    'gif' : {
-      template : 'templates/settings/export/gif.html',
-      controller : ns.GifExportController
+    gif: {
+      template: 'templates/settings/export/gif.html',
+      controller: ns.GifExportController
     },
-    'zip' : {
-      template : 'templates/settings/export/zip.html',
-      controller : ns.ZipExportController
+    zip: {
+      template: 'templates/settings/export/zip.html',
+      controller: ns.ZipExportController
     },
-    'misc' : {
-      template : 'templates/settings/export/misc.html',
-      controller : ns.MiscExportController
+    misc: {
+      template: 'templates/settings/export/misc.html',
+      controller: ns.MiscExportController
     }
   };
 
   ns.ExportController = function (piskelController) {
     this.piskelController = piskelController;
-    this.tabsWidget = new pskl.widgets.Tabs(tabs, this, pskl.UserSettings.EXPORT_TAB);
+    this.tabsWidget = new pskl.widgets.Tabs(
+      tabs,
+      this,
+      pskl.UserSettings.EXPORT_TAB);
     this.onSizeInputChange_ = this.onSizeInputChange_.bind(this);
   };
 
-  pskl.utils.inherit(ns.ExportController, pskl.controller.settings.AbstractSettingController);
-
+  pskl.utils.inherit(
+    ns.ExportController,
+    pskl.controller.settings.AbstractSettingController);
   ns.ExportController.prototype.init = function () {
     // Initialize zoom controls
     this.scaleInput = document.querySelector('.export-scale .scale-input');
@@ -38,11 +42,11 @@
     this.heightInput = document.querySelector('.export-resize .resize-height');
     var scale = pskl.UserSettings.get(pskl.UserSettings.EXPORT_SCALE);
     this.sizeInputWidget = new pskl.widgets.SizeInput({
-      widthInput : this.widthInput,
-      heightInput : this.heightInput,
-      initWidth : this.piskelController.getWidth() * scale,
-      initHeight : this.piskelController.getHeight() * scale,
-      onChange : this.onSizeInputChange_
+      widthInput: this.widthInput,
+      heightInput: this.heightInput,
+      initWidth: this.piskelController.getWidth() * scale,
+      initHeight: this.piskelController.getHeight() * scale,
+      onChange: this.onSizeInputChange_
     });
 
     this.onSizeInputChange_();
@@ -90,6 +94,8 @@
   };
 
   ns.ExportController.prototype.getExportZoom = function () {
-    return parseInt(this.widthInput.value, 10) / this.piskelController.getWidth();
+    return (
+      parseInt(this.widthInput.value, 10) / this.piskelController.getWidth()
+    );
   };
 })();

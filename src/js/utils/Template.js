@@ -3,7 +3,7 @@
   var templates = {};
 
   ns.Template = {
-    get : function (templateId) {
+    get: function (templateId) {
       if (!templates[templateId]) {
         var template = document.getElementById(templateId);
         if (template) {
@@ -15,7 +15,7 @@
       return templates[templateId];
     },
 
-    getAsHTML : function (templateId) {
+    getAsHTML: function (templateId) {
       var template = ns.Template.get(templateId);
       if (!template) {
         return;
@@ -24,7 +24,7 @@
       return ns.Template.createFromHTML(template);
     },
 
-    createFromHTML : function (html) {
+    createFromHTML: function (html) {
       var dummyEl = ns.Template._getDummyEl();
       dummyEl.innerHTML = html;
       var element = dummyEl.children[0];
@@ -36,7 +36,7 @@
       return element;
     },
 
-    replace : function (template, dict) {
+    replace: function (template, dict) {
       for (var key in dict) {
         if (dict.hasOwnProperty(key)) {
           var value = dict[key];
@@ -56,13 +56,16 @@
             value = ns.Template.sanitize(value);
           }
 
-          template = template.replace(new RegExp('\\{\\{' + key + '\\}\\}', 'g'), value);
+          template = template.replace(
+            new RegExp('\\{\\{' + key + '\\}\\}', 'g'),
+            value
+          );
         }
       }
       return template;
     },
 
-    getAndReplace : function (templateId, dict) {
+    getAndReplace: function (templateId, dict) {
       var result = '';
       var tpl = pskl.utils.Template.get(templateId);
       if (tpl) {
@@ -74,7 +77,7 @@
     /**
      * Sanitize the provided string to make it safer for using in templates.
      */
-    sanitize : function (string) {
+    sanitize: function (string) {
       var dummyEl = ns.Template._getDummyEl();
 
       // Apply the unsafe string as text content and
@@ -88,12 +91,10 @@
       return sanitizedString;
     },
 
-    _getDummyEl : pskl.utils.UserAgent.isIE11 ?
-      // IE11 specific implementation
+    _getDummyEl: pskl.utils.UserAgent.isIE11      ? // IE11 specific implementation
       function () {
         return document.createElement('div');
-      } :
-      // Normal, sane browsers implementation.
+      }      : // Normal, sane browsers implementation.
       function () {
         if (!ns.Template._dummyEl) {
           ns.Template._dummyEl = document.createElement('div');

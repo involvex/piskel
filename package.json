@@ -1,16 +1,13 @@
 {
   "name": "piskel",
-  "version": "0.15.2-SNAPSHOT",
+  "version": "0.106.0",
   "description": "Pixel art editor",
-  "author": "Julian Descottes <julian.descottes@gmail.com>",
-  "contributors": [
-    "Vincent Renaudin"
-  ],
+  "author": "Involvex",
   "homepage": "http://github.com/piskelapp/piskel",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "http://github.com/piskelapp/piskel.git"
+    "url": "https://github.com/involvex/piskel.git"
   },
   "files": [
     "dest/prod",
@@ -30,14 +27,14 @@
     "postversion": "git push && git push --tags && npm publish",
     "release": "grunt && node ./bin/copy-to-piskel-website",
     "release-piskel-web": "grunt && node ./bin/copy-to-piskel-web",
-    "build:desktop": "grunt desktop",
+    "build:desktop": "grunt desktop && grunt nwjs",
     "build:mac": "grunt desktop-mac",
-    "start:nw": "grunt build && nw",
+    "start:nw": "grunt build && .\\cache\\nwjs-v0.48.0-win-x64\\nw.exe .",
     "e2e": "npx playwright test",
     "e2e:interactive": "npx playwright test --ui",
     "unit-tests": "karma start",
     "unit-tests:watch": "karma start --auto-watch --no-single-run",
-    "test": "npm run unit-tests; npm run e2e",
+    "test": "npm run unit-tests && npm run e2e",
     "test-ci": "bash ./run-test-ci.sh"
   },
   "devDependencies": {
@@ -59,7 +56,7 @@
     "grunt-jscs": "3.0.1",
     "grunt-karma": "4.0.2",
     "grunt-leading-indent": "0.2.0",
-    "grunt-nw-builder": "4.13.0",
+    "grunt-nw-builder": "^4.13.0",
     "grunt-replace": "2.0.2",
     "grunt-spritesmith": "^6.9.0",
     "jasmine-core": "3.8.0",
@@ -80,6 +77,8 @@
     "height": 700
   },
   "dependencies": {
-    "minimist": "^1.2.5"
+    "minimist": "^1.2.5",
+    "nw": "^0.106.0",
+    "phantomjs": "^1.9.20"
   }
 }

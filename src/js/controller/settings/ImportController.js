@@ -5,24 +5,44 @@
     this.piskelController = piskelController;
   };
 
-  pskl.utils.inherit(ns.ImportController, pskl.controller.settings.AbstractSettingController);
-
+  pskl.utils.inherit(
+    ns.ImportController,
+    pskl.controller.settings.AbstractSettingController);
   ns.ImportController.prototype.init = function () {
     this.hiddenFileInput = document.querySelector('[name="file-upload-input"]');
-    this.addEventListener(this.hiddenFileInput, 'change', this.onFileUploadChange_);
-
-    this.hiddenOpenPiskelInput = document.querySelector('[name="open-piskel-input"]');
-
-    this.addEventListener('.browse-local-button', 'click', this.onBrowseLocalClick_);
-    this.addEventListener('.browse-backups-button', 'click', this.onBrowseBackupsClick_);
-    this.addEventListener('.file-input-button', 'click', this.onFileInputClick_);
-
+    this.addEventListener(
+      this.hiddenFileInput,
+      'change',
+      this.onFileUploadChange_);
+    this.hiddenOpenPiskelInput = document.querySelector(
+      '[name="open-piskel-input"]');
+    this.addEventListener(
+      '.browse-local-button',
+      'click',
+      this.onBrowseLocalClick_);
+    this.addEventListener(
+      '.browse-backups-button',
+      'click',
+      this.onBrowseBackupsClick_);
+    this.addEventListener(
+      '.file-input-button',
+      'click',
+      this.onFileInputClick_);
     // different handlers, depending on the Environment
     if (pskl.utils.Environment.detectNodeWebkit()) {
-      this.addEventListener('.open-piskel-button', 'click', this.openPiskelDesktop_);
+      this.addEventListener(
+        '.open-piskel-button',
+        'click',
+        this.openPiskelDesktop_);
     } else {
-      this.addEventListener(this.hiddenOpenPiskelInput, 'change', this.onOpenPiskelChange_);
-      this.addEventListener('.open-piskel-button', 'click', this.onOpenPiskelClick_);
+      this.addEventListener(
+        this.hiddenOpenPiskelInput,
+        'change',
+        this.onOpenPiskelChange_);
+      this.addEventListener(
+        '.open-piskel-button',
+        'click',
+        this.onOpenPiskelClick_);
     }
   };
 
@@ -55,14 +75,14 @@
 
   ns.ImportController.prototype.onBrowseLocalClick_ = function (evt) {
     $.publish(Events.DIALOG_SHOW, {
-      dialogId : 'browse-local'
+      dialogId: 'browse-local'
     });
     this.closeDrawer_();
   };
 
   ns.ImportController.prototype.onBrowseBackupsClick_ = function (evt) {
     $.publish(Events.DIALOG_SHOW, {
-      dialogId : 'browse-backups'
+      dialogId: 'browse-backups'
     });
     this.closeDrawer_();
   };
@@ -70,8 +90,8 @@
   ns.ImportController.prototype.openPiskelFile_ = function (file) {
     if (this.isPiskel_(file)) {
       $.publish(Events.DIALOG_SHOW, {
-        dialogId : 'import',
-        initArgs : {
+        dialogId: 'import',
+        initArgs: {
           rawFiles: [file]
         }
       });
@@ -90,8 +110,8 @@
     });
     if (areImages) {
       $.publish(Events.DIALOG_SHOW, {
-        dialogId : 'import',
-        initArgs : {
+        dialogId: 'import',
+        initArgs: {
           rawFiles: files
         }
       });
@@ -103,7 +123,7 @@
   };
 
   ns.ImportController.prototype.isPiskel_ = function (file) {
-    return (/\.piskel$/).test(file.name);
+    return /\.piskel$/.test(file.name);
   };
 
   ns.ImportController.prototype.onRestorePreviousSessionClick_ = function () {

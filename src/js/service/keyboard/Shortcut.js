@@ -35,7 +35,8 @@
    * @return {Array<String>} array of keys
    */
   ns.Shortcut.prototype.getKeys = function () {
-    var keys = pskl.UserSettings.get(this.getLocalStorageKey_()) || this.defaultKeys_;
+    var keys =
+      pskl.UserSettings.get(this.getLocalStorageKey_()) || this.defaultKeys_;
 
     if (typeof keys === 'string') {
       return [keys];

@@ -2,33 +2,33 @@
   var ns = $.namespace('pskl.controller.dialogs');
 
   var dialogs = {
-    'cheatsheet' : {
-      template : 'templates/dialogs/cheatsheet.html',
-      controller : ns.CheatsheetController
+    cheatsheet: {
+      template: 'templates/dialogs/cheatsheet.html',
+      controller: ns.CheatsheetController
     },
-    'create-palette' : {
-      template : 'templates/dialogs/create-palette.html',
-      controller : ns.CreatePaletteController
+    'create-palette': {
+      template: 'templates/dialogs/create-palette.html',
+      controller: ns.CreatePaletteController
     },
-    'browse-local' : {
-      template : 'templates/dialogs/browse-local.html',
-      controller : ns.BrowseLocalController
+    'browse-local': {
+      template: 'templates/dialogs/browse-local.html',
+      controller: ns.BrowseLocalController
     },
-    'import' : {
-      template : 'templates/dialogs/import.html',
-      controller : ns.importwizard.ImportWizard
+    import: {
+      template: 'templates/dialogs/import.html',
+      controller: ns.importwizard.ImportWizard
     },
-    'performance-info' : {
-      template : 'templates/dialogs/performance-info.html',
-      controller : ns.PerformanceInfoController
+    'performance-info': {
+      template: 'templates/dialogs/performance-info.html',
+      controller: ns.PerformanceInfoController
     },
-    'unsupported-browser' : {
-      template : 'templates/dialogs/unsupported-browser.html',
-      controller : ns.UnsupportedBrowserController
+    'unsupported-browser': {
+      template: 'templates/dialogs/unsupported-browser.html',
+      controller: ns.UnsupportedBrowserController
     },
-    'browse-backups' : {
-      template : 'templates/dialogs/browse-backups.html',
-      controller : ns.backups.BrowseBackups
+    'browse-backups': {
+      template: 'templates/dialogs/browse-backups.html',
+      controller: ns.backups.BrowseBackups
     }
   };
 
@@ -45,16 +45,27 @@
     $.subscribe(Events.DIALOG_SHOW, this.onDialogDisplayEvent_.bind(this));
     $.subscribe(Events.DIALOG_HIDE, this.hideDialog.bind(this));
 
-    var createPaletteShortcut = pskl.service.keyboard.Shortcuts.COLOR.CREATE_PALETTE;
-    pskl.app.shortcutService.registerShortcut(createPaletteShortcut, this.onCreatePaletteShortcut_.bind(this));
-
+    var createPaletteShortcut =
+      pskl.service.keyboard.Shortcuts.COLOR.CREATE_PALETTE;
+    pskl.app.shortcutService.registerShortcut(
+      createPaletteShortcut,
+      this.onCreatePaletteShortcut_.bind(this));
     var cheatsheetShortcut = pskl.service.keyboard.Shortcuts.MISC.CHEATSHEET;
-    pskl.app.shortcutService.registerShortcut(cheatsheetShortcut, this.onCheatsheetShortcut_.bind(this));
-    pskl.utils.Event.addEventListener('.cheatsheet-link', 'click', this.onCheatsheetShortcut_, this);
-
+    pskl.app.shortcutService.registerShortcut(
+      cheatsheetShortcut,
+      this.onCheatsheetShortcut_.bind(this));
+    pskl.utils.Event.addEventListener(
+      '.cheatsheet-link',
+      'click',
+      this.onCheatsheetShortcut_,
+      this);
     // adding the .animated class here instead of in the markup to avoid an animation during app startup
     this.dialogWrapper_.classList.add('animated');
-    pskl.utils.Event.addEventListener(this.dialogWrapper_, 'click', this.onWrapperClicked_, this);
+    pskl.utils.Event.addEventListener(
+      this.dialogWrapper_,
+      'click',
+      this.onWrapperClicked_,
+      this);
   };
 
   ns.DialogsController.prototype.onCreatePaletteShortcut_ = function () {
@@ -95,7 +106,8 @@
 
     var config = dialogs[dialogId];
     if (!config) {
-      console.error('Could not find dialog configuration for dialogId : ' + dialogId);
+      console.error(
+        'Could not find dialog configuration for dialogId : ' + dialogId);
       return;
     }
 
@@ -106,11 +118,13 @@
     controller.init(initArgs);
 
     this.currentDialog_ = {
-      id : dialogId,
-      controller : controller
+      id: dialogId,
+      controller: controller
     };
 
-    pskl.app.shortcutService.registerShortcut(this.closePopupShortcut, this.hideDialog.bind(this));
+    pskl.app.shortcutService.registerShortcut(
+      this.closePopupShortcut,
+      this.hideDialog.bind(this));
     this.dialogWrapper_.classList.add('show');
   };
 
@@ -144,5 +158,4 @@
     }
     return null;
   };
-
 })();

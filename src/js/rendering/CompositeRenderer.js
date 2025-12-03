@@ -5,8 +5,9 @@
     this.renderers = [];
   };
 
-  pskl.utils.inherit(pskl.rendering.CompositeRenderer, pskl.rendering.AbstractRenderer);
-
+  pskl.utils.inherit(
+    pskl.rendering.CompositeRenderer,
+    pskl.rendering.AbstractRenderer);
   ns.CompositeRenderer.prototype.add = function (renderer) {
     this.renderers.push(renderer);
     return this;

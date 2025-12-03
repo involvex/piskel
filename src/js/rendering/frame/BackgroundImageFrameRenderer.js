@@ -11,13 +11,16 @@
     container.appendChild(this.frameContainer);
 
     this.cachedFrameProcessor = new pskl.model.frame.CachedFrameProcessor();
-    this.cachedFrameProcessor.setFrameProcessor(this.frameToDataUrl_.bind(this));
+    this.cachedFrameProcessor.setFrameProcessor(
+      this.frameToDataUrl_.bind(this));
   };
 
   ns.BackgroundImageFrameRenderer.prototype.frameToDataUrl_ = function (frame) {
     var canvas;
     if (frame instanceof pskl.model.frame.RenderedFrame) {
-      canvas = pskl.utils.ImageResizer.scale(frame.getRenderedFrame(), this.zoom);
+      canvas = pskl.utils.ImageResizer.scale(
+        frame.getRenderedFrame(),
+        this.zoom);
     } else {
       canvas = pskl.utils.FrameUtils.toImage(frame, this.zoom);
     }

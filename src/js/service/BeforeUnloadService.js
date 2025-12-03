@@ -34,7 +34,8 @@
     // nature of IndexedDB.
     pskl.app.backupService.backup();
     if (pskl.app.savedStatusService.isDirty()) {
-      var confirmationMessage = 'Your current sprite has unsaved changes. Are you sure you want to quit?';
+      var confirmationMessage =
+        'Your current sprite has unsaved changes. Are you sure you want to quit?';
 
       evt = evt || window.event;
       if (evt) {
@@ -43,5 +44,4 @@
       return confirmationMessage;
     }
   };
-
 })();

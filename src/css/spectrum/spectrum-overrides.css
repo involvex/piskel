@@ -5,23 +5,24 @@
 /* Widget's main container */
 .sp-container {
   border-radius: 4px;
-  background-color: #2B2B2B;
+  background-color: #2b2b2b;
   border: solid 4px #888;
   padding: 5px 5px 0 5px;
-  box-shadow : 0 0 5px 0 black;
+  box-shadow: 0 0 5px 0 black;
 }
 
-.sp-container[data-y-position=bottom] {
+.sp-container[data-y-position="bottom"] {
   border-top-left-radius: 0;
 }
 
-.sp-container[data-y-position=top] {
+.sp-container[data-y-position="top"] {
   border-bottom-left-radius: 0;
 }
 
 /* Color square container */
-.sp-color, .sp-hue {
-  border : 1px solid #222;
+.sp-color,
+.sp-hue {
+  border: 1px solid #222;
 }
 
 /* Remove the padding on the input container */
@@ -30,7 +31,7 @@
   height: 100%;
   border-width: 0;
   box-sizing: border-box;
-  -moz-box-sizing:border-box;
+  -moz-box-sizing: border-box;
   background-color: #444;
 }
 
@@ -56,14 +57,14 @@
 }
 
 .sp-palette .sp-thumb-el {
-  margin : 0 5px 5px 0;
+  margin: 0 5px 5px 0;
   width: 24px;
   height: 24px;
   border-color: #444;
-
 }
 
-.sp-picker-container, .sp-palette-container {
+.sp-picker-container,
+.sp-palette-container {
   padding-top: 5px;
   padding-right: 5px;
   padding-left: 5px;
@@ -82,10 +83,12 @@
   left: -2px;
   right: -2px;
   border: 2px solid white;
-  background: rgba(255,255,255,0);
+  background: rgba(255, 255, 255, 0);
   opacity: 1;
   border-radius: 2px;
-  box-shadow: 0 0 1px 1px rgba(0,0,0,0.5), inset 0 0 1px 1px rgba(0,0,0,0.5);
+  box-shadow:
+    0 0 1px 1px rgba(0, 0, 0, 0.5),
+    inset 0 0 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 .sp-dragger {
@@ -94,9 +97,11 @@
   width: 12px;
   border: 2px solid white;
   background: none;
-  box-sizing:border-box;
-  -moz-box-sizing:border-box;
-  box-shadow: 0 0 1px 1px rgba(0,0,0,0.5), inset 0 0 1px 1px rgba(0,0,0,0.5);
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-shadow:
+    0 0 1px 1px rgba(0, 0, 0, 0.5),
+    inset 0 0 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 .sp-palette .sp-thumb-el.sp-thumb-active {
@@ -109,8 +114,8 @@
   margin: 0;
   background: #111;
   border-radius: 2px;
-  color: #D3D3D3;
-  font-family: monospace!important;
+  color: #d3d3d3;
+  font-family: monospace !important;
 }
 
 .sp-input.sp-validation-error {

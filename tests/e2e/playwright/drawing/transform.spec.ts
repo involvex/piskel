@@ -1,4 +1,4 @@
-import { executeTest } from './utils';
+import { executeTest } from "./utils";
 
 const transformTestNames = [
   "transform.center.json",
@@ -11,7 +11,7 @@ const transformTestNames = [
   "transform.flip.twice.undo.once.json",
   "transform.rotate.alt.twice.undo.once.json",
   "transform.rotate.once.alt.json",
-  "transform.rotate.twice.undo.once.json"
+  "transform.rotate.twice.undo.once.json",
 ];
 
 transformTestNames.forEach(executeTest);

@@ -11,12 +11,21 @@
 
   ns.StorageService.prototype.init = function () {
     var shortcuts = pskl.service.keyboard.Shortcuts;
-    pskl.app.shortcutService.registerShortcut(shortcuts.STORAGE.OPEN, this.onOpenKey_.bind(this));
-    pskl.app.shortcutService.registerShortcut(shortcuts.STORAGE.SAVE, this.onSaveKey_.bind(this));
-    pskl.app.shortcutService.registerShortcut(shortcuts.STORAGE.SAVE_AS, this.onSaveAsKey_.bind(this));
-
-    $.subscribe(Events.BEFORE_SAVING_PISKEL, this.setSavingFlag_.bind(this, true));
-    $.subscribe(Events.AFTER_SAVING_PISKEL, this.setSavingFlag_.bind(this, false));
+    pskl.app.shortcutService.registerShortcut(
+      shortcuts.STORAGE.OPEN,
+      this.onOpenKey_.bind(this));
+    pskl.app.shortcutService.registerShortcut(
+      shortcuts.STORAGE.SAVE,
+      this.onSaveKey_.bind(this));
+    pskl.app.shortcutService.registerShortcut(
+      shortcuts.STORAGE.SAVE_AS,
+      this.onSaveAsKey_.bind(this));
+    $.subscribe(
+      Events.BEFORE_SAVING_PISKEL,
+      this.setSavingFlag_.bind(this, true));
+    $.subscribe(
+      Events.AFTER_SAVING_PISKEL,
+      this.setSavingFlag_.bind(this, false));
   };
 
   ns.StorageService.prototype.isSaving = function () {
@@ -41,16 +50,25 @@
   };
 
   ns.StorageService.prototype.saveToDesktop = function (piskel, saveAsNew) {
-    return this.delegateSave_(pskl.app.desktopStorageService, piskel, saveAsNew);
+    return this.delegateSave_(
+      pskl.app.desktopStorageService,
+      piskel,
+      saveAsNew);
   };
 
-  ns.StorageService.prototype.delegateSave_ = function(delegatedService, piskel, saveAsNew) {
+  ns.StorageService.prototype.delegateSave_ = function (
+    delegatedService,
+    piskel,
+    saveAsNew
+  ) {
     if (this.savingFlag_) {
       return Q.reject('Already saving');
     }
 
     $.publish(Events.BEFORE_SAVING_PISKEL);
-    return delegatedService.save(piskel, saveAsNew).then(this.onSaveSuccess_, this.onSaveError_);
+    return delegatedService
+      .save(piskel, saveAsNew)
+      .then(this.onSaveSuccess_, this.onSaveError_);
   };
 
   ns.StorageService.prototype.onOpenKey_ = function () {
@@ -71,9 +89,11 @@
       // on Firefox, the native 'save' window will then be displayed
       // wrap in timeout in order to start saving only after event.preventDefault
       // has been done
-      window.setTimeout(function () {
-        this.saveToIndexedDb(this.piskelController.getPiskel());
-      }.bind(this), 0);
+      window.setTimeout(
+        function () {
+          this.saveToIndexedDb(this.piskelController.getPiskel());
+        }.bind(this),
+        0);
     }
   };
 
@@ -85,10 +105,12 @@
   };
 
   ns.StorageService.prototype.onSaveSuccess_ = function () {
-    $.publish(Events.SHOW_NOTIFICATION, [{
-      content : 'Successfully saved !',
-      hideDelay : 3000
-    }]);
+    $.publish(Events.SHOW_NOTIFICATION, [
+      {
+        content: 'Successfully saved !',
+        hideDelay: 3000
+      }
+    ]);
     $.publish(Events.PISKEL_SAVED);
     this.afterSaving_();
   };
@@ -98,10 +120,12 @@
     if (errorMessage) {
       errorText += ' : ' + errorMessage;
     }
-    $.publish(Events.SHOW_NOTIFICATION, [{
-      content : errorText,
-      hideDelay : 10000
-    }]);
+    $.publish(Events.SHOW_NOTIFICATION, [
+      {
+        content: errorText,
+        hideDelay: 10000
+      }
+    ]);
     this.afterSaving_();
     return Q.reject(errorMessage);
   };

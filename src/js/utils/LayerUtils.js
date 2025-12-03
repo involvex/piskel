@@ -2,14 +2,17 @@
   var ns = $.namespace('pskl.utils');
 
   ns.LayerUtils = {
-    clone : function (layer) {
+    clone: function (layer) {
       var clonedFrames = layer.getFrames().map(function (frame) {
         return frame.clone();
       });
-      return pskl.model.Layer.fromFrames(layer.getName() + ' (clone)', clonedFrames);
+      return pskl.model.Layer.fromFrames(
+        layer.getName() + ' (clone)',
+        clonedFrames
+      );
     },
 
-    mergeLayers : function (layerA, layerB) {
+    mergeLayers: function (layerA, layerB) {
       var framesA = layerA.getFrames();
       var framesB = layerB.getFrames();
       var mergedFrames = [];
@@ -17,11 +20,14 @@
         var otherFrame = framesB[index];
         mergedFrames.push(pskl.utils.FrameUtils.merge([otherFrame, frame]));
       });
-      var mergedLayer = pskl.model.Layer.fromFrames(layerA.getName(), mergedFrames);
+      var mergedLayer = pskl.model.Layer.fromFrames(
+        layerA.getName(),
+        mergedFrames
+      );
       return mergedLayer;
     },
 
-    getFrameHashAt : function (layers, index) {
+    getFrameHashAt: function (layers, index) {
       var hashBuffer = [];
       layers.forEach(function (l) {
         var frame = l.getFrameAt(index);
@@ -41,8 +47,10 @@
      * @return {Frame} Frame instance (can be a fake frame when using
      *         transparency)
      */
-    mergeFrameAt : function (layers, index) {
-      var isTransparent = layers.some(function (l) {return l.isTransparent();});
+    mergeFrameAt: function (layers, index) {
+      var isTransparent = layers.some(function (l) {
+        return l.isTransparent();
+      });
       if (isTransparent) {
         return pskl.utils.LayerUtils.mergeTransparentFrameAt_(layers, index);
       } else {
@@ -50,30 +58,34 @@
       }
     },
 
-    mergeTransparentFrameAt_ : function (layers, index) {
+    mergeTransparentFrameAt_: function (layers, index) {
       var hash = pskl.utils.LayerUtils.getFrameHashAt(layers, index);
       var width = layers[0].frames[0].getWidth();
       var height = layers[0].frames[0].getHeight();
-      var renderFn = function () {return pskl.utils.LayerUtils.flattenFrameAt(layers, index, true);};
+      var renderFn = function () {
+        return pskl.utils.LayerUtils.flattenFrameAt(layers, index, true);
+      };
       return new pskl.model.frame.RenderedFrame(renderFn, width, height, hash);
     },
 
-    mergeOpaqueFrameAt_ : function (layers, index) {
+    mergeOpaqueFrameAt_: function (layers, index) {
       var hash = pskl.utils.LayerUtils.getFrameHashAt(layers, index);
-      var frames = layers.map(function(l) {return l.getFrameAt(index);});
+      var frames = layers.map(function (l) {
+        return l.getFrameAt(index);
+      });
       var mergedFrame = pskl.utils.FrameUtils.merge(frames);
       mergedFrame.id = hash;
       mergedFrame.version = 0;
       return mergedFrame;
     },
 
-    renderFrameAt : function (layer, index, preserveOpacity) {
+    renderFrameAt: function (layer, index, preserveOpacity) {
       var opacity = preserveOpacity ? layer.getOpacity() : 1;
       var frame = layer.getFrameAt(index);
       return pskl.utils.FrameUtils.toImage(frame, 1, opacity);
     },
 
-    flattenFrameAt : function (layers, index, preserveOpacity) {
+    flattenFrameAt: function (layers, index, preserveOpacity) {
       var width = layers[0].getFrameAt(index).getWidth();
       var height = layers[0].getFrameAt(index).getHeight();
       var canvas = pskl.utils.CanvasUtils.createCanvas(width, height);
@@ -87,5 +99,4 @@
       return canvas;
     }
   };
-
 })();

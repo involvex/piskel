@@ -5,10 +5,14 @@
 
   ns.AbstractDialogController.prototype.init = function () {
     var closeButton = document.querySelector('.dialog-close');
-    this.addEventListener(closeButton, 'click', this.closeDialog);
+    this.addEventListener_(closeButton, 'click', this.closeDialog);
   };
 
-  ns.AbstractDialogController.prototype.addEventListener = function (el, type, cb) {
+  ns.AbstractDialogController.prototype.addEventListener_ = function (
+    el,
+    type,
+    cb
+  ) {
     pskl.utils.Event.addEventListener(el, type, cb, this);
   };
 

@@ -9,12 +9,15 @@
    */
   ns.FrameRenderer = function (container, renderingOptions, classList) {
     this.defaultRenderingOptions = {
-      'supportGridRendering' : false,
-      'zoom' : 1
+      supportGridRendering: false,
+      zoom: 1
     };
 
-    renderingOptions = $.extend(true, {}, this.defaultRenderingOptions, renderingOptions);
-
+    renderingOptions = $.extend(
+      true,
+      {},
+      this.defaultRenderingOptions,
+      renderingOptions);
     if (container === undefined) {
       throw 'Bad FrameRenderer initialization. <container> undefined.';
     }
@@ -28,13 +31,13 @@
     this.zoom = renderingOptions.zoom;
 
     this.offset = {
-      x : 0,
-      y : 0
+      x: 0,
+      y: 0
     };
 
     this.margin = {
-      x : 0,
-      y : 0
+      x: 0,
+      y: 0
     };
 
     this.supportGridRendering = renderingOptions.supportGridRendering;
@@ -58,11 +61,14 @@
     this.setGridWidth(this.getUserGridWidth_());
     this.setGridSpacing(this.getUserGridSpacing_());
 
-    $.subscribe(Events.USER_SETTINGS_CHANGED, this.onUserSettingsChange_.bind(this));
+    $.subscribe(
+      Events.USER_SETTINGS_CHANGED,
+      this.onUserSettingsChange_.bind(this));
   };
 
-  pskl.utils.inherit(pskl.rendering.frame.FrameRenderer, pskl.rendering.AbstractRenderer);
-
+  pskl.utils.inherit(
+    pskl.rendering.frame.FrameRenderer,
+    pskl.rendering.AbstractRenderer);
   ns.FrameRenderer.prototype.render = function (frame) {
     if (frame) {
       this.clear();
@@ -88,15 +94,14 @@
     }
 
     // back up center coordinates
-    var centerX = this.offset.x + (this.displayWidth / (2 * this.zoom));
-    var centerY = this.offset.y + (this.displayHeight / (2 * this.zoom));
+    var centerX = this.offset.x + this.displayWidth / (2 * this.zoom);
+    var centerY = this.offset.y + this.displayHeight / (2 * this.zoom);
 
     this.zoom = zoom;
     // recenter
     this.setOffset(
-      centerX - (this.displayWidth / (2 * this.zoom)),
-      centerY - (this.displayHeight / (2 * this.zoom))
-    );
+      centerX - this.displayWidth / (2 * this.zoom),
+      centerY - this.displayHeight / (2 * this.zoom));
   };
 
   ns.FrameRenderer.prototype.getZoom = function () {
@@ -115,24 +120,24 @@
 
   ns.FrameRenderer.prototype.getDisplaySize = function () {
     return {
-      height : this.displayHeight,
-      width : this.displayWidth
+      height: this.displayHeight,
+      width: this.displayWidth
     };
   };
 
   ns.FrameRenderer.prototype.getOffset = function () {
     return {
-      x : this.offset.x,
-      y : this.offset.y
+      x: this.offset.x,
+      y: this.offset.y
     };
   };
 
   ns.FrameRenderer.prototype.setOffset = function (x, y) {
     var width = pskl.app.piskelController.getWidth();
     var height = pskl.app.piskelController.getHeight();
-    var maxX = width - (this.displayWidth / this.zoom);
+    var maxX = width - this.displayWidth / this.zoom;
     x = pskl.utils.Math.minmax(x, 0, maxX);
-    var maxY = height - (this.displayHeight / this.zoom);
+    var maxY = height - this.displayHeight / this.zoom;
     y = pskl.utils.Math.minmax(y, 0, maxY);
 
     this.offset.x = x;
@@ -186,10 +191,10 @@
   };
 
   ns.FrameRenderer.prototype.updateMargins_ = function (frame) {
-    var deltaX = this.displayWidth - (this.zoom * frame.getWidth());
+    var deltaX = this.displayWidth - this.zoom * frame.getWidth();
     this.margin.x = Math.max(0, deltaX) / 2;
 
-    var deltaY = this.displayHeight - (this.zoom * frame.getHeight());
+    var deltaY = this.displayHeight - this.zoom * frame.getHeight();
     this.margin.y = Math.max(0, deltaY) / 2;
   };
 
@@ -197,16 +202,25 @@
     var height = this.displayHeight;
     var width = this.displayWidth;
 
-    this.displayCanvas = pskl.utils.CanvasUtils.createCanvas(width, height, this.classList);
+    this.displayCanvas = pskl.utils.CanvasUtils.createCanvas(
+      width,
+      height,
+      this.classList);
     pskl.utils.CanvasUtils.disableImageSmoothing(this.displayCanvas);
     this.container.appendChild(this.displayCanvas);
   };
 
-  ns.FrameRenderer.prototype.onUserSettingsChange_ = function (evt, settingName, settingValue) {
+  ns.FrameRenderer.prototype.onUserSettingsChange_ = function (
+    evt,
+    settingName,
+    settingValue
+  ) {
     var settings = pskl.UserSettings;
-    if (settingName == settings.GRID_WIDTH ||
-        settingName == settings.GRID_SPACING ||
-        settingName == settings.GRID_ENABLED) {
+    if (
+      settingName == settings.GRID_WIDTH ||
+      settingName == settings.GRID_SPACING ||
+      settingName == settings.GRID_ENABLED
+    ) {
       this.setGridWidth(this.getUserGridWidth_());
       this.setGridSpacing(this.getUserGridSpacing_());
     }
@@ -229,7 +243,7 @@
    * frame) into a sprite coordinate in column and row.
    * @public
    */
-  ns.FrameRenderer.prototype.getCoordinates = function(x, y) {
+  ns.FrameRenderer.prototype.getCoordinates = function (x, y) {
     var containerRect = this.container.getBoundingClientRect();
     x = x - containerRect.left;
     y = y - containerRect.top;
@@ -244,12 +258,12 @@
     y = y + this.offset.y * cellSize;
 
     return {
-      x : Math.floor(x / cellSize),
-      y : Math.floor(y / cellSize)
+      x: Math.floor(x / cellSize),
+      y: Math.floor(y / cellSize)
     };
   };
 
-  ns.FrameRenderer.prototype.reverseCoordinates = function(x, y) {
+  ns.FrameRenderer.prototype.reverseCoordinates = function (x, y) {
     var cellSize = this.zoom;
 
     x = x * cellSize;
@@ -266,8 +280,8 @@
     y = y + containerRect.top;
 
     return {
-      x : x + (cellSize / 2),
-      y : y + (cellSize / 2)
+      x: x + cellSize / 2,
+      y: y + cellSize / 2
     };
   };
 
@@ -275,8 +289,14 @@
    * @private
    */
   ns.FrameRenderer.prototype.renderFrame_ = function (frame) {
-    if (!this.canvas || frame.getWidth() != this.canvas.width || frame.getHeight() != this.canvas.height) {
-      this.canvas = pskl.utils.CanvasUtils.createCanvas(frame.getWidth(), frame.getHeight());
+    if (
+      !this.canvas ||
+      frame.getWidth() != this.canvas.width ||
+      frame.getHeight() != this.canvas.height
+    ) {
+      this.canvas = pskl.utils.CanvasUtils.createCanvas(
+        frame.getWidth(),
+        frame.getHeight());
     }
 
     var w = this.canvas.width;
@@ -305,7 +325,11 @@
       // that was potentially fixed, but is very hardware dependant. Seems to be
       // triggered when doing clear rect or fill rect using the full width & height
       // of a canvas. (https://bugs.chromium.org/p/chromium/issues/detail?id=469906)
-      displayContext.fillRect(0, 0, this.displayCanvas.width - 1, this.displayCanvas.height - 1);
+      displayContext.fillRect(
+        0,
+        0,
+        this.displayCanvas.width - 1,
+        this.displayCanvas.height - 1);
     }
 
     displayContext.translate(translateX, translateY);
@@ -341,15 +365,15 @@
       }
 
       // Draw or clear vertical lines.
-      for (var i = 1 ; i < frame.getWidth() ; i++) {
+      for (var i = 1; i < frame.getWidth(); i++) {
         if (i % gridSpacing == 0) {
-          drawOrClear((i * z) - (gridWidth / 2), 0, gridWidth, h * z);
+          drawOrClear(i * z - gridWidth / 2, 0, gridWidth, h * z);
         }
       }
       // Draw or clear horizontal lines.
-      for (var j = 1 ; j < frame.getHeight() ; j++) {
+      for (var j = 1; j < frame.getHeight(); j++) {
         if (j % gridSpacing == 0) {
-          drawOrClear(0, (j * z) - (gridWidth / 2), w * z, gridWidth);
+          drawOrClear(0, j * z - gridWidth / 2, w * z, gridWidth);
         }
       }
     }
@@ -362,11 +386,26 @@
    * drawing mode, to easily create seamless textures. A colored overlay is applied to
    * differentiate those additional frames from the main frame.
    */
-  ns.FrameRenderer.prototype.drawTiledFrames_ = function (context, image, w, h, z) {
+  ns.FrameRenderer.prototype.drawTiledFrames_ = function (
+    context,
+    image,
+    w,
+    h,
+    z
+  ) {
     var opacity = pskl.UserSettings.get('SEAMLESS_OPACITY');
     opacity = pskl.utils.Math.minmax(opacity, 0, 1);
     context.fillStyle = 'rgba(255, 255, 255, ' + opacity + ')';
-    [[0, -1], [0, 1], [-1, -1], [-1, 0], [-1, 1], [1, -1], [1, 0], [1, 1]].forEach(function (d) {
+    [
+      [0, -1],
+      [0, 1],
+      [-1, -1],
+      [-1, 0],
+      [-1, 1],
+      [1, -1],
+      [1, 0],
+      [1, 1]
+    ].forEach(function (d) {
       context.drawImage(image, d[0] * w * z, d[1] * h * z);
       context.fillRect(d[0] * w * z, d[1] * h * z, w * z, h * z);
     });

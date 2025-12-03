@@ -42,11 +42,12 @@
    */
 
   ns.ArrayBufferSerializer = {
-    calculateRequiredBytes : function(piskel, framesData) {
+    calculateRequiredBytes: function (piskel, framesData) {
       var width = piskel.getWidth();
       var height = piskel.getHeight();
       var descriptorNameLength = piskel.getDescriptor().name.length;
-      var descriptorDescriptionLength = piskel.getDescriptor().description.length;
+      var descriptorDescriptionLength =
+        piskel.getDescriptor().description.length;
       var layersLength = piskel.getLayers().length;
 
       var bytes = 0;
@@ -85,7 +86,7 @@
       return bytes;
     },
 
-    serialize : function (piskel) {
+    serialize: function (piskel) {
       var i;
       var j;
       var layers;
@@ -95,10 +96,12 @@
       // Render frames
       var framesData = [];
       for (i = 0, layers = piskel.getLayers(); i < layers.length; i++) {
-        var renderer = new pskl.rendering.FramesheetRenderer(layers[i].getFrames());
+        var renderer = new pskl.rendering.FramesheetRenderer(
+          layers[i].getFrames()
+        );
         dataUri = renderer.renderAsCanvas().toDataURL().split(',')[1];
         dataUriLength = dataUri.length;
-        framesData.push({uri: dataUri, length: dataUriLength});
+        framesData.push({ uri: dataUri, length: dataUriLength });
       }
 
       var frames = pskl.app.piskelController.getLayerAt(0).getFrames();
@@ -182,7 +185,7 @@
         arr16[currentIndex + 1] = Math.floor(opacity * 65535);
         arr16[currentIndex + 2] = frameCount;
         arr16[currentIndex + 3] = ((dataUriLength & 0xffff0000) >> 16) >>> 0; // Upper 16
-        arr16[currentIndex + 4] = ((dataUriLength & 0x0000ffff)) >>> 0;       // Lower 16
+        arr16[currentIndex + 4] = (dataUriLength & 0x0000ffff) >>> 0; // Lower 16
 
         // Name
         for (j = 0; j < layerNameLength; j++) {
@@ -191,10 +194,11 @@
 
         // Data URI
         for (j = 0; j < dataUriLength; j++) {
-          arr8[(currentIndex + 5 + layerNameLength) * 2 + j] = dataUri.charCodeAt(j);
+          arr8[(currentIndex + 5 + layerNameLength) * 2 + j] =
+            dataUri.charCodeAt(j);
         }
 
-        currentIndex += Math.ceil(5 + layerNameLength + (dataUriLength / 2));
+        currentIndex += Math.ceil(5 + layerNameLength + dataUriLength / 2);
       }
 
       return buffer;

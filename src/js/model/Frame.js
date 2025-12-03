@@ -10,7 +10,12 @@
       this.pixels = ns.Frame.createEmptyPixelGrid_(width, height);
       this.stateIndex = 0;
     } else {
-      throw 'Bad arguments in pskl.model.Frame constructor : ' + width + ', ' + height;
+      throw (
+        'Bad arguments in pskl.model.Frame constructor : ' +
+        width +
+        ', ' +
+        height
+      );
     }
   };
 
@@ -57,7 +62,8 @@
       pixels = _emptyPixelGridCache[key];
     } else {
       pixels = _emptyPixelGridCache[key] = new Uint32Array(width * height);
-      var transparentColorInt = pskl.utils.colorToInt(Constants.TRANSPARENT_COLOR);
+      var transparentColorInt = pskl.utils.colorToInt(
+        Constants.TRANSPARENT_COLOR);
       pixels.fill(transparentColorInt);
     }
 
@@ -90,7 +96,9 @@
   };
 
   ns.Frame.prototype.clear = function () {
-    this.pixels = ns.Frame.createEmptyPixelGrid_(this.getWidth(), this.getHeight());
+    this.pixels = ns.Frame.createEmptyPixelGrid_(
+      this.getWidth(),
+      this.getHeight());
     this.version++;
   };
 
@@ -113,7 +121,8 @@
       color = pskl.utils.colorToInt(color);
 
       if (p !== color) {
-        this.pixels[index] = color || pskl.utils.colorToInt(Constants.TRANSPARENT_COLOR);
+        this.pixels[index] =
+          color || pskl.utils.colorToInt(Constants.TRANSPARENT_COLOR);
         this.version++;
       }
     }
@@ -131,7 +140,7 @@
     var width = this.getWidth();
     var height = this.getHeight();
     var length = width * height;
-    for (var i = 0; i < length ; i++) {
+    for (var i = 0; i < length; i++) {
       callback(this.pixels[i], i % width, Math.floor(i / width), this);
     }
   };
@@ -149,6 +158,9 @@
   };
 
   ns.Frame.prototype.isSameSize = function (otherFrame) {
-    return this.getHeight() == otherFrame.getHeight() && this.getWidth() == otherFrame.getWidth();
+    return (
+      this.getHeight() == otherFrame.getHeight() &&
+      this.getWidth() == otherFrame.getWidth()
+    );
   };
 })();

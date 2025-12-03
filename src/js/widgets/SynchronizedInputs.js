@@ -9,8 +9,18 @@
     this.syncEnabled = true;
     this.lastInput = this.leftInput;
 
-    pskl.utils.Event.addEventListener(this.leftInput, 'input', this.onInput_, this);
-    pskl.utils.Event.addEventListener(this.rightInput, 'input', this.onInput_, this);
+    pskl.utils.Event.addEventListener(
+      this.leftInput,
+      'input',
+      this.onInput_,
+      this
+    );
+    pskl.utils.Event.addEventListener(
+      this.rightInput,
+      'input',
+      this.onInput_,
+      this
+    );
   };
 
   ns.SynchronizedInputs.prototype.destroy = function () {

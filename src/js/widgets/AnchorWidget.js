@@ -25,19 +25,24 @@
     container.appendChild(this.wrapper);
 
     this.disabled = false;
-    pskl.utils.Event.addEventListener(this.wrapper, 'click', this.onResizeOriginClick_, this);
+    pskl.utils.Event.addEventListener(
+      this.wrapper,
+      'click',
+      this.onResizeOriginClick_,
+      this
+    );
   };
 
   ns.AnchorWidget.ORIGIN = {
-    TOPLEFT : 'TOPLEFT',
-    TOP : 'TOP',
-    TOPRIGHT : 'TOPRIGHT',
-    MIDDLELEFT : 'MIDDLELEFT',
-    MIDDLE : 'MIDDLE',
-    MIDDLERIGHT : 'MIDDLERIGHT',
-    BOTTOMLEFT : 'BOTTOMLEFT',
-    BOTTOM : 'BOTTOM',
-    BOTTOMRIGHT : 'BOTTOMRIGHT'
+    TOPLEFT: 'TOPLEFT',
+    TOP: 'TOP',
+    TOPRIGHT: 'TOPRIGHT',
+    MIDDLELEFT: 'MIDDLELEFT',
+    MIDDLE: 'MIDDLE',
+    MIDDLERIGHT: 'MIDDLERIGHT',
+    BOTTOMLEFT: 'BOTTOMLEFT',
+    BOTTOM: 'BOTTOM',
+    BOTTOMRIGHT: 'BOTTOMRIGHT'
   };
 
   ns.AnchorWidget.prototype.destroy = function (evt) {
@@ -54,12 +59,16 @@
 
   ns.AnchorWidget.prototype.setOrigin = function (origin) {
     this.origin = origin;
-    var previous = this.wrapper.querySelector('.' + OPTION_CLASSNAME + '.selected');
+    var previous = this.wrapper.querySelector(
+      '.' + OPTION_CLASSNAME + '.selected'
+    );
     if (previous) {
       previous.classList.remove('selected');
     }
 
-    var selected = this.wrapper.querySelector('.' + OPTION_CLASSNAME + '[data-origin="' + origin + '"]');
+    var selected = this.wrapper.querySelector(
+      '.' + OPTION_CLASSNAME + '[data-origin="' + origin + '"]'
+    );
     if (selected) {
       selected.classList.add('selected');
       this.refreshNeighbors_(selected);
@@ -83,12 +92,15 @@
   ns.AnchorWidget.prototype.enable = function () {
     this.disabled = false;
     this.wrapper.classList.remove('disabled');
-    window.setTimeout(this.wrapper.classList.remove.bind(this.wrapper.classList, 'transition'), 250);
+    window.setTimeout(
+      this.wrapper.classList.remove.bind(this.wrapper.classList, 'transition'),
+      250
+    );
   };
 
   ns.AnchorWidget.prototype.refreshNeighbors_ = function (selected) {
     var options = this.wrapper.querySelectorAll('.' + OPTION_CLASSNAME);
-    for (var i = 0 ; i < options.length ; i++) {
+    for (var i = 0; i < options.length; i++) {
       options[i].removeAttribute('data-neighbor');
     }
 

@@ -4,10 +4,10 @@
  * @require Constants
  * @require pskl.utils
  */
-(function() {
+(function () {
   var ns = $.namespace('pskl.tools.drawing');
 
-  ns.Eraser = function() {
+  ns.Eraser = function () {
     this.superclass.constructor.call(this);
 
     this.toolId = 'tool-eraser';
@@ -20,7 +20,7 @@
   /**
    * @override
    */
-  ns.Eraser.prototype.getToolColor = function() {
+  ns.Eraser.prototype.getToolColor = function () {
     return Constants.TRANSPARENT_COLOR;
   };
 })();

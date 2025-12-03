@@ -75,7 +75,10 @@
     if (this.frames[index]) {
       this.frames.splice(index, 1);
     } else {
-      console.error('Invalid index in removeFrameAt : %s (size : %s)', index, this.size());
+      console.error(
+        'Invalid index in removeFrameAt : %s (size : %s)',
+        index,
+        this.size());
     }
   };
 
@@ -91,7 +94,10 @@
       this.frames[toIndex] = fromFrame;
       this.frames[fromIndex] = toFrame;
     } else {
-      console.error('Frame not found in moveFrameAt (from %s, to %s)', fromIndex, toIndex);
+      console.error(
+        'Frame not found in moveFrameAt (from %s, to %s)',
+        fromIndex,
+        toIndex);
     }
   };
 
@@ -115,8 +121,10 @@
   };
 
   ns.Layer.prototype.getHash = function () {
-    return this.frames.map(function (frame) {
-      return frame.getHash();
-    }).join('-');
+    return this.frames
+      .map(function (frame) {
+        return frame.getHash();
+      })
+      .join('-');
   };
 })();

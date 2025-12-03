@@ -1,8 +1,10 @@
-describe("FrameUtils addImageToFrame tests", function() {
-  var black = '#000000';
-  var red = '#ff0000';
+describe("FrameUtils addImageToFrame tests", function () {
+  var black = "#000000";
+  var red = "#ff0000";
   var transparent = Constants.TRANSPARENT_COLOR;
-  var B = black, R = red, T = transparent;
+  var B = black,
+    R = red,
+    T = transparent;
 
   // shortcuts
   var toFrameGrid = test.testutils.toFrameGrid;
@@ -27,7 +29,7 @@ describe("FrameUtils addImageToFrame tests", function() {
     // Transparent frame 2x2
     var frame = createFrameFromGrid([
       [T, T],
-      [T, T]
+      [T, T],
     ]);
 
     // Single red pixel image
@@ -38,14 +40,14 @@ describe("FrameUtils addImageToFrame tests", function() {
     // Verify
     frameEqualsGrid(frame, [
       [R, T],
-      [T, T]
+      [T, T],
     ]);
 
     pskl.utils.FrameUtils.addImageToFrame(frame, image, 1, 1);
     // Verify
     frameEqualsGrid(frame, [
       [R, T],
-      [T, R]
+      [T, R],
     ]);
   });
 
@@ -53,7 +55,7 @@ describe("FrameUtils addImageToFrame tests", function() {
     // Transparent frame 2x2
     var frame = createFrameFromGrid([
       [T, T],
-      [T, T]
+      [T, T],
     ]);
 
     // Line of 2 red pixels
@@ -64,7 +66,7 @@ describe("FrameUtils addImageToFrame tests", function() {
     // Verify
     frameEqualsGrid(frame, [
       [R, R],
-      [T, T]
+      [T, T],
     ]);
 
     pskl.utils.FrameUtils.addImageToFrame(frame, image, 0, 1);
@@ -72,7 +74,7 @@ describe("FrameUtils addImageToFrame tests", function() {
     // Verify
     frameEqualsGrid(frame, [
       [R, R],
-      [R, R]
+      [R, R],
     ]);
   });
 
@@ -80,13 +82,13 @@ describe("FrameUtils addImageToFrame tests", function() {
     // Black frame 2x2
     var frame = createFrameFromGrid([
       [B, B],
-      [B, B]
+      [B, B],
     ]);
 
     // 2x2 image with 3 transparent pixels and a red pixel
     var image = createImageFromGrid([
       [T, T],
-      [T, R]
+      [T, R],
     ]);
 
     pskl.utils.FrameUtils.addImageToFrame(frame, image, 0, 0);
@@ -94,7 +96,7 @@ describe("FrameUtils addImageToFrame tests", function() {
     // Verify
     frameEqualsGrid(frame, [
       [B, B],
-      [B, R]
+      [B, R],
     ]);
   });
 
@@ -102,13 +104,11 @@ describe("FrameUtils addImageToFrame tests", function() {
     // Transparent frame 2x2
     var frame = createFrameFromGrid([
       [T, T],
-      [T, T]
+      [T, T],
     ]);
 
     // Line of 2 red pixels
-    var image = createImageFromGrid([
-      [R, R]
-    ]);
+    var image = createImageFromGrid([[R, R]]);
 
     // Drop it on the right side, should be moved back to te left
     pskl.utils.FrameUtils.addImageToFrame(frame, image, 1, 0);
@@ -116,7 +116,7 @@ describe("FrameUtils addImageToFrame tests", function() {
     // Verify
     frameEqualsGrid(frame, [
       [R, R],
-      [T, T]
+      [T, T],
     ]);
   });
 
@@ -124,13 +124,13 @@ describe("FrameUtils addImageToFrame tests", function() {
     // Transparent frame 2x2
     var frame = createFrameFromGrid([
       [T, T],
-      [T, T]
+      [T, T],
     ]);
 
     // 2x2 image
     var image = createImageFromGrid([
       [B, R],
-      [R, B]
+      [R, B],
     ]);
 
     pskl.utils.FrameUtils.addImageToFrame(frame, image, 1, 1);
@@ -138,7 +138,7 @@ describe("FrameUtils addImageToFrame tests", function() {
     // Verify
     frameEqualsGrid(frame, [
       [B, R],
-      [R, B]
+      [R, B],
     ]);
   });
 });

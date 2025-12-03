@@ -11,7 +11,11 @@
   };
 
   ns.PopupPreviewController.prototype.init = function () {
-    pskl.utils.Event.addEventListener(window, 'unload', this.onMainWindowUnload_, this);
+    pskl.utils.Event.addEventListener(
+      window,
+      'unload',
+      this.onMainWindowUnload_,
+      this);
   };
 
   ns.PopupPreviewController.prototype.isOpen = function () {
@@ -29,11 +33,21 @@
 
   ns.PopupPreviewController.prototype.onPopupLoaded = function () {
     this.popup.document.title = POPUP_TITLE;
-    this.popup.document.body.innerHTML = pskl.utils.Template.get('popup-preview-partial');
-    pskl.utils.Event.addEventListener(this.popup, 'resize', this.onWindowResize_, this);
-    pskl.utils.Event.addEventListener(this.popup, 'unload', this.onPopupClosed_, this);
+    this.popup.document.body.innerHTML = pskl.utils.Template.get(
+      'popup-preview-partial');
+    pskl.utils.Event.addEventListener(
+      this.popup,
+      'resize',
+      this.onWindowResize_,
+      this);
+    pskl.utils.Event.addEventListener(
+      this.popup,
+      'unload',
+      this.onPopupClosed_,
+      this);
     var container = this.popup.document.querySelector('.preview-container');
-    this.renderer = new pskl.rendering.frame.BackgroundImageFrameRenderer(container);
+    this.renderer = new pskl.rendering.frame.BackgroundImageFrameRenderer(
+      container);
     this.updateZoom_();
     this.renderFlag = true;
   };
@@ -53,7 +67,8 @@
   ns.PopupPreviewController.prototype.updateZoom_ = function () {
     var documentElement = this.popup.document.documentElement;
     var wZoom = documentElement.clientWidth / this.piskelController.getWidth();
-    var hZoom = documentElement.clientHeight / this.piskelController.getHeight();
+    var hZoom =
+      documentElement.clientHeight / this.piskelController.getHeight();
     var zoom = Math.min(wZoom, hZoom);
 
     this.renderer.setZoom(zoom);

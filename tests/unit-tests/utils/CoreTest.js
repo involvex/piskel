@@ -1,9 +1,8 @@
-describe("Core utils tests", function() {
+describe("Core utils tests", function () {
+  beforeEach(function () {});
+  afterEach(function () {});
 
-  beforeEach(function() {});
-  afterEach(function() {});
-
-  it("colorToInt parses red", function() {
+  it("colorToInt parses red", function () {
     var RED = 4278190335;
 
     expect(pskl.utils.colorToInt("red")).toBe(RED);
@@ -15,7 +14,7 @@ describe("Core utils tests", function() {
     expect(pskl.utils.colorToInt("#f00")).toBe(RED);
   });
 
-  it("colorToInt parses white", function() {
+  it("colorToInt parses white", function () {
     var WHITE = 4294967295;
 
     expect(pskl.utils.colorToInt("white")).toBe(WHITE);
@@ -27,7 +26,7 @@ describe("Core utils tests", function() {
     expect(pskl.utils.colorToInt("#fff")).toBe(WHITE);
   });
 
-  it("colorToInt parses transparent", function() {
+  it("colorToInt parses transparent", function () {
     var TRANSPARENT = 0;
 
     expect(pskl.utils.colorToInt("transparent")).toBe(TRANSPARENT);

@@ -8,7 +8,9 @@
     return pskl.utils.FrameUtils.toImage(frame);
   };
 
-  var DEFAULT_OUTPUT_CLONER = function (o) {return o;};
+  var DEFAULT_OUTPUT_CLONER = function (o) {
+    return o;
+  };
 
   var DEFAULT_NAMESPACE = '__cache_default__';
 
@@ -33,7 +35,9 @@
    * Function with 1 argument : pskl.model.Frame
    * @param {Function} frameProcessor
    */
-  ns.CachedFrameProcessor.prototype.setFrameProcessor = function (frameProcessor) {
+  ns.CachedFrameProcessor.prototype.setFrameProcessor = function (
+    frameProcessor
+  ) {
     this.frameProcessor = frameProcessor;
   };
 

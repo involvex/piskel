@@ -16,24 +16,24 @@
      *
      * @return {Piskel} The new Piskel instance created
      */
-    merge : function (piskel, importedPiskel, options) {
+    merge: function (piskel, importedPiskel, options) {
       var isImportedPiskelBigger =
-          importedPiskel.getWidth() > piskel.getWidth() ||
-          importedPiskel.getHeight() > piskel.getHeight();
+        importedPiskel.getWidth() > piskel.getWidth() ||
+        importedPiskel.getHeight() > piskel.getHeight();
 
       // First make sure both the piskel and the imported piskel use the target dimensions.
       if (isImportedPiskelBigger && options.resize === 'expand') {
         piskel = pskl.utils.ResizeUtils.resizePiskel(piskel, {
-          width : Math.max(piskel.getWidth(), importedPiskel.getWidth()),
-          height : Math.max(piskel.getHeight(), importedPiskel.getHeight()),
-          origin : options.origin,
+          width: Math.max(piskel.getWidth(), importedPiskel.getWidth()),
+          height: Math.max(piskel.getHeight(), importedPiskel.getHeight()),
+          origin: options.origin,
           resizeContent: false
         });
       } else {
         importedPiskel = pskl.utils.ResizeUtils.resizePiskel(importedPiskel, {
-          width : piskel.getWidth(),
-          height : piskel.getHeight(),
-          origin : options.origin,
+          width: piskel.getWidth(),
+          height: piskel.getHeight(),
+          origin: options.origin,
           resizeContent: false
         });
       }
@@ -48,7 +48,7 @@
       }
       // Add necessary frames in the original piskel.
       var importedFrameCount = importedPiskel.getFrameCount();
-      for (var i = 0 ; i < importedFrameCount ; i++) {
+      for (var i = 0; i < importedFrameCount; i++) {
         var index = i + insertIndex;
         // For a given index, a new frame should be added either if we are using "add" insert mode
         // or if the current index is not supported by the original piskel.
@@ -61,7 +61,7 @@
       importedPiskel.getLayers().forEach(function (layer) {
         var name = layer.getName() + ' (imported)';
         var importedLayer = new pskl.model.Layer(name);
-        for (var i = 0 ; i < piskel.getFrameCount() ; i++) {
+        for (var i = 0; i < piskel.getFrameCount(); i++) {
           var importedIndex = i - insertIndex;
           var frame = layer.getFrameAt(importedIndex);
           if (!frame) {
@@ -76,11 +76,11 @@
       return piskel;
     },
 
-    createEmptyFrame_ : function (piskel) {
+    createEmptyFrame_: function (piskel) {
       return new pskl.model.Frame(piskel.getWidth(), piskel.getHeight());
     },
 
-    addFrameToLayers_ : function (piskel, index) {
+    addFrameToLayers_: function (piskel, index) {
       piskel.getLayers().forEach(function (l) {
         l.addFrameAt(ns.MergeUtils.createEmptyFrame_(piskel), index);
       });

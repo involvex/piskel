@@ -1,19 +1,19 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
-const minimist = require('minimist');
-const childProcess = require('child_process');
-const phantomjs = require('phantomjs');
-const binPath = phantomjs.path;
+var fs = require("fs");
+var path = require("path");
+var minimist = require("minimist");
+var childProcess = require("child_process");
+var phantomjs = require("phantomjs");
+var binPath = phantomjs.path;
 
 // Parse command args
-let args = minimist(process.argv.slice(2), {
+var args = minimist(process.argv.slice(2), {
   default: {
     crop: false,
     dataUri: false,
     debug: false,
-    scale: 1
+    scale: 1,
   },
 });
 
@@ -21,41 +21,45 @@ if (args.debug) console.log(args);
 
 // Ensure a path for the src file was passed
 if (!args._ || (args._ && !args._.length)) {
-  console.error('Path to a .piskel file is required');
-
-  return;
+  console.error("Path to a .piskel file is required");
+  process.exit(1);
 }
 
-const src = args._[0];
+var src = args._[0];
 
 // Ensure the src file exists
 if (!fs.existsSync(src)) {
-  console.error('No such file: ' + src);
-
-  return;
+  console.error("No such file: " + src);
+  process.exit(1);
 }
 
 // Read src piskel file
-const piskelFile = fs.readFileSync(src, 'utf-8');
+var piskelFile = fs.readFileSync(src, "utf-8");
 
-const dest = args.dest || path.basename(src, '.piskel');
+var dest = args.dest || path.basename(src, ".piskel");
 
-console.log('Piskel CLI is exporting...');
+console.log("Piskel CLI is exporting...");
 
 // Get path to Piskel's app js bundle
-let piskelAppJsDir = path.resolve(__dirname +'/../dest/prod/js/');
-let minJsFiles = fs.readdirSync(piskelAppJsDir).filter(filename => filename.indexOf('min') > -1);
-let piskelAppJsFileName = minJsFiles[0];
-let piskelAppJsPath = (piskelAppJsFileName) ? path.join(piskelAppJsDir, piskelAppJsFileName) : '';
+var piskelAppJsDir = path.resolve(__dirname + "/../dest/prod/js/");
+var minJsFiles = fs
+  .readdirSync(piskelAppJsDir)
+  .filter(function (filename) { return filename.indexOf("min") > -1; });
+var piskelAppJsFileName = minJsFiles[0];
+var piskelAppJsPath = piskelAppJsFileName
+  ? path.join(piskelAppJsDir, piskelAppJsFileName)
+  : "";
 
 if (!fs.existsSync(piskelAppJsPath)) {
-  console.error(`Piskel's application JS file not found in: ${piskelAppJsDir}. Run prod build and try again.`);
+  console.error(
+    "Piskel's application JS file not found in: " + piskelAppJsDir + ". Run prod build and try again."
+  );
 
-  return;
+  process.exit(1);
 }
 
 // Prepare args to pass to phantom script
-const options = {
+var options = {
   dest: dest,
   zoom: args.scale,
   crop: !!args.crop,
@@ -66,19 +70,19 @@ const options = {
   debug: args.debug,
   piskelAppJsPath: piskelAppJsPath,
   scaledWidth: args.scaledWidth,
-  scaledHeight: args.scaledHeight
+  scaledHeight: args.scaledHeight,
 };
 
-const childArgs = [
-  path.join(__dirname, 'piskel-export.js'),
+var childArgs = [
+  path.join(__dirname, "piskel-export.js"),
   piskelFile,
-  JSON.stringify(options)
+  JSON.stringify(options),
 ];
 
 if (args.debug) {
   childArgs.unshift(
-    '--remote-debugger-port=9035',
-    '--remote-debugger-autorun=yes'
+    "--remote-debugger-port=9035",
+    "--remote-debugger-autorun=yes",
   );
 }
 
@@ -89,5 +93,5 @@ childProcess.execFile(binPath, childArgs, function (err, stdout, stderr) {
   if (stderr) console.log(stderr);
   if (stdout) console.log(stdout);
 
-  console.log('Export complete');
+  console.log("Export complete");
 });

@@ -18,10 +18,10 @@
       if (progress != currentProgress) {
         currentProgress = progress;
         this.postMessage({
-          type : 'STEP',
-          progress : currentProgress,
-          currentStep : currentStep,
-          total : currentTotal
+          type: 'STEP',
+          progress: currentProgress,
+          currentStep: currentStep,
+          total: currentTotal
         });
       }
     };
@@ -38,10 +38,10 @@
     var imageDataToGrid = function (imageData, width, height, transparent) {
       // Draw the zoomed-up pixels to a different canvas context
       var grid = [];
-      for (var x = 0 ; x < width ; x++) {
+      for (var x = 0; x < width; x++) {
         grid[x] = [];
         postStep_();
-        for (var y = 0 ; y < height ; y++) {
+        for (var y = 0; y < height; y++) {
           // Find the starting index in the one-dimensional image data
           var i = (y * width + x) * 4;
           var r = imageData[i];
@@ -62,9 +62,9 @@
       var grid = imageDataToGrid(imageData, width, height, 'transparent');
 
       var colorsMap = {};
-      for (var i = 0 ; i < grid.length ; i++) {
+      for (var i = 0; i < grid.length; i++) {
         postStep_();
-        for (var j = 0 ; j < grid[i].length ; j++) {
+        for (var j = 0; j < grid[i].length; j++) {
           var color = grid[i][j];
           if (color != 'transparent') {
             colorsMap[color] = true;
@@ -74,22 +74,26 @@
       return colorsMap;
     };
 
-    this.onmessage = function(event) {
+    this.onmessage = function (event) {
       try {
         var data = event.data;
 
         initStepCounter_(data.width * 2);
 
-        var colorsMap = getColorsMapFromImageData(data.imageData, data.width, data.height);
+        var colorsMap = getColorsMapFromImageData(
+          data.imageData,
+          data.width,
+          data.height
+        );
 
         this.postMessage({
-          type : 'SUCCESS',
-          colorsMap : colorsMap
+          type: 'SUCCESS',
+          colorsMap: colorsMap
         });
       } catch (e) {
         this.postMessage({
-          type : 'ERROR',
-          message : e.message
+          type: 'ERROR',
+          message: e.message
         });
       }
     };

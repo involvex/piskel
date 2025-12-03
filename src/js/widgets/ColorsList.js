@@ -17,10 +17,20 @@
       items: '.create-palette-color'
     });
 
-    pskl.utils.Event.addEventListener(this.colorsList, 'click', this.onColorContainerClick_, this);
+    pskl.utils.Event.addEventListener(
+      this.colorsList,
+      'click',
+      this.onColorContainerClick_,
+      this
+    );
 
-    var colorPickerContainer = container.querySelector('.color-picker-container');
-    this.hslRgbColorPicker = new pskl.widgets.HslRgbColorPicker(colorPickerContainer, this.onColorUpdated_.bind(this));
+    var colorPickerContainer = container.querySelector(
+      '.color-picker-container'
+    );
+    this.hslRgbColorPicker = new pskl.widgets.HslRgbColorPicker(
+      colorPickerContainer,
+      this.onColorUpdated_.bind(this)
+    );
     this.hslRgbColorPicker.init();
   };
 
@@ -55,7 +65,9 @@
    */
   ns.ColorsList.prototype.refreshColorElement_ = function (index) {
     var color = this.palette.get(this.selectedIndex);
-    var element = document.querySelector('[data-palette-index="' + index + '"]');
+    var element = document.querySelector(
+      '[data-palette-index="' + index + '"]'
+    );
     if (element) {
       element.style.background = color;
       element.classList.toggle('light-color', this.isLight_(color));
@@ -105,16 +117,17 @@
     var tpl = pskl.utils.Template.get('create-palette-color-template');
     var colors = this.palette.getColors();
 
-    colors.forEach(function (color, index) {
-      var isSelected = (index === this.selectedIndex);
+    colors.forEach(
+      function (color, index) {
+        var isSelected = index === this.selectedIndex;
 
-      html += pskl.utils.Template.replace(tpl, {
-        'color' : color, index : index,
-        ':selected' : isSelected,
-        ':light-color' : this.isLight_(color)
-      });
-    }.bind(this));
-
+        html += pskl.utils.Template.replace(tpl, {
+          color: color,
+          index: index,
+          ':selected': isSelected,
+          ':light-color': this.isLight_(color)
+        });
+      }.bind(this));
     html += '<li class="create-palette-new-color">+</li>';
 
     this.colorsList.innerHTML = html;

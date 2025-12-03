@@ -8,7 +8,7 @@
   };
 
   ns.Uuid = {
-    generate : function () {
+    generate: function () {
       return 'ss-s-s-s-sss'.replace(/s/g, function () {
         return s4();
       });

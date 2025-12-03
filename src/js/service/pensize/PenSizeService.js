@@ -15,8 +15,12 @@
     this.size = pskl.UserSettings.get(pskl.UserSettings.PEN_SIZE);
 
     var shortcuts = pskl.service.keyboard.Shortcuts;
-    pskl.app.shortcutService.registerShortcut(shortcuts.MISC.INCREASE_PENSIZE, this.increasePenSize_.bind(this));
-    pskl.app.shortcutService.registerShortcut(shortcuts.MISC.DECREASE_PENSIZE, this.decreasePenSize_.bind(this));
+    pskl.app.shortcutService.registerShortcut(
+      shortcuts.MISC.INCREASE_PENSIZE,
+      this.increasePenSize_.bind(this));
+    pskl.app.shortcutService.registerShortcut(
+      shortcuts.MISC.DECREASE_PENSIZE,
+      this.decreasePenSize_.bind(this));
   };
 
   ns.PenSizeService.prototype.increasePenSize_ = function () {
@@ -46,5 +50,4 @@
 
     return size >= MIN_PENSIZE && size <= MAX_PENSIZE;
   };
-
 })();

@@ -1,10 +1,10 @@
-jQuery.namespace = function() {
+jQuery.namespace = function () {
   var a = arguments;
   var o = null;
-  for (var i = 0; i < a.length ; i++) {
+  for (var i = 0; i < a.length; i++) {
     var d = a[i].split('.');
     o = window;
-    for (var j = 0 ; j < d.length ; j++) {
+    for (var j = 0; j < d.length; j++) {
       o[d[j]] = o[d[j]] || {};
       o = o[d[j]];
     }
@@ -20,7 +20,9 @@ if (!Function.prototype.bind) {
     if (typeof this !== 'function') {
       // closest thing possible to the ECMAScript 5
       // internal IsCallable function
-      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+      throw new TypeError(
+        'Function.prototype.bind - what is trying to be bound is not callable'
+      );
     }
 
     var bindArgs = Array.prototype.slice.call(arguments, 1);
@@ -65,7 +67,8 @@ if (!Uint32Array.prototype.fill) {
  *
  * @require Constants
  */
-(function() { // namespace: pskl.utils
+(function () {
+  // namespace: pskl.utils
 
   var ns = $.namespace('pskl.utils');
 
@@ -77,7 +80,12 @@ if (!Uint32Array.prototype.fill) {
    * @return {String} hex representation of the color '#ABCDEF'
    */
   ns.rgbToHex = function (r, g, b) {
-    return '#' + pskl.utils.componentToHex(r) + pskl.utils.componentToHex(g) + pskl.utils.componentToHex(b);
+    return (
+      '#' +
+      pskl.utils.componentToHex(r) +
+      pskl.utils.componentToHex(g) +
+      pskl.utils.componentToHex(b)
+    );
   };
 
   /**
@@ -91,12 +99,12 @@ if (!Uint32Array.prototype.fill) {
   };
 
   var intHexCache = {};
-  ns.intToHex = function(int) {
+  ns.intToHex = function (int) {
     if (intHexCache[int]) {
       return intHexCache[int];
     }
 
-    var hex = ns.rgbToHex(int & 0xff, int >> 8 & 0xff, int >> 16 & 0xff);
+    var hex = ns.rgbToHex(int & 0xff, (int >> 8) & 0xff, (int >> 16) & 0xff);
     intHexCache[int] = hex;
     return hex;
   };
@@ -109,7 +117,7 @@ if (!Uint32Array.prototype.fill) {
     }
   };
 
-  ns.inherit = function(extendedObject, inheritFrom) {
+  ns.inherit = function (extendedObject, inheritFrom) {
     extendedObject.prototype = Object.create(inheritFrom.prototype);
     extendedObject.prototype.constructor = extendedObject;
     extendedObject.prototype.superclass = inheritFrom.prototype;
@@ -117,13 +125,16 @@ if (!Uint32Array.prototype.fill) {
 
   ns.wrap = function (wrapper, wrappedObject) {
     for (var prop in wrappedObject) {
-      if (typeof wrappedObject[prop] === 'function' && typeof wrapper[prop] === 'undefined') {
+      if (
+        typeof wrappedObject[prop] === 'function' &&
+        typeof wrapper[prop] === 'undefined'
+      ) {
         wrapper[prop] = wrappedObject[prop].bind(wrappedObject);
       }
     }
   };
 
-  ns.hashCode = function(str) {
+  ns.hashCode = function (str) {
     var hash = 0;
     if (str.length === 0) {
       return hash;
@@ -143,12 +154,12 @@ if (!Uint32Array.prototype.fill) {
   };
 
   var entityMap = {
-    '&' : '&amp;',
-    '<' : '&lt;',
-    '>' : '&gt;',
-    '"' : '&quot;',
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
     '\'': '&#39;',
-    '/' : '&#x2F;'
+    '/': '&#x2F;'
   };
   ns.escapeHtml = function (string) {
     return String(string).replace(/[&<>"'\/]/g, function (s) {
@@ -171,7 +182,7 @@ if (!Uint32Array.prototype.fill) {
     if (tc && tc.ok) {
       var rgb = tc.toRgb();
       var a = Math.round(rgb.a * 255);
-      var intValue = (a << 24 >>> 0) + (rgb.b << 16) + (rgb.g << 8) + rgb.r;
+      var intValue = ((a << 24) >>> 0) + (rgb.b << 16) + (rgb.g << 8) + rgb.r;
       if (a === 0) {
         // assign all 'transparent' colors to 0, theoretically mapped to rgba(0,0,0,0) only
         intValue = 0;
@@ -193,7 +204,7 @@ if (!Uint32Array.prototype.fill) {
     }
   };
 
-  ns.intToColor = function(intValue) {
+  ns.intToColor = function (intValue) {
     if (typeof intValue === 'string') {
       return intValue;
     }
@@ -203,9 +214,9 @@ if (!Uint32Array.prototype.fill) {
     }
 
     var r = intValue & 0xff;
-    var g = intValue >> 8 & 0xff;
-    var b = intValue >> 16 & 0xff;
-    var a = (intValue >> 24 >>> 0 & 0xff) / 255;
+    var g = (intValue >> 8) & 0xff;
+    var b = (intValue >> 16) & 0xff;
+    var a = (((intValue >> 24) >>> 0) & 0xff) / 255;
     var color = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
 
     colorCache[color] = intValue;
@@ -215,11 +226,10 @@ if (!Uint32Array.prototype.fill) {
 
   var reEntityMap = {};
   ns.unescapeHtml = function (string) {
-    Object.keys(entityMap).forEach(function(key) {
+    Object.keys(entityMap).forEach(function (key) {
       reEntityMap[key] = reEntityMap[key] || new RegExp(entityMap[key], 'g');
       string = string.replace(reEntityMap[key], key);
     });
     return string;
   };
-
 })();

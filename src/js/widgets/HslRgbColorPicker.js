@@ -16,9 +16,19 @@
     var isFirefox = pskl.utils.UserAgent.isFirefox;
     var isChrome = pskl.utils.UserAgent.isChrome;
 
-    var changeEvent = (isChrome || isFirefox) ? 'input' : 'change';
-    pskl.utils.Event.addEventListener(this.container, changeEvent, this.onPickerChange_, this);
-    pskl.utils.Event.addEventListener(this.container, 'keydown', this.onPickerChange_, this);
+    var changeEvent = isChrome || isFirefox ? 'input' : 'change';
+    pskl.utils.Event.addEventListener(
+      this.container,
+      changeEvent,
+      this.onPickerChange_,
+      this
+    );
+    pskl.utils.Event.addEventListener(
+      this.container,
+      'keydown',
+      this.onPickerChange_,
+      this
+    );
 
     // Cannot use pskl.utils.Event with useCapture for now ...
     this.onBlur_ = this.onBlur_.bind(this);
@@ -29,8 +39,8 @@
     $(this.spectrumEl).spectrum({
       flat: true,
       showButtons: false,
-      move : this.setColor.bind(this),
-      change : this.setColor.bind(this)
+      move: this.setColor.bind(this),
+      change: this.setColor.bind(this)
     });
 
     this.setColor('#000000');
@@ -99,7 +109,11 @@
     return increment;
   };
 
-  ns.HslRgbColorPicker.prototype.updateColor_ = function (inputValue, model, dimension) {
+  ns.HslRgbColorPicker.prototype.updateColor_ = function (
+    inputValue,
+    model,
+    dimension
+  ) {
     var value = this.toModelValue_(inputValue, model, dimension);
     if (model === 'hsv' || model === 'rgb') {
       if (!isNaN(value)) {
@@ -145,7 +159,7 @@
   ns.HslRgbColorPicker.prototype.updateInputs = function () {
     var inputs = this.container.querySelectorAll('input');
 
-    for (var i = 0 ; i < inputs.length ; i++) {
+    for (var i = 0; i < inputs.length; i++) {
       var input = inputs[i];
       var dimension = input.dataset.dimension;
       var model = input.dataset.model;
@@ -178,7 +192,11 @@
     return value;
   };
 
-  ns.HslRgbColorPicker.prototype.toModelValue_ = function (value, model, dimension) {
+  ns.HslRgbColorPicker.prototype.toModelValue_ = function (
+    value,
+    model,
+    dimension
+  ) {
     var modelValue;
 
     if (model === 'rgb' || model === 'hsv') {
@@ -194,7 +212,8 @@
   };
 
   ns.HslRgbColorPicker.prototype.toTinyColor_ = function (color) {
-    var isTinyColor = typeof color == 'object' && color.hasOwnProperty('_tc_id');
+    var isTinyColor =
+      typeof color == 'object' && color.hasOwnProperty('_tc_id');
     if (isTinyColor) {
       return color;
     } else {
@@ -206,16 +225,19 @@
     var isHsvColor = ['h', 's', 'v'].every(color.hasOwnProperty.bind(color));
     if (isHsvColor) {
       return {
-        h : this.normalizeDimension_(color.h, 'h'),
-        s : this.normalizeDimension_(color.s, 's'),
-        v : this.normalizeDimension_(color.v, 'v')
+        h: this.normalizeDimension_(color.h, 'h'),
+        s: this.normalizeDimension_(color.s, 's'),
+        v: this.normalizeDimension_(color.v, 'v')
       };
     } else {
       return this.toTinyColor_(color).toHsv();
     }
   };
 
-  ns.HslRgbColorPicker.prototype.normalizeDimension_ = function (value, dimension) {
+  ns.HslRgbColorPicker.prototype.normalizeDimension_ = function (
+    value,
+    dimension
+  ) {
     var range = this.getDimensionRange_(dimension);
     return Math.max(range[0], Math.min(range[1], value));
   };
@@ -232,11 +254,19 @@
     var isHueSlider = dimension === 'h';
     if (!isHueSlider) {
       var colors = this.getSliderBackgroundColors_(model, dimension);
-      slider.style.backgroundImage = 'linear-gradient(to right, ' + colors.start + ' 0, ' + colors.end + ' 100%)';
+      slider.style.backgroundImage =
+        'linear-gradient(to right, ' +
+        colors.start +
+        ' 0, ' +
+        colors.end +
+        ' 100%)';
     }
   };
 
-  ns.HslRgbColorPicker.prototype.getSliderBackgroundColors_ = function (model, dimension) {
+  ns.HslRgbColorPicker.prototype.getSliderBackgroundColors_ = function (
+    model,
+    dimension
+  ) {
     var color = this.getColor_(model);
     var start = pskl.utils.copy(color);
     var end = pskl.utils.copy(color);
@@ -246,8 +276,8 @@
     end[dimension] = range[1];
 
     return {
-      start : window.tinycolor(start).toRgbString(),
-      end : window.tinycolor(end).toRgbString()
+      start: window.tinycolor(start).toRgbString(),
+      end: window.tinycolor(end).toRgbString()
     };
   };
 
@@ -270,5 +300,4 @@
     }
     return color;
   };
-
 })();

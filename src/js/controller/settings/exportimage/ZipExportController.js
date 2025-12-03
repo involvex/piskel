@@ -6,26 +6,36 @@
     this.exportController = exportController;
   };
 
-  pskl.utils.inherit(ns.ZipExportController, pskl.controller.settings.AbstractSettingController);
-
+  pskl.utils.inherit(
+    ns.ZipExportController,
+    pskl.controller.settings.AbstractSettingController);
   ns.ZipExportController.prototype.init = function () {
     this.pngFilePrefixInput = document.querySelector('.zip-prefix-name');
     this.pngFilePrefixInput.value = 'sprite_';
 
-    this.splitByLayersCheckbox = document.querySelector('.zip-split-layers-checkbox');
-    this.addEventListener(this.splitByLayersCheckbox, 'change', this.onSplitLayersClick_);
-
-    this.useLayerNamesContainer = document.querySelector('.use-layer-names-container');
-    this.useLayerNamesCheckbox = document.querySelector('.zip-use-layer-names-checkbox');
+    this.splitByLayersCheckbox = document.querySelector(
+      '.zip-split-layers-checkbox');
+    this.addEventListener(
+      this.splitByLayersCheckbox,
+      'change',
+      this.onSplitLayersClick_);
+    this.useLayerNamesContainer = document.querySelector(
+      '.use-layer-names-container');
+    this.useLayerNamesCheckbox = document.querySelector(
+      '.zip-use-layer-names-checkbox');
     this.toggleHideUseLayerNamesCheckbox();
 
     var zipButton = document.querySelector('.zip-generate-button');
     this.addEventListener(zipButton, 'click', this.onZipButtonClick_);
   };
 
-  ns.ZipExportController.prototype.toggleHideUseLayerNamesCheckbox = function () {
-    this.useLayerNamesContainer.style.display = (this.splitByLayersCheckbox.checked ? 'block' : 'none');
-  };
+  ns.ZipExportController.prototype.toggleHideUseLayerNamesCheckbox =
+    function () {
+      this.useLayerNamesContainer.style.display = this.splitByLayersCheckbox
+        .checked ?
+        'block' :
+        'none';
+    };
 
   ns.ZipExportController.prototype.onSplitLayersClick_ = function () {
     this.toggleHideUseLayerNamesCheckbox();
@@ -43,7 +53,7 @@
     var fileName = this.getPiskelName_() + '.zip';
 
     var blob = zip.generate({
-      type : 'blob'
+      type: 'blob'
     });
 
     pskl.utils.FileUtils.downloadAsFile(blob, fileName);
@@ -58,13 +68,17 @@
       var basename = this.pngFilePrefixInput.value;
       var id = pskl.utils.StringUtils.leftPad(i, paddingLength, '0');
       var filename = basename + id + '.png';
-      zip.file(filename, pskl.utils.CanvasUtils.getBase64FromCanvas(canvas) + '\n', {base64: true});
+      zip.file(
+        filename,
+        pskl.utils.CanvasUtils.getBase64FromCanvas(canvas) + '\n',
+        { base64: true });
     }
   };
 
   ns.ZipExportController.prototype.splittedExport_ = function (zip) {
     var layers = this.piskelController.getLayers();
-    var framePaddingLength = ('' + this.piskelController.getFrameCount()).length;
+    var framePaddingLength = ('' + this.piskelController.getFrameCount())
+      .length;
     var layerPaddingLength = ('' + layers.length).length;
     var zoom = this.exportController.getExportZoom();
     for (var j = 0; this.piskelController.hasLayerAt(j); j++) {
@@ -74,12 +88,18 @@
         var render = pskl.utils.LayerUtils.renderFrameAt(layer, i, true);
         var canvas = pskl.utils.ImageResizer.scale(render, zoom);
         var basename = this.pngFilePrefixInput.value;
-        var frameid = pskl.utils.StringUtils.leftPad(i + 1, framePaddingLength, '0');
+        var frameid = pskl.utils.StringUtils.leftPad(
+          i + 1,
+          framePaddingLength,
+          '0');
         var filename = 'l' + layerid + '_' + basename + frameid + '.png';
         if (this.useLayerNamesCheckbox.checked) {
           filename = layer.getName() + '_' + basename + frameid + '.png';
         }
-        zip.file(filename, pskl.utils.CanvasUtils.getBase64FromCanvas(canvas) + '\n', {base64: true});
+        zip.file(
+          filename,
+          pskl.utils.CanvasUtils.getBase64FromCanvas(canvas) + '\n',
+          { base64: true });
       }
     }
   };

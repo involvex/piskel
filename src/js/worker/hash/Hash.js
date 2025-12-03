@@ -14,7 +14,7 @@
 
   ns.Hash.prototype.process = function () {
     this.worker.postMessage({
-      str : this.str
+      str: this.str
     });
   };
 

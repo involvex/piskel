@@ -7,8 +7,9 @@
     this.piskelController = piskelController;
   };
 
-  pskl.utils.inherit(ns.MiscExportController, pskl.controller.settings.AbstractSettingController);
-
+  pskl.utils.inherit(
+    ns.MiscExportController,
+    pskl.controller.settings.AbstractSettingController);
   ns.MiscExportController.prototype.init = function () {
     var cDownloadButton = document.querySelector('.c-download-button');
     this.addEventListener(cDownloadButton, 'click', this.onDownloadCFileClick_);
@@ -16,23 +17,30 @@
 
   ns.MiscExportController.prototype.onDownloadCFileClick_ = function (evt) {
     var fileName = this.getPiskelName_() + '.c';
-    var cName = this.getPiskelName_().replace(' ','_');
+    var cName = this.getPiskelName_().replace(' ', '_');
     var width = this.piskelController.getWidth();
     var height = this.piskelController.getHeight();
     var frameCount = this.piskelController.getFrameCount();
 
     // Useful defines for C routines
     var frameStr = '#include <stdint.h>\n\n';
-    frameStr += '#define ' + cName.toUpperCase() + '_FRAME_COUNT ' +  this.piskelController.getFrameCount() + '\n';
-    frameStr += '#define ' + cName.toUpperCase() + '_FRAME_WIDTH ' + width + '\n';
-    frameStr += '#define ' + cName.toUpperCase() + '_FRAME_HEIGHT ' + height + '\n\n';
+    frameStr +=
+      '#define ' +
+      cName.toUpperCase() +
+      '_FRAME_COUNT ' +
+      this.piskelController.getFrameCount() +
+      '\n';
+    frameStr +=
+      '#define ' + cName.toUpperCase() + '_FRAME_WIDTH ' + width + '\n';
+    frameStr +=
+      '#define ' + cName.toUpperCase() + '_FRAME_HEIGHT ' + height + '\n\n';
 
     frameStr += '/* Piskel data for \"' + this.getPiskelName_() + '\" */\n\n';
 
     frameStr += 'static const uint32_t ' + cName.toLowerCase();
     frameStr += '_data[' + frameCount + '][' + width * height + '] = {\n';
 
-    for (var i = 0 ; i < frameCount ; i++) {
+    for (var i = 0; i < frameCount; i++) {
       var render = this.piskelController.renderFrameAt(i, true);
       var context = render.getContext('2d');
       var imgd = context.getImageData(0, 0, width, height);
@@ -44,11 +52,11 @@
         if (j != pix.length - 4) {
           frameStr += ', ';
         }
-        if (((j + 4) % (width * 4)) === 0) {
+        if ((j + 4) % (width * 4) === 0) {
           frameStr += '\n';
         }
       }
-      if (i != (frameCount - 1)) {
+      if (i != frameCount - 1) {
         frameStr += '},\n';
       } else {
         frameStr += '}\n';
@@ -56,9 +64,12 @@
     }
 
     frameStr += '};\n';
-    pskl.utils.BlobUtils.stringToBlob(frameStr, function(blob) {
-      pskl.utils.FileUtils.downloadAsFile(blob, fileName);
-    }.bind(this), 'application/text');
+    pskl.utils.BlobUtils.stringToBlob(
+      frameStr,
+      function (blob) {
+        pskl.utils.FileUtils.downloadAsFile(blob, fileName);
+      }.bind(this),
+      'application/text');
   };
 
   ns.MiscExportController.prototype.getPiskelName_ = function () {

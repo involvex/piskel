@@ -3,10 +3,10 @@
  *
  * @require pskl.utils
  */
-(function() {
+(function () {
   var ns = $.namespace('pskl.tools.drawing');
 
-  ns.ColorPicker = function() {
+  ns.ColorPicker = function () {
     this.toolId = 'tool-colorpicker';
     this.helpText = 'Color picker';
     this.shortcut = pskl.service.keyboard.Shortcuts.TOOL.COLORPICKER;
@@ -17,7 +17,13 @@
   /**
    * @override
    */
-  ns.ColorPicker.prototype.applyToolAt = function(col, row, frame, overlay, event) {
+  ns.ColorPicker.prototype.applyToolAt = function (
+    col,
+    row,
+    frame,
+    overlay,
+    event
+  ) {
     if (frame.containsPixel(col, row)) {
       var sampledColor = pskl.utils.intToColor(frame.getPixel(col, row));
       if (pskl.app.mouseStateService.isLeftButtonPressed()) {
