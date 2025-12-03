@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 const drawingDoneSelector = "#drawing-test-result";
 
-export const executeTest = (testName) => {
+export const executeTest = (testName: any) => {
   test(`Execute '${testName}' test`, async ({ page }) => {
     const testFilePath = `drawing/tests/${testName}`;
     await page.goto("/?test-run=" + testFilePath);
