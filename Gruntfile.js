@@ -392,6 +392,7 @@ module.exports = function (grunt) {
   });
 
   // TEST TASKS
+  grunt.registerTask("test", ["karma:unit"]);
   // Run linting
   grunt.registerTask("lint", ["eslint", "leadingIndent:css"]);
 
