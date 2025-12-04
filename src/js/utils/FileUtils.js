@@ -1,43 +1,43 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
-  var stopPropagation = function (e) {
+  const stopPropagation = function (e) {
     e.stopPropagation();
   };
 
   ns.FileUtils = {
     readFile: function (file, callback) {
-      var reader = new FileReader();
-      reader.addEventListener('loadend', function () {
+      const reader = new FileReader();
+      reader.addEventListener('loadend', () => {
         callback(reader.result);
       });
       reader.readAsDataURL(file);
     },
 
     readFileAsArrayBuffer: function (file, callback) {
-      var reader = new FileReader();
-      reader.addEventListener('loadend', function () {
+      const reader = new FileReader();
+      reader.addEventListener('loadend', () => {
         callback(reader.result);
       });
       reader.readAsArrayBuffer(file);
     },
 
     readImageFile: function (file, callback) {
-      ns.FileUtils.readFile(file, function (content) {
-        var image = new Image();
+      ns.FileUtils.readFile(file, (content) => {
+        const image = new Image();
         image.onload = callback.bind(null, image);
         image.src = content;
       });
     },
 
     downloadAsFile: function (content, filename) {
-      var saveAs =
+      const saveAs =
         window.saveAs ||
         (navigator.msSaveBlob && navigator.msSaveBlob.bind(navigator));
       if (saveAs) {
         saveAs(content, filename);
       } else {
-        var downloadLink = document.createElement('a');
+        const downloadLink = document.createElement('a');
         content = window.URL.createObjectURL(content);
         downloadLink.setAttribute('href', content);
         downloadLink.setAttribute('download', filename);

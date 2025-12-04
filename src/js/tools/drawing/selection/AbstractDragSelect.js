@@ -4,7 +4,7 @@
  * @provide pskl.tools.drawing.selection.AbstractDragSelect
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing.selection');
+  const ns = $.namespace('pskl.tools.drawing.selection');
 
   ns.AbstractDragSelect = function () {
     ns.BaseSelect.call(this);

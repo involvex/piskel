@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.model.frame');
+  const ns = $.namespace('pskl.model.frame');
 
   ns.AsyncCachedFrameProcessor = function (cacheResetInterval) {
     ns.CachedFrameProcessor.call(this, cacheResetInterval);
@@ -16,22 +16,22 @@
    * @return {Object} the processed frame
    */
   ns.AsyncCachedFrameProcessor.prototype.get = function (frame, namespace) {
-    var processedFrame = null;
+    let processedFrame = null;
     namespace = namespace || this.defaultNamespace;
 
     if (!this.cache_[namespace]) {
       this.cache_[namespace] = {};
     }
 
-    var deferred = Q.defer();
+    const deferred = Q.defer();
 
-    var cache = this.cache_[namespace];
+    const cache = this.cache_[namespace];
 
-    var key1 = frame.getHash();
+    const key1 = frame.getHash();
     if (cache[key1]) {
       processedFrame = cache[key1];
     } else {
-      var callback = this.onProcessorComplete_.bind(
+      const callback = this.onProcessorComplete_.bind(
         this,
         deferred,
         cache,

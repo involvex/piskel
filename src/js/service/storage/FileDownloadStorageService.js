@@ -1,21 +1,21 @@
 (function () {
-  var ns = $.namespace('pskl.service.storage');
+  const ns = $.namespace('pskl.service.storage');
 
   ns.FileDownloadStorageService = function () {};
   ns.FileDownloadStorageService.prototype.init = function () {};
 
   ns.FileDownloadStorageService.prototype.save = function (piskel) {
-    var serialized = pskl.utils.serialization.Serializer.serialize(piskel);
-    var deferred = Q.defer();
+    const serialized = pskl.utils.serialization.Serializer.serialize(piskel);
+    const deferred = Q.defer();
 
     pskl.utils.BlobUtils.stringToBlob(
       serialized,
-      function (blob) {
-        var piskelName = piskel.getDescriptor().name;
-        var timestamp = pskl.utils.DateUtils.format(
+      (blob) => {
+        const piskelName = piskel.getDescriptor().name;
+        const timestamp = pskl.utils.DateUtils.format(
           new Date(),
           '{{Y}}{{M}}{{D}}-{{H}}{{m}}{{s}}');
-        var fileName = piskelName + '-' + timestamp + '.piskel';
+        const fileName = piskelName + '-' + timestamp + '.piskel';
 
         try {
           pskl.utils.FileUtils.downloadAsFile(blob, fileName);
@@ -23,7 +23,7 @@
         } catch (e) {
           deferred.reject(e.message);
         }
-      }.bind(this),
+      },
       'application/piskel+json');
     return deferred.promise;
   };

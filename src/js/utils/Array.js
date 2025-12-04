@@ -1,11 +1,11 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
   ns.Array = {
     find: function (array, filterFn) {
-      var match = null;
+      let match = null;
       array = Array.isArray(array) ? array : [];
-      var filtered = array.filter(filterFn);
+      const filtered = array.filter(filterFn);
       if (filtered.length) {
         match = filtered[0];
       }
@@ -20,7 +20,7 @@
      * @return {Array<Array>} array of arrays containing the items of the original array
      */
     chunk: function (array, chunksCount) {
-      var chunks = [];
+      const chunks = [];
 
       // We cannot have more chunks than array items.
       chunksCount = Math.min(chunksCount, array.length);
@@ -28,10 +28,10 @@
       // chunksCount should be at least 1
       chunksCount = Math.max(1, chunksCount);
 
-      var step = Math.round(array.length / chunksCount);
-      for (var i = 0; i < chunksCount; i++) {
-        var isLast = i == chunksCount - 1;
-        var end = isLast ? array.length : (i + 1) * step;
+      const step = Math.round(array.length / chunksCount);
+      for (let i = 0; i < chunksCount; i++) {
+        const isLast = i == chunksCount - 1;
+        const end = isLast ? array.length : (i + 1) * step;
         chunks.push(array.slice(i * step, end));
       }
       return chunks;

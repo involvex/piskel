@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service.palette');
+  const ns = $.namespace('pskl.service.palette');
 
   ns.PaletteService = function () {
     this.dynamicPalettes = [];
@@ -8,9 +8,9 @@
   };
 
   ns.PaletteService.prototype.getPalettes = function () {
-    var palettesString = this.localStorageGlobal.getItem('piskel.palettes');
-    var palettes = JSON.parse(palettesString) || [];
-    palettes = palettes.map(function (palette) {
+    const palettesString = this.localStorageGlobal.getItem('piskel.palettes');
+    let palettes = JSON.parse(palettesString) || [];
+    palettes = palettes.map((palette) => {
       return pskl.model.Palette.fromObject(palette);
     });
 
@@ -18,15 +18,15 @@
   };
 
   ns.PaletteService.prototype.getPaletteById = function (paletteId) {
-    var palettes = this.getPalettes();
+    const palettes = this.getPalettes();
     return this.findPaletteInArray_(paletteId, palettes);
   };
 
   ns.PaletteService.prototype.savePalette = function (palette) {
-    var palettes = this.getPalettes();
-    var existingPalette = this.findPaletteInArray_(palette.id, palettes);
+    const palettes = this.getPalettes();
+    const existingPalette = this.findPaletteInArray_(palette.id, palettes);
     if (existingPalette) {
-      var currentIndex = palettes.indexOf(existingPalette);
+      const currentIndex = palettes.indexOf(existingPalette);
       palettes.splice(currentIndex, 1, palette);
     } else {
       palettes.push(palette);
@@ -45,8 +45,8 @@
   };
 
   ns.PaletteService.prototype.deletePaletteById = function (id) {
-    var palettes = this.getPalettes();
-    var filteredPalettes = palettes.filter(function (palette) {
+    const palettes = this.getPalettes();
+    const filteredPalettes = palettes.filter((palette) => {
       return palette.id !== id;
     });
 
@@ -55,9 +55,9 @@
 
   ns.PaletteService.prototype.savePalettes_ = function (palettes) {
     palettes = palettes.filter(
-      function (palette) {
+      (palette) => {
         return this.dynamicPalettes.indexOf(palette) === -1;
-      }.bind(this));
+      });
     this.localStorageGlobal.setItem(
       'piskel.palettes',
       JSON.stringify(palettes));
@@ -68,9 +68,9 @@
     paletteId,
     palettes
   ) {
-    var match = null;
+    let match = null;
 
-    palettes.forEach(function (palette) {
+    palettes.forEach((palette) => {
       if (palette.id === paletteId) {
         match = palette;
       }

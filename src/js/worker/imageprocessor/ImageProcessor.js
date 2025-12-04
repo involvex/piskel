@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.worker.imageprocessor');
+  const ns = $.namespace('pskl.worker.imageprocessor');
 
   ns.ImageProcessor = function (image, onSuccess, onStep, onError) {
     this.image = image;
@@ -16,8 +16,8 @@
   };
 
   ns.ImageProcessor.prototype.process = function () {
-    var canvas = pskl.utils.CanvasUtils.createFromImage(this.image);
-    var imageData = pskl.utils.CanvasUtils.getImageDataFromCanvas(canvas);
+    const canvas = pskl.utils.CanvasUtils.createFromImage(this.image);
+    const imageData = pskl.utils.CanvasUtils.getImageDataFromCanvas(canvas);
     this.worker.postMessage({
       imageData: imageData,
       width: this.image.width,

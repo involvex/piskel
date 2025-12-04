@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service.storage');
+  const ns = $.namespace('pskl.service.storage');
 
   ns.LocalStorageService = function (piskelController) {
     if (piskelController === undefined) {
@@ -11,12 +11,12 @@
   ns.LocalStorageService.prototype.init = function () {};
 
   ns.LocalStorageService.prototype.save = function (piskel) {
-    var name = piskel.getDescriptor().name;
-    var description = piskel.getDescriptor().description;
+    const name = piskel.getDescriptor().name;
+    const description = piskel.getDescriptor().description;
 
-    var serialized = pskl.utils.serialization.Serializer.serialize(piskel);
+    const serialized = pskl.utils.serialization.Serializer.serialize(piskel);
     if (pskl.app.localStorageService.getPiskel(name)) {
-      var confirmOverwrite = window.confirm(
+      const confirmOverwrite = window.confirm(
         'There is already a piskel saved as ' + name + '. Overwrite ?');
       if (!confirmOverwrite) {
         return Q.reject('Cancelled by user, "' + name + '" already exists');
@@ -34,12 +34,12 @@
   };
 
   ns.LocalStorageService.prototype.load = function (name) {
-    var piskelString = this.getPiskel(name);
-    var key = this.getKey_(name);
+    const piskelString = this.getPiskel(name);
+    const key = this.getKey_(name);
 
     pskl.utils.serialization.Deserializer.deserialize(
       JSON.parse(piskelString),
-      function (piskel) {
+      (piskel) => {
         pskl.app.piskelController.setPiskel(piskel);
       });
   };
@@ -54,8 +54,8 @@
   };
 
   ns.LocalStorageService.prototype.removeFromKeys_ = function (name) {
-    var keys = this.getKeys();
-    var otherKeys = keys.filter(function (key) {
+    const keys = this.getKeys();
+    const otherKeys = keys.filter((key) => {
       return key.name !== name;
     });
 
@@ -63,7 +63,7 @@
   };
 
   ns.LocalStorageService.prototype.getKey_ = function (name) {
-    var matches = this.getKeys().filter(function (key) {
+    const matches = this.getKeys().filter((key) => {
       return key.name === name;
     });
     if (matches.length > 0) {
@@ -78,7 +78,7 @@
     description,
     date
   ) {
-    var keys = this.getKeys();
+    const keys = this.getKeys();
     keys.push({
       name: name,
       description: description,
@@ -92,7 +92,7 @@
   };
 
   ns.LocalStorageService.prototype.getKeys = function (name) {
-    var keysString = window.localStorage.getItem('piskel.keys');
+    const keysString = window.localStorage.getItem('piskel.keys');
     return JSON.parse(keysString) || [];
   };
 })();

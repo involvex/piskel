@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.rendering');
+  const ns = $.namespace('pskl.rendering');
 
   ns.DrawingLoop = function () {
     this.requestAnimationFrame = this.getRequestAnimationFrameShim_();
@@ -10,7 +10,7 @@
   };
 
   ns.DrawingLoop.prototype.addCallback = function (callback, scope, args) {
-    var callbackObj = {
+    const callbackObj = {
       fn: callback,
       scope: scope,
       args: args
@@ -21,7 +21,7 @@
   };
 
   ns.DrawingLoop.prototype.removeCallback = function (callbackObj) {
-    var index = this.callbacks.indexOf(callbackObj);
+    const index = this.callbacks.indexOf(callbackObj);
     if (index != -1) {
       this.callbacks.splice(index, 1);
     }
@@ -33,16 +33,16 @@
   };
 
   ns.DrawingLoop.prototype.loop_ = function () {
-    var currentTime = Date.now();
-    var delta = currentTime - this.previousTime;
+    const currentTime = Date.now();
+    const delta = currentTime - this.previousTime;
     this.executeCallbacks_(delta);
     this.previousTime = currentTime;
     this.requestAnimationFrame.call(window, this.loop_);
   };
 
   ns.DrawingLoop.prototype.executeCallbacks_ = function (deltaTime) {
-    for (var i = 0; i < this.callbacks.length; i++) {
-      var cb = this.callbacks[i];
+    for (let i = 0; i < this.callbacks.length; i++) {
+      const cb = this.callbacks[i];
       cb.fn.call(cb.scope, deltaTime, cb.args);
     }
   };
@@ -52,7 +52,7 @@
   };
 
   ns.DrawingLoop.prototype.getRequestAnimationFrameShim_ = function () {
-    var requestAnimationFrame =
+    const requestAnimationFrame =
       window.requestAnimationFrame ||
       window.mozRequestAnimationFrame ||
       window.webkitRequestAnimationFrame ||

@@ -1,22 +1,22 @@
-describe("BackupService test", function () {
+describe("BackupService test", () => {
   // Some helper const.
-  var ONE_SECOND = 1000;
-  var ONE_MINUTE = 60 * ONE_SECOND;
+  const ONE_SECOND = 1000;
+  const ONE_MINUTE = 60 * ONE_SECOND;
 
-  var mockBackupDatabase;
-  var mockPiskel;
-  var mockPiskelController;
+  let mockBackupDatabase;
+  let mockPiskel;
+  let mockPiskelController;
 
   // Globals used in stubs
-  var stubValues = {
+  const stubValues = {
     snapshotDate: null,
     serializedPiskel: null,
   };
 
   // Main test object.
-  var backupService;
+  let backupService;
 
-  beforeEach(function () {
+  beforeEach(() => {
     // Create mocks.
     mockBackupDatabase = {
       // Test property
@@ -78,7 +78,7 @@ describe("BackupService test", function () {
     };
 
     spyOn(pskl.utils.serialization.Serializer, "serialize").and.callFake(
-      function () {
+      () => {
         return stubValues.serializedPiskel;
       }
     );
@@ -95,7 +95,7 @@ describe("BackupService test", function () {
     };
   });
 
-  var createSnapshotObject = function (
+  const createSnapshotObject = function (
     session_id,
     name,
     description,
@@ -111,7 +111,7 @@ describe("BackupService test", function () {
     };
   };
 
-  var preparePiskelMocks = function (
+  const preparePiskelMocks = function (
     session_id,
     name,
     description,
@@ -128,7 +128,7 @@ describe("BackupService test", function () {
     stubValues.serializedPiskel = serialized;
   };
 
-  it("calls create to backup", function (done) {
+  it("calls create to backup", (done) => {
     preparePiskelMocks(
       1,
       "piskel_name",
@@ -143,9 +143,9 @@ describe("BackupService test", function () {
     // No snapshots currently saved.
     spyOn(mockBackupDatabase, "createSnapshot").and.callThrough();
 
-    backupService.backup().then(function () {
+    backupService.backup().then(() => {
       expect(mockBackupDatabase.createSnapshot).toHaveBeenCalled();
-      var snapshot =
+      const snapshot =
         mockBackupDatabase.createSnapshot.calls.mostRecent().args[0];
       expect(snapshot.session_id).toEqual(1);
       expect(snapshot.name).toEqual("piskel_name");
@@ -156,12 +156,12 @@ describe("BackupService test", function () {
     });
   });
 
-  it("does not call update to backup if the hash did not change", function (done) {
-    var session = 1;
-    var date1 = 0;
-    var date2 = ONE_MINUTE;
+  it("does not call update to backup if the hash did not change", (done) => {
+    const session = 1;
+    const date1 = 0;
+    const date2 = ONE_MINUTE;
 
-    var snapshot1 = createSnapshotObject(
+    const snapshot1 = createSnapshotObject(
       1,
       "piskel_name1",
       "piskel_desc1",
@@ -181,7 +181,7 @@ describe("BackupService test", function () {
     spyOn(mockBackupDatabase, "updateSnapshot").and.callThrough();
     spyOn(mockBackupDatabase, "createSnapshot").and.callThrough();
 
-    backupService.backup().then(function () {
+    backupService.backup().then(() => {
       // The snapshot should have been created using "createSnapshot".
       expect(mockBackupDatabase.createSnapshot).toHaveBeenCalled();
       expect(mockBackupDatabase.updateSnapshot.calls.any()).toBe(false);
@@ -198,7 +198,7 @@ describe("BackupService test", function () {
       );
       snapshotDate = date2;
 
-      backupService.backup().then(function () {
+      backupService.backup().then(() => {
         // Check that createSnapshot was not called again and updateSnapshot either.
         expect(mockBackupDatabase.createSnapshot.calls.count()).toEqual(1);
         expect(mockBackupDatabase.updateSnapshot.calls.count()).toEqual(0);
@@ -207,12 +207,12 @@ describe("BackupService test", function () {
     });
   });
 
-  it("calls update to backup if there is an existing & recent snapshot", function (done) {
-    var session = 1;
-    var date1 = 0;
-    var date2 = ONE_MINUTE;
+  it("calls update to backup if there is an existing & recent snapshot", (done) => {
+    const session = 1;
+    const date1 = 0;
+    const date2 = ONE_MINUTE;
 
-    var snapshot1 = createSnapshotObject(
+    const snapshot1 = createSnapshotObject(
       1,
       "piskel_name1",
       "piskel_desc1",
@@ -232,7 +232,7 @@ describe("BackupService test", function () {
     spyOn(mockBackupDatabase, "updateSnapshot").and.callThrough();
     spyOn(mockBackupDatabase, "createSnapshot").and.callThrough();
 
-    backupService.backup().then(function () {
+    backupService.backup().then(() => {
       // The snapshot should have been created using "createSnapshot".
       expect(mockBackupDatabase.createSnapshot).toHaveBeenCalled();
 
@@ -248,12 +248,12 @@ describe("BackupService test", function () {
       );
       snapshotDate = date2;
 
-      backupService.backup().then(function () {
+      backupService.backup().then(() => {
         // Check that createSnapshot was not called again.
         expect(mockBackupDatabase.createSnapshot.calls.count()).toEqual(1);
         // Check that updateSnapshot was called with the expected arguments.
         expect(mockBackupDatabase.updateSnapshot).toHaveBeenCalled();
-        var snapshot =
+        const snapshot =
           mockBackupDatabase.updateSnapshot.calls.mostRecent().args[0];
         expect(snapshot.session_id).toEqual(session);
         expect(snapshot.name).toEqual("piskel_name2");
@@ -265,12 +265,12 @@ describe("BackupService test", function () {
     });
   });
 
-  it("creates a new snapshot if the time difference is big enough", function (done) {
-    var session = 1;
-    var date1 = 0;
-    var date2 = 6 * ONE_MINUTE;
+  it("creates a new snapshot if the time difference is big enough", (done) => {
+    const session = 1;
+    const date1 = 0;
+    const date2 = 6 * ONE_MINUTE;
 
-    var snapshot1 = createSnapshotObject(
+    const snapshot1 = createSnapshotObject(
       1,
       "piskel_name1",
       "piskel_desc1",
@@ -290,7 +290,7 @@ describe("BackupService test", function () {
     spyOn(mockBackupDatabase, "updateSnapshot").and.callThrough();
     spyOn(mockBackupDatabase, "createSnapshot").and.callThrough();
 
-    backupService.backup().then(function () {
+    backupService.backup().then(() => {
       // The snapshot should have been created using "createSnapshot".
       expect(mockBackupDatabase.createSnapshot).toHaveBeenCalled();
 
@@ -306,12 +306,12 @@ describe("BackupService test", function () {
       );
       snapshotDate = date2;
 
-      backupService.backup().then(function () {
+      backupService.backup().then(() => {
         // Check that updateSnapshot was not called.
         expect(mockBackupDatabase.updateSnapshot.calls.count()).toEqual(0);
         // Check that updateSnapshot was called with the expected arguments.
         expect(mockBackupDatabase.createSnapshot).toHaveBeenCalled();
-        var snapshot =
+        const snapshot =
           mockBackupDatabase.createSnapshot.calls.mostRecent().args[0];
         expect(snapshot.session_id).toEqual(session);
         expect(snapshot.name).toEqual("piskel_name2");
@@ -323,9 +323,9 @@ describe("BackupService test", function () {
     });
   });
 
-  it("deletes old snapshots if there are too many of them", function (done) {
-    var session = 1;
-    var maxPerSession = 12;
+  it("deletes old snapshots if there are too many of them", (done) => {
+    const session = 1;
+    const maxPerSession = 12;
 
     preparePiskelMocks(
       session,
@@ -342,7 +342,7 @@ describe("BackupService test", function () {
 
     // Prepare array of already saved snapshots.
     mockBackupDatabase._sessions[session] = [];
-    for (var i = maxPerSession - 1; i >= 0; i--) {
+    for (let i = maxPerSession - 1; i >= 0; i--) {
       mockBackupDatabase._sessions[session].push(
         createSnapshotObject(
           session,
@@ -354,11 +354,11 @@ describe("BackupService test", function () {
       );
     }
 
-    backupService.backup().then(function () {
+    backupService.backup().then(() => {
       expect(mockBackupDatabase.createSnapshot).toHaveBeenCalled();
       expect(mockBackupDatabase.deleteSnapshot).toHaveBeenCalled();
       // It will simply attempt to delete the last item from the array of saved sessions
-      var snapshot =
+      const snapshot =
         mockBackupDatabase.deleteSnapshot.calls.mostRecent().args[0];
       expect(snapshot.session_id).toEqual(session);
       expect(snapshot.name).toEqual("piskel_name");
@@ -369,9 +369,9 @@ describe("BackupService test", function () {
     });
   });
 
-  it("deletes a session if there are too many of them", function (done) {
-    var session = "session10";
-    var maxSessions = 10;
+  it("deletes a session if there are too many of them", (done) => {
+    const session = "session10";
+    const maxSessions = 10;
 
     preparePiskelMocks(
       session,
@@ -383,8 +383,8 @@ describe("BackupService test", function () {
     snapshotDate = 10 * ONE_MINUTE;
 
     // Prepare array of sessions.
-    var sessions = [];
-    for (var i = 0; i < maxSessions + 1; i++) {
+    const sessions = [];
+    for (let i = 0; i < maxSessions + 1; i++) {
       sessions.push({
         id: "session" + i,
         startDate: i * ONE_MINUTE,
@@ -398,11 +398,11 @@ describe("BackupService test", function () {
     spyOn(mockBackupDatabase, "createSnapshot").and.callThrough();
     spyOn(mockBackupDatabase, "deleteSnapshotsForSession").and.callThrough();
 
-    backupService.backup().then(function () {
+    backupService.backup().then(() => {
       expect(mockBackupDatabase.createSnapshot).toHaveBeenCalled();
       expect(mockBackupDatabase.deleteSnapshotsForSession).toHaveBeenCalled();
       // It will simply attempt to delete the last item from the array of saved sessions
-      var sessionId =
+      const sessionId =
         mockBackupDatabase.deleteSnapshotsForSession.calls.mostRecent().args[0];
       expect(sessionId).toEqual("session0");
       done();

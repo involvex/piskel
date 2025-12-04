@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings');
+  const ns = $.namespace('pskl.controller.settings');
   ns.AbstractSettingController = function () {};
 
   ns.AbstractSettingController.prototype.addEventListener = function (
@@ -16,9 +16,9 @@
   };
 
   ns.AbstractSettingController.prototype.nullifyDomReferences_ = function () {
-    for (var key in this) {
+    for (const key in this) {
       if (this.hasOwnProperty(key)) {
-        var isHTMLElement = this[key] && this[key].nodeName;
+        const isHTMLElement = this[key] && this[key].nodeName;
         if (isHTMLElement) {
           this[key] = null;
         }

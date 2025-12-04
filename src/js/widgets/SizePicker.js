@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.widgets');
+  const ns = $.namespace('pskl.widgets');
 
   ns.SizePicker = function (onChange) {
     this.onChange = onChange;
@@ -20,7 +20,7 @@
   };
 
   ns.SizePicker.prototype.getSize = function () {
-    var selectedOption = this.container.querySelector('.selected');
+    const selectedOption = this.container.querySelector('.selected');
     return selectedOption ? selectedOption.dataset.size : null;
   };
 
@@ -31,7 +31,7 @@
 
     pskl.utils.Dom.removeClass('labeled', this.container);
     pskl.utils.Dom.removeClass('selected', this.container);
-    var selectedOption;
+    let selectedOption;
     selectedOption = this.container.querySelector('[data-size="' + size + '"]');
     if (!selectedOption) {
       selectedOption = this.container.querySelector('[data-size]:last-child');
@@ -44,7 +44,7 @@
   };
 
   ns.SizePicker.prototype.onSizeOptionClick_ = function (e) {
-    var size = e.target.dataset.size;
+    let size = e.target.dataset.size;
     if (!isNaN(size)) {
       size = parseInt(size, 10);
       this.onChange(size);

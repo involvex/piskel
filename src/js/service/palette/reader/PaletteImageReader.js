@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service.palette.reader');
+  const ns = $.namespace('pskl.service.palette.reader');
 
   ns.PaletteImageReader = function (file, onSuccess, onError) {
     this.file = file;
@@ -16,7 +16,7 @@
   };
 
   ns.PaletteImageReader.prototype.onImageLoaded_ = function (image) {
-    var imageProcessor = new pskl.worker.imageprocessor.ImageProcessor(
+    const imageProcessor = new pskl.worker.imageprocessor.ImageProcessor(
       image,
       this.onWorkerSuccess_.bind(this),
       this.onWorkerStep_.bind(this),
@@ -27,17 +27,17 @@
   };
 
   ns.PaletteImageReader.prototype.onWorkerSuccess_ = function (event) {
-    var data = event.data;
-    var colorsMap = data.colorsMap;
+    const data = event.data;
+    const colorsMap = data.colorsMap;
 
-    var colors = Object.keys(colorsMap);
+    const colors = Object.keys(colorsMap);
 
     if (colors.length > Constants.MAX_PALETTE_COLORS) {
       this.onError('Too many colors : ' + colors.length);
     } else {
-      var uuid = pskl.utils.Uuid.generate();
-      var sortedColors = this.colorSorter_.sort(colors);
-      var palette = new pskl.model.Palette(
+      const uuid = pskl.utils.Uuid.generate();
+      const sortedColors = this.colorSorter_.sort(colors);
+      const palette = new pskl.model.Palette(
         uuid,
         this.file.name + ' palette',
         sortedColors);
@@ -47,7 +47,7 @@
   };
 
   ns.PaletteImageReader.prototype.onWorkerStep_ = function (event) {
-    var progress = event.data.progress;
+    const progress = event.data.progress;
     $.publish(Events.UPDATE_PROGRESS, [{ progress: progress }]);
   };
 

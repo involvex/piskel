@@ -1,9 +1,9 @@
-describe("PenSize test suite", function () {
-  var penSizeService;
-  var userSettingsBackup;
-  var userSettingsPenSize;
+describe("PenSize test suite", () => {
+  let penSizeService;
+  let userSettingsBackup;
+  let userSettingsPenSize;
 
-  beforeEach(function () {
+  beforeEach(() => {
     userSettingsBackup = pskl.UserSettings;
 
     pskl.UserSettings = {
@@ -24,11 +24,11 @@ describe("PenSize test suite", function () {
     penSizeService = new pskl.service.pensize.PenSizeService();
   });
 
-  afterEach(function () {
+  afterEach(() => {
     pskl.UserSettings = userSettingsBackup;
   });
 
-  it("gets initial value from user settings", function () {
+  it("gets initial value from user settings", () => {
     console.log("[PenSizeService] gets initial value from user settings");
     userSettingsPenSize = 2;
 
@@ -37,7 +37,7 @@ describe("PenSize test suite", function () {
     expect(pskl.UserSettings.get).toHaveBeenCalledWith("PEN_SIZE_TEST_KEY");
   });
 
-  it("saves valid value to user settings", function () {
+  it("saves valid value to user settings", () => {
     console.log("[PenSizeService] saves valid value to user settings");
     userSettingsPenSize = 1;
 
@@ -49,7 +49,7 @@ describe("PenSize test suite", function () {
     expect($.publish).toHaveBeenCalledWith(Events.PEN_SIZE_CHANGED);
   });
 
-  it("skips invalid value (outside of [1, 4])", function () {
+  it("skips invalid value (outside of [1, 4])", () => {
     console.log("[PenSizeService] skips invalid value (outside of [1, 32])");
     userSettingsPenSize = 1;
 

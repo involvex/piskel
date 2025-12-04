@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.tools');
+  const ns = $.namespace('pskl.tools');
 
   ns.Tool = function () {
     this.toolId = 'tool';

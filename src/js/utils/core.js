@@ -1,10 +1,10 @@
 jQuery.namespace = function () {
-  var a = arguments;
-  var o = null;
-  for (var i = 0; i < a.length; i++) {
-    var d = a[i].split('.');
+  const a = arguments;
+  let o = null;
+  for (let i = 0; i < a.length; i++) {
+    const d = a[i].split('.');
     o = window;
-    for (var j = 0; j < d.length; j++) {
+    for (let j = 0; j < d.length; j++) {
       o[d[j]] = o[d[j]] || {};
       o = o[d[j]];
     }
@@ -25,11 +25,11 @@ if (!Function.prototype.bind) {
       );
     }
 
-    var bindArgs = Array.prototype.slice.call(arguments, 1);
-    var fToBind = this;
-    var FNOP = function () {};
-    var fBound = function () {
-      var args = bindArgs.concat(Array.prototype.slice.call(arguments));
+    const bindArgs = Array.prototype.slice.call(arguments, 1);
+    const fToBind = this;
+    const FNOP = function () {};
+    const fBound = function () {
+      const args = bindArgs.concat(Array.prototype.slice.call(arguments));
       return fToBind.apply(this instanceof FNOP && oThis ? this : oThis, args);
     };
 
@@ -56,7 +56,7 @@ if (!Uint32Array.prototype.fill) {
       end = this.length + end;
     }
 
-    for (var i = start; i < end; i++) {
+    for (let i = start; i < end; i++) {
       this[i] = value;
     }
   };
@@ -70,7 +70,7 @@ if (!Uint32Array.prototype.fill) {
 (function () {
   // namespace: pskl.utils
 
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
   /**
    * Convert a rgb(Number, Number, Number) color to hexadecimal representation
@@ -94,17 +94,17 @@ if (!Uint32Array.prototype.fill) {
    * @return {String} eg. '0A'
    */
   ns.componentToHex = function (c) {
-    var hex = c.toString(16);
+    const hex = c.toString(16);
     return hex.length == 1 ? '0' + hex : hex;
   };
 
-  var intHexCache = {};
+  const intHexCache = {};
   ns.intToHex = function (int) {
     if (intHexCache[int]) {
       return intHexCache[int];
     }
 
-    var hex = ns.rgbToHex(int & 0xff, (int >> 8) & 0xff, (int >> 16) & 0xff);
+    const hex = ns.rgbToHex(int & 0xff, (int >> 8) & 0xff, (int >> 16) & 0xff);
     intHexCache[int] = hex;
     return hex;
   };
@@ -124,7 +124,7 @@ if (!Uint32Array.prototype.fill) {
   };
 
   ns.wrap = function (wrapper, wrappedObject) {
-    for (var prop in wrappedObject) {
+    for (const prop in wrappedObject) {
       if (
         typeof wrappedObject[prop] === 'function' &&
         typeof wrapper[prop] === 'undefined'
@@ -135,7 +135,7 @@ if (!Uint32Array.prototype.fill) {
   };
 
   ns.hashCode = function (str) {
-    var hash = 0;
+    let hash = 0;
     if (str.length === 0) {
       return hash;
     }
@@ -153,7 +153,7 @@ if (!Uint32Array.prototype.fill) {
     return JSON.parse(JSON.stringify(object));
   };
 
-  var entityMap = {
+  const entityMap = {
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',
@@ -162,13 +162,13 @@ if (!Uint32Array.prototype.fill) {
     '/': '&#x2F;'
   };
   ns.escapeHtml = function (string) {
-    return String(string).replace(/[&<>"'\/]/g, function (s) {
+    return String(string).replace(/[&<>"'\/]/g, (s) => {
       return entityMap[s];
     });
   };
 
-  var colorCache = {};
-  var colorCacheReverse = {};
+  const colorCache = {};
+  const colorCacheReverse = {};
   ns.colorToInt = function (color) {
     if (typeof color === 'number') {
       return color;
@@ -178,11 +178,11 @@ if (!Uint32Array.prototype.fill) {
       return colorCache[color];
     }
 
-    var tc = window.tinycolor(color);
+    const tc = window.tinycolor(color);
     if (tc && tc.ok) {
-      var rgb = tc.toRgb();
-      var a = Math.round(rgb.a * 255);
-      var intValue = ((a << 24) >>> 0) + (rgb.b << 16) + (rgb.g << 8) + rgb.r;
+      const rgb = tc.toRgb();
+      const a = Math.round(rgb.a * 255);
+      let intValue = ((a << 24) >>> 0) + (rgb.b << 16) + (rgb.g << 8) + rgb.r;
       if (a === 0) {
         // assign all 'transparent' colors to 0, theoretically mapped to rgba(0,0,0,0) only
         intValue = 0;
@@ -192,7 +192,7 @@ if (!Uint32Array.prototype.fill) {
       return intValue;
     } else {
       // If tinycolor failed, determine color by using the browser
-      var d = document.createElement('div');
+      const d = document.createElement('div');
       d.style.color = color;
       document.body.appendChild(d);
 
@@ -213,20 +213,20 @@ if (!Uint32Array.prototype.fill) {
       return colorCacheReverse[intValue];
     }
 
-    var r = intValue & 0xff;
-    var g = (intValue >> 8) & 0xff;
-    var b = (intValue >> 16) & 0xff;
-    var a = (((intValue >> 24) >>> 0) & 0xff) / 255;
-    var color = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+    const r = intValue & 0xff;
+    const g = (intValue >> 8) & 0xff;
+    const b = (intValue >> 16) & 0xff;
+    const a = (((intValue >> 24) >>> 0) & 0xff) / 255;
+    const color = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
 
     colorCache[color] = intValue;
     colorCacheReverse[intValue] = color;
     return color;
   };
 
-  var reEntityMap = {};
+  const reEntityMap = {};
   ns.unescapeHtml = function (string) {
-    Object.keys(entityMap).forEach(function (key) {
+    Object.keys(entityMap).forEach((key) => {
       reEntityMap[key] = reEntityMap[key] || new RegExp(entityMap[key], 'g');
       string = string.replace(reEntityMap[key], key);
     });

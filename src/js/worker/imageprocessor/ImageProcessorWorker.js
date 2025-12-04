@@ -1,20 +1,20 @@
 (function () {
-  var ns = $.namespace('pskl.worker.imageprocessor');
+  const ns = $.namespace('pskl.worker.imageprocessor');
 
   ns.ImageProcessorWorker = function () {
-    var currentStep;
-    var currentProgress;
-    var currentTotal;
+    let currentStep;
+    let currentProgress;
+    let currentTotal;
 
-    var initStepCounter_ = function (total) {
+    const initStepCounter_ = function (total) {
       currentStep = 0;
       currentProgress = 0;
       currentTotal = total;
     };
 
-    var postStep_ = function () {
+    const postStep_ = function () {
       currentStep = currentStep + 1;
-      var progress = ((currentStep / currentTotal) * 100).toFixed(1);
+      const progress = ((currentStep / currentTotal) * 100).toFixed(1);
       if (progress != currentProgress) {
         currentProgress = progress;
         this.postMessage({
@@ -26,28 +26,28 @@
       }
     };
 
-    var componentToHex = function (c) {
-      var hex = c.toString(16);
+    const componentToHex = function (c) {
+      const hex = c.toString(16);
       return hex.length == 1 ? '0' + hex : hex;
     };
 
-    var rgbToHex = function (r, g, b) {
+    const rgbToHex = function (r, g, b) {
       return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
     };
 
-    var imageDataToGrid = function (imageData, width, height, transparent) {
+    const imageDataToGrid = function (imageData, width, height, transparent) {
       // Draw the zoomed-up pixels to a different canvas context
-      var grid = [];
-      for (var x = 0; x < width; x++) {
+      const grid = [];
+      for (let x = 0; x < width; x++) {
         grid[x] = [];
         postStep_();
-        for (var y = 0; y < height; y++) {
+        for (let y = 0; y < height; y++) {
           // Find the starting index in the one-dimensional image data
-          var i = (y * width + x) * 4;
-          var r = imageData[i];
-          var g = imageData[i + 1];
-          var b = imageData[i + 2];
-          var a = imageData[i + 3];
+          const i = (y * width + x) * 4;
+          const r = imageData[i];
+          const g = imageData[i + 1];
+          const b = imageData[i + 2];
+          const a = imageData[i + 3];
           if (a < 125) {
             grid[x][y] = transparent;
           } else {
@@ -58,14 +58,14 @@
       return grid;
     };
 
-    var getColorsMapFromImageData = function (imageData, width, height) {
-      var grid = imageDataToGrid(imageData, width, height, 'transparent');
+    const getColorsMapFromImageData = function (imageData, width, height) {
+      const grid = imageDataToGrid(imageData, width, height, 'transparent');
 
-      var colorsMap = {};
-      for (var i = 0; i < grid.length; i++) {
+      const colorsMap = {};
+      for (let i = 0; i < grid.length; i++) {
         postStep_();
-        for (var j = 0; j < grid[i].length; j++) {
-          var color = grid[i][j];
+        for (let j = 0; j < grid[i].length; j++) {
+          const color = grid[i][j];
           if (color != 'transparent') {
             colorsMap[color] = true;
           }
@@ -76,11 +76,11 @@
 
     this.onmessage = function (event) {
       try {
-        var data = event.data;
+        const data = event.data;
 
         initStepCounter_(data.width * 2);
 
-        var colorsMap = getColorsMapFromImageData(
+        const colorsMap = getColorsMapFromImageData(
           data.imageData,
           data.width,
           data.height

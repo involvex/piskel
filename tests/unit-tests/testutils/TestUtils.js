@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace("test.testutils");
+  const ns = $.namespace("test.testutils");
 
   /**
    * Frame.createFromGrid accepts grids that are rotated by 90deg from
@@ -24,12 +24,12 @@
    * This helper will build the second array from the first array.
    */
   ns.toFrameGrid = function (normalGrid) {
-    var frameGrid = [];
-    var w = normalGrid[0].length;
-    var h = normalGrid.length;
-    for (var x = 0; x < w; x++) {
+    const frameGrid = [];
+    const w = normalGrid[0].length;
+    const h = normalGrid.length;
+    for (let x = 0; x < w; x++) {
       frameGrid[x] = [];
-      for (var y = 0; y < h; y++) {
+      for (let y = 0; y < h; y++) {
         frameGrid[x][y] = normalGrid[y][x];
       }
     }
@@ -37,16 +37,16 @@
   };
 
   ns.frameEqualsGrid = function (frame, grid) {
-    frame.forEachPixel(function (color, col, row) {
+    frame.forEachPixel((color, col, row) => {
       ns.colorEqualsColor(color, grid[row][col]);
     });
   };
 
   ns.imageEqualsGrid = function (image, grid) {
-    for (var x = 0; x < grid.length; x++) {
-      for (var y = 0; y < grid[x].length; y++) {
-        var expected = tinycolor(grid[x][y]).toRgbString();
-        var color = tinycolor(ns.getRgbaAt(image, x, y)).toRgbString();
+    for (let x = 0; x < grid.length; x++) {
+      for (let y = 0; y < grid[x].length; y++) {
+        const expected = tinycolor(grid[x][y]).toRgbString();
+        const color = tinycolor(ns.getRgbaAt(image, x, y)).toRgbString();
         ns.colorEqualsColor(color, expected);
       }
     }
@@ -61,14 +61,14 @@
   };
 
   ns.getRgbaAt = function (image, x, y) {
-    var w = image.width;
-    var h = image.height;
-    var canvas = pskl.utils.CanvasUtils.createCanvas(w, h);
-    var context = canvas.getContext("2d");
+    const w = image.width;
+    const h = image.height;
+    const canvas = pskl.utils.CanvasUtils.createCanvas(w, h);
+    const context = canvas.getContext("2d");
 
     context.drawImage(image, 0, 0, w, h, 0, 0, w, h);
-    var imageData = context.getImageData(0, 0, w, h).data;
-    var i = (y * w + x) * 4;
+    const imageData = context.getImageData(0, 0, w, h).data;
+    const i = (y * w + x) * 4;
 
     return {
       r: imageData[i],

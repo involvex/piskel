@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
   ns.ImageResizer = {
     scale: function (image, factor, smoothingEnabled) {
@@ -12,11 +12,11 @@
     },
 
     resize: function (image, targetWidth, targetHeight, smoothingEnabled) {
-      var canvas = pskl.utils.CanvasUtils.createCanvas(
+      const canvas = pskl.utils.CanvasUtils.createCanvas(
         targetWidth,
         targetHeight
       );
-      var context = canvas.getContext('2d');
+      const context = canvas.getContext('2d');
       context.save();
 
       if (!smoothingEnabled) {

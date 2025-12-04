@@ -1,8 +1,8 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
-  var colorCache = {};
-  var offCanvasPool = {};
-  var imageDataPool = {};
+  const ns = $.namespace('pskl.utils');
+  const colorCache = {};
+  const offCanvasPool = {};
+  const imageDataPool = {};
   ns.FrameUtils = {
     /**
      * Render a Frame object as an image.
@@ -15,7 +15,7 @@
       zoom = zoom || 1;
       opacity = isNaN(opacity) ? 1 : opacity;
 
-      var canvasRenderer = new pskl.rendering.CanvasRenderer(frame, zoom);
+      const canvasRenderer = new pskl.rendering.CanvasRenderer(frame, zoom);
       canvasRenderer.drawTransparentAs(Constants.TRANSPARENT_COLOR);
       canvasRenderer.setOpacity(opacity);
       return canvasRenderer.render();
@@ -30,7 +30,7 @@
      * @param {String} globalAlpha (optional) global frame opacity
      */
     drawToCanvas: function (frame, canvas, transparentColor, globalAlpha) {
-      var context = canvas.getContext('2d');
+      const context = canvas.getContext('2d');
       globalAlpha = isNaN(globalAlpha) ? 1 : globalAlpha;
       context.globalAlpha = globalAlpha;
       transparentColor = transparentColor || Constants.TRANSPARENT_COLOR;
@@ -45,18 +45,18 @@
         );
         context.drawImage(frame.getRenderedFrame(), 0, 0);
       } else {
-        var w = frame.getWidth();
-        var h = frame.getHeight();
-        var pixels = frame.pixels;
+        const w = frame.getWidth();
+        const h = frame.getHeight();
+        let pixels = frame.pixels;
 
         // Replace transparent color
-        var constantTransparentColorInt = pskl.utils.colorToInt(
+        const constantTransparentColorInt = pskl.utils.colorToInt(
           Constants.TRANSPARENT_COLOR
         );
-        var transparentColorInt = pskl.utils.colorToInt(transparentColor);
+        const transparentColorInt = pskl.utils.colorToInt(transparentColor);
         if (transparentColorInt != constantTransparentColorInt) {
           pixels = frame.getPixels();
-          for (var i = 0, length = pixels.length; i < length; i++) {
+          for (let i = 0, length = pixels.length; i < length; i++) {
             if (pixels[i] == constantTransparentColorInt) {
               pixels[i] = transparentColorInt;
             }
@@ -64,8 +64,8 @@
         }
 
         // Imagedata from cache
-        var imageDataKey = w + '-' + h;
-        var imageData;
+        const imageDataKey = w + '-' + h;
+        let imageData;
         if (!imageDataPool[imageDataKey]) {
           imageData = imageDataPool[imageDataKey] = context.createImageData(
             w,
@@ -76,13 +76,13 @@
         }
 
         // Convert to uint8 and set the data
-        var data = new Uint8ClampedArray(pixels.buffer);
-        var imgDataData = imageData.data;
+        const data = new Uint8ClampedArray(pixels.buffer);
+        const imgDataData = imageData.data;
         imgDataData.set(data);
 
         // Offcanvas from cache
-        var offCanvasKey = w + '-' + h;
-        var offCanvas;
+        const offCanvasKey = w + '-' + h;
+        let offCanvas;
         if (!offCanvasPool[offCanvasKey]) {
           offCanvas = offCanvasPool[offCanvasKey] =
             pskl.utils.CanvasUtils.createCanvas(w, h);
@@ -116,10 +116,10 @@
     },
 
     merge: function (frames) {
-      var merged = null;
+      let merged = null;
       if (frames.length) {
         merged = frames[0].clone();
-        for (var i = 1; i < frames.length; i++) {
+        for (let i = 1; i < frames.length; i++) {
           pskl.utils.FrameUtils.mergeFrames_(merged, frames[i]);
         }
       }
@@ -127,11 +127,11 @@
     },
 
     mergeFrames_: function (frameA, frameB) {
-      var transparentColorInt = pskl.utils.colorToInt(
+      const transparentColorInt = pskl.utils.colorToInt(
         Constants.TRANSPARENT_COLOR
       );
       for (
-        var i = 0, length = frameA.getWidth() * frameA.getHeight();
+        let i = 0, length = frameA.getWidth() * frameA.getHeight();
         i < length;
         ++i
       ) {
@@ -149,7 +149,7 @@
      * Coordinates will be adjusted so that the image fits in the frame, if possible.
      */
     addImageToFrame: function (frame, image, x, y) {
-      var imageFrame = pskl.utils.FrameUtils.createFromImage(image);
+      const imageFrame = pskl.utils.FrameUtils.createFromImage(image);
       x = x - Math.floor(imageFrame.width / 2);
       y = y - Math.floor(imageFrame.height / 2);
 
@@ -164,7 +164,7 @@
         y = Math.min(y, frame.height - imageFrame.height);
       }
 
-      imageFrame.forEachPixel(function (color, frameX, frameY) {
+      imageFrame.forEachPixel((color, frameX, frameY) => {
         if (color != pskl.utils.colorToInt(Constants.TRANSPARENT_COLOR)) {
           frame.setPixel(x + frameX, y + frameY, color);
         }
@@ -172,41 +172,124 @@
     },
 
     resize: function (frame, targetWidth, targetHeight, smoothing) {
-      var image = pskl.utils.FrameUtils.toImage(frame);
-      var resizedImage = pskl.utils.ImageResizer.resize(
+      const image = pskl.utils.FrameUtils.toImage(frame);
+      const resizedImage = pskl.utils.ImageResizer.resize(
         image,
         targetWidth,
         targetHeight,
-        smoothing);
+        smoothing
+      );
       return pskl.utils.FrameUtils.createFromImage(resizedImage);
     },
 
     removeTransparency: function (frame) {
-      frame.forEachPixel(function (color, x, y) {
-        var alpha = ((color >> 24) >>> 0) & 0xff;
+      frame.forEachPixel((color, x, y) => {
+        const alpha = ((color >> 24) >>> 0) & 0xff;
         if (alpha && alpha !== 255) {
-          var rounded = Math.round(alpha / 255) * 255;
-          var roundedColor =
+          const rounded = Math.round(alpha / 255) * 255;
+          const roundedColor =
             color - ((alpha << 24) >>> 0) + ((rounded << 24) >>> 0);
           frame.setPixel(x, y, roundedColor);
         }
       });
     },
 
+    /**
+     * Preserve transparency with smooth edges by applying anti-aliasing
+     * to semi-transparent pixels.
+     *
+     * @param {Frame} frame - The frame to process
+     * @param {boolean} preserveSmoothEdges - Whether to preserve smooth edges
+     */
+    preserveTransparencyWithSmoothEdges: function (frame, preserveSmoothEdges) {
+      if (!preserveSmoothEdges) {
+        return;
+      }
+
+      frame.forEachPixel((color, x, y) => {
+        const alpha = ((color >> 24) >>> 0) & 0xff;
+        if (alpha > 0 && alpha < 255) {
+          // For semi-transparent pixels, apply edge smoothing
+          // This helps preserve anti-aliased edges from the original image
+          const smoothedColor = pskl.utils.FrameUtils.applyEdgeSmoothing_(
+            frame,
+            x,
+            y,
+            color
+          );
+          frame.setPixel(x, y, smoothedColor);
+        }
+      });
+    },
+
+    /**
+     * Apply edge smoothing to a semi-transparent pixel by considering
+     * its neighboring pixels.
+     *
+     * @private
+     * @param {Frame} frame - The frame containing the pixel
+     * @param {number} x - X coordinate of the pixel
+     * @param {number} y - Y coordinate of the pixel
+     * @param {number} color - Original color value
+     * @return {number} - Smoothed color value
+     */
+    applyEdgeSmoothing_: function (frame, x, y, color) {
+      const alpha = ((color >> 24) >>> 0) & 0xff;
+      const rgb = color & 0x00ffffff;
+
+      // Check neighboring pixels to determine if this is an edge pixel
+      const neighbors = [];
+      const directions = [
+        [-1, 0],
+        [1, 0],
+        [0, -1],
+        [0, 1],
+      ];
+
+      for (let i = 0; i < directions.length; i++) {
+        const nx = x + directions[i][0];
+        const ny = y + directions[i][1];
+
+        if (
+          nx >= 0 &&
+          nx < frame.getWidth() &&
+          ny >= 0 &&
+          ny < frame.getHeight()
+        ) {
+          const neighborColor = frame.getPixel(nx, ny);
+          const neighborAlpha = ((neighborColor >> 24) >>> 0) & 0xff;
+
+          if (neighborAlpha === 255) {
+            // This is an edge pixel - preserve the semi-transparency
+            return color;
+          }
+        }
+      }
+
+      // If we get here, it's likely an internal semi-transparent pixel
+      // Round to fully transparent or opaque based on alpha threshold
+      if (alpha > 128) {
+        return rgb | 0xff000000; // Fully opaque
+      } else {
+        return 0x00000000; // Fully transparent
+      }
+    },
+
     createFromCanvas: function (canvas, x, y, w, h, preserveOpacity) {
-      var imgData = canvas.getContext('2d').getImageData(x, y, w, h).data;
+      const imgData = canvas.getContext('2d').getImageData(x, y, w, h).data;
       return pskl.utils.FrameUtils.createFromImageData_(
         imgData,
         w,
         h,
-        preserveOpacity);
+        preserveOpacity
+      );
     },
 
     createFromImageSrc: function (src, preserveOpacity, cb) {
-      var image = new Image();
+      const image = new Image();
       image.addEventListener('load', function onImageLoaded() {
         image.removeEventListener('load', onImageLoaded);
-        var frame = ns.FrameUtils.createFromImage(image, preserveOpacity);
+        const frame = ns.FrameUtils.createFromImage(image, preserveOpacity);
         cb(frame);
       });
       image.src = src;
@@ -222,26 +305,38 @@
      * @param  {boolean} preserveOpacity set to true to preserve the opacity
      * @return {pskl.model.Frame} corresponding frame
      */
-    createFromImage: function (image, preserveOpacity) {
-      var w = image.width;
-      var h = image.height;
-      var canvas = pskl.utils.CanvasUtils.createCanvas(w, h);
-      var context = canvas.getContext('2d');
+    createFromImage: function (image, preserveOpacity, preserveSmoothEdges) {
+      const w = image.width;
+      const h = image.height;
+      const canvas = pskl.utils.CanvasUtils.createCanvas(w, h);
+      const context = canvas.getContext('2d');
 
       context.drawImage(image, 0, 0, w, h, 0, 0, w, h);
-      var imgData = context.getImageData(0, 0, w, h).data;
+      const imgData = context.getImageData(0, 0, w, h).data;
       return pskl.utils.FrameUtils.createFromImageData_(
         imgData,
         w,
         h,
-        preserveOpacity);
+        preserveOpacity,
+        preserveSmoothEdges
+      );
     },
 
-    createFromImageData_: function (imageData, width, height, preserveOpacity) {
-      var frame = new pskl.model.Frame(width, height);
+    createFromImageData_: function (
+      imageData,
+      width,
+      height,
+      preserveOpacity,
+      preserveSmoothEdges
+    ) {
+      const frame = new pskl.model.Frame(width, height);
       frame.pixels = new Uint32Array(imageData.buffer);
+
       if (!preserveOpacity) {
         pskl.utils.FrameUtils.removeTransparency(frame);
+      } else if (preserveSmoothEdges) {
+        // Apply edge smoothing to preserve anti-aliased edges
+        pskl.utils.FrameUtils.preserveTransparencyWithSmoothEdges(frame, true);
       }
 
       return frame;
@@ -256,14 +351,15 @@
      * @return {Array<Frame>}
      */
     createFramesFromSpritesheet: function (image, frameCount) {
-      var layout = [];
-      for (var i = 0; i < frameCount; i++) {
+      const layout = [];
+      for (let i = 0; i < frameCount; i++) {
         layout.push([i]);
       }
-      var chunkFrames = pskl.utils.FrameUtils.createFramesFromChunk(
+      const chunkFrames = pskl.utils.FrameUtils.createFramesFromChunk(
         image,
-        layout);
-      return chunkFrames.map(function (chunkFrame) {
+        layout
+      );
+      return chunkFrames.map((chunkFrame) => {
         return chunkFrame.frame;
       });
     },
@@ -277,22 +373,22 @@
      * @return {Array<Object>} array of objects containing: {index: frame index, frame: frame instance}
      */
     createFramesFromChunk: function (image, layout) {
-      var width = image.width;
-      var height = image.height;
+      const width = image.width;
+      const height = image.height;
 
       // Recalculate the expected frame dimensions from the layout information
-      var frameWidth = width / layout.length;
-      var frameHeight = height / layout[0].length;
+      const frameWidth = width / layout.length;
+      const frameHeight = height / layout[0].length;
 
       // Create a canvas adapted to the image size
-      var canvas = pskl.utils.CanvasUtils.createCanvas(frameWidth, frameHeight);
-      var context = canvas.getContext('2d');
+      const canvas = pskl.utils.CanvasUtils.createCanvas(frameWidth, frameHeight);
+      const context = canvas.getContext('2d');
 
       // Draw the zoomed-up pixels to a different canvas context
-      var chunkFrames = [];
-      for (var i = 0; i < layout.length; i++) {
-        var row = layout[i];
-        for (var j = 0; j < row.length; j++) {
+      const chunkFrames = [];
+      for (let i = 0; i < layout.length; i++) {
+        const row = layout[i];
+        for (let j = 0; j < row.length; j++) {
           context.clearRect(0, 0, frameWidth, frameHeight);
           context.drawImage(
             image,
@@ -303,16 +399,18 @@
             0,
             0,
             frameWidth,
-            frameHeight);
-          var frame = pskl.utils.FrameUtils.createFromCanvas(
+            frameHeight
+          );
+          const frame = pskl.utils.FrameUtils.createFromCanvas(
             canvas,
             0,
             0,
             frameWidth,
-            frameHeight);
+            frameHeight
+          );
           chunkFrames.push({
             index: layout[i][j],
-            frame: frame
+            frame: frame,
           });
         }
       }
@@ -321,16 +419,16 @@
     },
 
     toFrameGrid: function (normalGrid) {
-      var frameGrid = [];
-      var w = normalGrid[0].length;
-      var h = normalGrid.length;
-      for (var x = 0; x < w; x++) {
+      const frameGrid = [];
+      const w = normalGrid[0].length;
+      const h = normalGrid.length;
+      for (let x = 0; x < w; x++) {
         frameGrid[x] = [];
-        for (var y = 0; y < h; y++) {
+        for (let y = 0; y < h; y++) {
           frameGrid[x][y] = normalGrid[y][x];
         }
       }
       return frameGrid;
-    }
+    },
   };
 })();

@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
-var fs = require("fs");
-var path = require("path");
-var minimist = require("minimist");
-var childProcess = require("child_process");
-var phantomjs = require("phantomjs");
-var binPath = phantomjs.path;
+const fs = require("fs");
+const path = require("path");
+const minimist = require("minimist");
+const childProcess = require("child_process");
+const phantomjs = require("phantomjs");
+const binPath = phantomjs.path;
 
 // Parse command args
-var args = minimist(process.argv.slice(2), {
+const args = minimist(process.argv.slice(2), {
   default: {
     crop: false,
     dataUri: false,
@@ -25,7 +25,7 @@ if (!args._ || (args._ && !args._.length)) {
   process.exit(1);
 }
 
-var src = args._[0];
+const src = args._[0];
 
 // Ensure the src file exists
 if (!fs.existsSync(src)) {
@@ -34,19 +34,19 @@ if (!fs.existsSync(src)) {
 }
 
 // Read src piskel file
-var piskelFile = fs.readFileSync(src, "utf-8");
+const piskelFile = fs.readFileSync(src, "utf-8");
 
-var dest = args.dest || path.basename(src, ".piskel");
+const dest = args.dest || path.basename(src, ".piskel");
 
 console.log("Piskel CLI is exporting...");
 
 // Get path to Piskel's app js bundle
-var piskelAppJsDir = path.resolve(__dirname + "/../dest/prod/js/");
-var minJsFiles = fs
+const piskelAppJsDir = path.resolve(__dirname + "/../dest/prod/js/");
+const minJsFiles = fs
   .readdirSync(piskelAppJsDir)
-  .filter(function (filename) { return filename.indexOf("min") > -1; });
-var piskelAppJsFileName = minJsFiles[0];
-var piskelAppJsPath = piskelAppJsFileName
+  .filter((filename) => { return filename.indexOf("min") > -1; });
+const piskelAppJsFileName = minJsFiles[0];
+const piskelAppJsPath = piskelAppJsFileName
   ? path.join(piskelAppJsDir, piskelAppJsFileName)
   : "";
 
@@ -59,7 +59,7 @@ if (!fs.existsSync(piskelAppJsPath)) {
 }
 
 // Prepare args to pass to phantom script
-var options = {
+const options = {
   dest: dest,
   zoom: args.scale,
   crop: !!args.crop,
@@ -73,7 +73,7 @@ var options = {
   scaledHeight: args.scaledHeight,
 };
 
-var childArgs = [
+const childArgs = [
   path.join(__dirname, "piskel-export.js"),
   piskelFile,
   JSON.stringify(options),
@@ -87,7 +87,7 @@ if (args.debug) {
 }
 
 // Run phantom script
-childProcess.execFile(binPath, childArgs, function (err, stdout, stderr) {
+childProcess.execFile(binPath, childArgs, (err, stdout, stderr) => {
   // Print any output the from child process
   if (err) console.log(err);
   if (stderr) console.log(stderr);

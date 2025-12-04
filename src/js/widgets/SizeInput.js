@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.widgets');
+  const ns = $.namespace('pskl.widgets');
 
   /**
    * Synchronize two "number" inputs to stick to their initial ratio.
@@ -59,7 +59,7 @@
    * @param  {HTMLElement} origin either widthInput or heightInput
    */
   ns.SizeInput.prototype.synchronize_ = function (sizeInput) {
-    var value = parseInt(sizeInput.value, 10);
+    let value = parseInt(sizeInput.value, 10);
     if (isNaN(value)) {
       value = 0;
     }

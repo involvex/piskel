@@ -1,5 +1,5 @@
-describe("Serialization/Deserialization test", function () {
-  beforeEach(function () {
+describe("Serialization/Deserialization test", () => {
+  beforeEach(() => {
     pskl.app.piskelController = {
       getFPS: function () {
         return 1;
@@ -7,17 +7,17 @@ describe("Serialization/Deserialization test", function () {
     };
   });
 
-  afterEach(function () {
+  afterEach(() => {
     delete pskl.app.piskelController;
   });
 
-  it("serializes frames correctly", function (done) {
+  it("serializes frames correctly", (done) => {
     // Create piskel.
-    var descriptor = new pskl.model.piskel.Descriptor(
+    const descriptor = new pskl.model.piskel.Descriptor(
       "piskelName",
       "piskelDesc"
     );
-    var piskel = new pskl.model.Piskel(1, 1, 1, descriptor);
+    const piskel = new pskl.model.Piskel(1, 1, 1, descriptor);
     // Add layer.
     piskel.addLayer(new pskl.model.Layer("layer1"));
     // Add frame.
@@ -33,14 +33,14 @@ describe("Serialization/Deserialization test", function () {
     // Verify the frame is successfully added in the layer.
     expect(piskel.getLayerAt(0).getFrames().length).toBe(1);
 
-    var serializedPiskel =
+    const serializedPiskel =
       pskl.utils.serialization.Serializer.serialize(piskel);
 
-    var deserializer = pskl.utils.serialization.Deserializer;
-    deserializer.deserialize(JSON.parse(serializedPiskel), function (p) {
+    const deserializer = pskl.utils.serialization.Deserializer;
+    deserializer.deserialize(JSON.parse(serializedPiskel), (p) => {
       // Check the frame has been properly deserialized
       expect(p.getLayerAt(0).getFrames().length).toBe(1);
-      var frame = p.getLayerAt(0).getFrameAt(0);
+      const frame = p.getLayerAt(0).getFrameAt(0);
       test.testutils.frameEqualsGrid(frame, [
         ["red", "black"],
         ["blue", "green"],
@@ -49,12 +49,12 @@ describe("Serialization/Deserialization test", function () {
     });
   });
 
-  it("serializes layer opacity", function (done) {
-    var descriptor = new pskl.model.piskel.Descriptor(
+  it("serializes layer opacity", (done) => {
+    const descriptor = new pskl.model.piskel.Descriptor(
       "piskelName",
       "piskelDesc"
     );
-    var piskel = new pskl.model.Piskel(1, 1, 1, descriptor);
+    const piskel = new pskl.model.Piskel(1, 1, 1, descriptor);
 
     piskel.addLayer(new pskl.model.Layer("layer1"));
     piskel.addLayer(new pskl.model.Layer("layer2"));
@@ -64,16 +64,16 @@ describe("Serialization/Deserialization test", function () {
     piskel.getLayerAt(1).setOpacity(0.3);
     piskel.getLayerAt(2).setOpacity(0.9);
 
-    var frame = new pskl.model.Frame(1, 1);
-    piskel.getLayers().forEach(function (layer) {
+    const frame = new pskl.model.Frame(1, 1);
+    piskel.getLayers().forEach((layer) => {
       layer.addFrame(frame);
     });
 
-    var serializedPiskel =
+    const serializedPiskel =
       pskl.utils.serialization.Serializer.serialize(piskel);
 
-    var deserializer = pskl.utils.serialization.Deserializer;
-    deserializer.deserialize(JSON.parse(serializedPiskel), function (p) {
+    const deserializer = pskl.utils.serialization.Deserializer;
+    deserializer.deserialize(JSON.parse(serializedPiskel), (p) => {
       expect(p.getLayerAt(0).getOpacity()).toBe(0);
       expect(p.getLayerAt(1).getOpacity()).toBe(0.3);
       expect(p.getLayerAt(2).getOpacity()).toBe(0.9);

@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings');
+  const ns = $.namespace('pskl.controller.settings');
 
-  var tabs = {
+  const tabs = {
     misc: {
       template: 'templates/settings/preferences/misc.html',
       controller: ns.preferences.MiscPreferencesController
@@ -27,7 +27,7 @@
     ns.PreferencesController,
     pskl.controller.settings.AbstractSettingController);
   ns.PreferencesController.prototype.init = function () {
-    var container = document.querySelector('.settings-section-preferences');
+    const container = document.querySelector('.settings-section-preferences');
     this.tabsWidget.init(container);
   };
 

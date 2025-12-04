@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
   ns.ResizeUtils = {
     /**
@@ -13,12 +13,12 @@
      * @return {Piskel} The resized piskel
      */
     resizePiskel: function (piskel, options) {
-      var fps = piskel.getFPS();
-      var resizedLayers = piskel.getLayers().map(function (layer) {
+      const fps = piskel.getFPS();
+      const resizedLayers = piskel.getLayers().map((layer) => {
         return ns.ResizeUtils.resizeLayer(layer, options);
       });
 
-      var resizedPiskel = pskl.model.Piskel.fromLayers(
+      const resizedPiskel = pskl.model.Piskel.fromLayers(
         resizedLayers,
         fps,
         piskel.getDescriptor()
@@ -30,11 +30,11 @@
     },
 
     resizeLayer: function (layer, options) {
-      var opacity = layer.getOpacity();
-      var resizedFrames = layer.getFrames().map(function (frame) {
+      const opacity = layer.getOpacity();
+      const resizedFrames = layer.getFrames().map((frame) => {
         return ns.ResizeUtils.resizeFrame(frame, options);
       });
-      var resizedLayer = pskl.model.Layer.fromFrames(
+      const resizedLayer = pskl.model.Layer.fromFrames(
         layer.getName(),
         resizedFrames
       );
@@ -43,16 +43,16 @@
     },
 
     resizeFrame: function (frame, options) {
-      var width = options.width;
-      var height = options.height;
-      var origin = options.origin;
+      const width = options.width;
+      const height = options.height;
+      const origin = options.origin;
 
       if (options.resizeContent) {
         return pskl.utils.FrameUtils.resize(frame, width, height, false);
       } else {
-        var resizedFrame = new pskl.model.Frame(width, height);
-        frame.forEachPixel(function (color, x, y) {
-          var translated = ns.ResizeUtils.translateCoordinates(
+        const resizedFrame = new pskl.model.Frame(width, height);
+        frame.forEachPixel((color, x, y) => {
+          const translated = ns.ResizeUtils.translateCoordinates(
             x,
             y,
             frame,

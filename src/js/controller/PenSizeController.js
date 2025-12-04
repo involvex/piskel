@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller');
+  const ns = $.namespace('pskl.controller');
 
   ns.PenSizeController = function () {
     this.sizePicker = new pskl.widgets.SizePicker(
@@ -22,7 +22,7 @@
   };
 
   ns.PenSizeController.prototype.updateSelectedOption_ = function () {
-    var size = pskl.app.penSizeService.getPenSize();
+    const size = pskl.app.penSizeService.getPenSize();
     this.sizePicker.setSize(size);
   };
 })();

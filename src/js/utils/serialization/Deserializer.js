@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.utils.serialization');
+  const ns = $.namespace('pskl.utils.serialization');
 
   ns.Deserializer = function (data, callback) {
     this.layersToLoad_ = 0;
@@ -11,7 +11,7 @@
 
   ns.Deserializer.deserialize = function (data, onSuccess, onError) {
     try {
-      var deserializer;
+      let deserializer;
       if (data.modelVersion == Constants.MODEL_VERSION) {
         deserializer = new ns.Deserializer(data, onSuccess);
       } else if (data.modelVersion == 1) {
@@ -29,13 +29,13 @@
   };
 
   ns.Deserializer.prototype.deserialize = function () {
-    var data = this.data_;
-    var piskelData = data.piskel;
-    var name = piskelData.name || 'Deserialized piskel';
-    var description = piskelData.description || '';
-    var fps = typeof piskelData.fps != 'undefined' ? piskelData.fps : 12;
+    const data = this.data_;
+    const piskelData = data.piskel;
+    const name = piskelData.name || 'Deserialized piskel';
+    const description = piskelData.description || '';
+    const fps = typeof piskelData.fps != 'undefined' ? piskelData.fps : 12;
 
-    var descriptor = new pskl.model.piskel.Descriptor(name, description);
+    const descriptor = new pskl.model.piskel.Descriptor(name, description);
     this.piskel_ = new pskl.model.Piskel(
       piskelData.width,
       piskelData.height,
@@ -49,8 +49,8 @@
   };
 
   ns.Deserializer.prototype.deserializeLayer = function (layerString, index) {
-    var layerData = JSON.parse(layerString);
-    var layer = new pskl.model.Layer(layerData.name);
+    const layerData = JSON.parse(layerString);
+    const layer = new pskl.model.Layer(layerData.name);
     layer.setOpacity(layerData.opacity);
 
     // Backward compatibility: if the layerData is not chunked but contains a single base64PNG,
@@ -59,24 +59,24 @@
       this.normalizeLayerData_(layerData);
     }
 
-    var chunks = layerData.chunks;
+    const chunks = layerData.chunks;
 
     // Prepare a frames array to store frame objects extracted from the chunks.
-    var frames = [];
+    const frames = [];
     Q.all(
-      chunks.map(function (chunk) {
+      chunks.map((chunk) => {
         // Create a promise for each chunk.
-        var deferred = Q.defer();
-        var image = new Image();
+        const deferred = Q.defer();
+        const image = new Image();
         // Load the chunk image in an Image object.
         image.onload = function () {
           // extract the chunkFrames from the chunk image
-          var chunkFrames = pskl.utils.FrameUtils.createFramesFromChunk(
+          const chunkFrames = pskl.utils.FrameUtils.createFramesFromChunk(
             image,
             chunk.layout
           );
           // add each image to the frames array, at the extracted index
-          chunkFrames.forEach(function (chunkFrame) {
+          chunkFrames.forEach((chunkFrame) => {
             frames[chunkFrame.index] = chunkFrame.frame;
           });
           deferred.resolve();
@@ -86,15 +86,15 @@
       })
     )
       .then(
-        function () {
-          frames.forEach(function (frame) {
+        () => {
+          frames.forEach((frame) => {
             layer.addFrame(frame);
           });
           this.layers_[index] = layer;
           this.onLayerLoaded_();
-        }.bind(this)
+        }
       )
-      .catch(function (error) {
+      .catch((error) => {
         console.error('Failed to deserialize layer');
         console.error(error);
       });
@@ -106,9 +106,9 @@
     this.layersToLoad_ = this.layersToLoad_ - 1;
     if (this.layersToLoad_ === 0) {
       this.layers_.forEach(
-        function (layer) {
+        (layer) => {
           this.piskel_.addLayer(layer);
-        }.bind(this));
+        });
       this.piskel_.hiddenFrames = this.hiddenFrames;
       this.callback_(this.piskel_);
     }
@@ -119,8 +119,8 @@
    * an single base64PNG without chunk/layout information.
    */
   ns.Deserializer.prototype.normalizeLayerData_ = function (layerData) {
-    var layout = [];
-    for (var i = 0; i < layerData.frameCount; i++) {
+    const layout = [];
+    for (let i = 0; i < layerData.frameCount; i++) {
       layout.push([i]);
     }
     layerData.chunks = [

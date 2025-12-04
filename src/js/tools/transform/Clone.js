@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.tools.transform');
+  const ns = $.namespace('pskl.tools.transform');
 
   ns.Clone = function () {
     this.toolId = 'tool-clone';
@@ -10,9 +10,9 @@
   pskl.utils.inherit(ns.Clone, ns.AbstractTransformTool);
 
   ns.Clone.prototype.applyTool_ = function (altKey, allFrames, allLayers) {
-    var ref = pskl.app.piskelController.getCurrentFrame();
-    var layer = pskl.app.piskelController.getCurrentLayer();
-    layer.getFrames().forEach(function (frame) {
+    const ref = pskl.app.piskelController.getCurrentFrame();
+    const layer = pskl.app.piskelController.getCurrentLayer();
+    layer.getFrames().forEach((frame) => {
       if (frame !== ref) {
         frame.setPixels(ref.getPixels());
       }

@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings.preferences');
+  const ns = $.namespace('pskl.controller.settings.preferences');
 
   ns.TilePreferencesController = function (
     piskelController,
@@ -14,15 +14,15 @@
     pskl.controller.settings.AbstractSettingController);
   ns.TilePreferencesController.prototype.init = function () {
     // Tile mode
-    var tileMode = pskl.UserSettings.get(pskl.UserSettings.SEAMLESS_MODE);
-    var tileModeCheckbox = document.querySelector('.tile-mode-checkbox');
+    const tileMode = pskl.UserSettings.get(pskl.UserSettings.SEAMLESS_MODE);
+    const tileModeCheckbox = document.querySelector('.tile-mode-checkbox');
     if (tileMode) {
       tileModeCheckbox.setAttribute('checked', tileMode);
     }
     this.addEventListener(tileModeCheckbox, 'change', this.onTileModeChange_);
 
     // Tile mask opacity
-    var tileMaskOpacityInput = document.querySelector(
+    const tileMaskOpacityInput = document.querySelector(
       '.tile-mask-opacity-input');
     tileMaskOpacityInput.value = pskl.UserSettings.get(
       pskl.UserSettings.SEAMLESS_OPACITY);
@@ -46,8 +46,8 @@
   ns.TilePreferencesController.prototype.onTileMaskOpacityChange_ = function (
     evt
   ) {
-    var target = evt.target;
-    var opacity = parseFloat(target.value);
+    const target = evt.target;
+    const opacity = parseFloat(target.value);
     if (!isNaN(opacity)) {
       pskl.UserSettings.set(pskl.UserSettings.SEAMLESS_OPACITY, opacity);
       this.updateTileMaskOpacityText_(opacity);
@@ -59,7 +59,7 @@
   ns.TilePreferencesController.prototype.updateTileMaskOpacityText_ = function (
     opacity
   ) {
-    var seamlessOpacityText = document.querySelector('.tile-mask-opacity-text');
+    const seamlessOpacityText = document.querySelector('.tile-mask-opacity-text');
     seamlessOpacityText.innerHTML = (opacity * 1).toFixed(2);
   };
 })();

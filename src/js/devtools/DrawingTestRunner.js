@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.devtools');
+  const ns = $.namespace('pskl.devtools');
 
   ns.DrawingTestRunner = function (testName) {
     this.testName = testName;
@@ -9,15 +9,15 @@
   ns.DrawingTestRunner.prototype.start = function () {
     pskl.utils.Xhr.get(
       this.testName,
-      function (response) {
-        var res = response.responseText;
-        var recordPlayer = new ns.DrawingTestPlayer(JSON.parse(res));
+      (response) => {
+        const res = response.responseText;
+        const recordPlayer = new ns.DrawingTestPlayer(JSON.parse(res));
         recordPlayer.start();
-      }.bind(this));
+      });
   };
 
   ns.DrawingTestRunner.prototype.onTestRecordEnd_ = function (evt, success) {
-    var testResult = document.createElement('div');
+    const testResult = document.createElement('div');
     testResult.id = 'drawing-test-result';
     testResult.setAttribute('data-test-name', this.testName);
     testResult.setAttribute('data-testid', 'drawing-test-result');

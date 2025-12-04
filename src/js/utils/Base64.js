@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
-  var base64Ranks;
+  let base64Ranks;
   if (Uint8Array) {
     base64Ranks = new Uint8Array([
       62, -1, -1, -1, 63, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, 0,
@@ -18,18 +18,18 @@
     },
 
     decode: function (base64) {
-      var outptr = 0;
-      var last = [0, 0];
-      var state = 0;
-      var save = 0;
+      let outptr = 0;
+      const last = [0, 0];
+      let state = 0;
+      let save = 0;
 
-      var undef;
-      var len = base64.length;
-      var i = 0;
-      var buffer = new Uint8Array(((len / 4) * 3) | 0);
+      let undef;
+      let len = base64.length;
+      let i = 0;
+      const buffer = new Uint8Array(((len / 4) * 3) | 0);
       while (len--) {
-        var code = base64.charCodeAt(i++);
-        var rank = base64Ranks[code - 43];
+        const code = base64.charCodeAt(i++);
+        const rank = base64Ranks[code - 43];
         if (rank !== 255 && rank !== undef) {
           last[1] = last[0];
           last[0] = code;

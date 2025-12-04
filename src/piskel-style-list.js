@@ -1,6 +1,11 @@
 // This list is used both by the grunt build and index.html (in debug mode)
 
-(typeof exports != "undefined" ? exports : pskl_exports).styles = [
+// Ensure pskl_exports is available globally for legacy code
+if (typeof window !== 'undefined') {
+  window.pskl_exports = window.pskl_exports || {};
+}
+
+(typeof exports != "undefined" ? exports : window.pskl_exports).styles = [
   "css/variables.css",
   "css/reset.css",
   "css/style.css",

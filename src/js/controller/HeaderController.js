@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller');
+  const ns = $.namespace('pskl.controller');
 
   /**
    * When embedded in piskelapp.com, the page adds a header containing the name of the currently edited sprite
@@ -35,7 +35,7 @@
 
   ns.HeaderController.prototype.updateHeader_ = function () {
     try {
-      var name = this.piskelController.getPiskel().getDescriptor().name;
+      let name = this.piskelController.getPiskel().getDescriptor().name;
       if (this.savedStatusService.isDirty()) {
         name = name + ' *';
       }

@@ -2,11 +2,11 @@
 process.env.CHROME_BIN = require("puppeteer").executablePath();
 
 module.exports = function (config) {
-  var mapToSrcFolder = function (path) {
+  const mapToSrcFolder = function (path) {
     return ["src", path].join("/");
   };
 
-  var piskelScripts = require("./src/piskel-script-list.js").scripts.map(
+  const piskelScripts = require("./src/piskel-script-list.js").scripts.map(
     mapToSrcFolder
   );
   piskelScripts.push("tests/unit-tests/testutils/**/*.js");

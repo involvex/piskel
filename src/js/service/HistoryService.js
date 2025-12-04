@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service');
+  const ns = $.namespace('pskl.service');
 
   ns.HistoryService = function (
     piskelController,
@@ -40,7 +40,7 @@
   ns.HistoryService.prototype.init = function () {
     $.subscribe(Events.PISKEL_SAVE_STATE, this.onSaveStateEvent.bind(this));
 
-    var shortcuts = pskl.service.keyboard.Shortcuts;
+    const shortcuts = pskl.service.keyboard.Shortcuts;
     this.shortcutService.registerShortcut(
       shortcuts.MISC.UNDO,
       this.undo.bind(this));
@@ -60,7 +60,7 @@
     this.stateQueue = this.stateQueue.slice(0, this.currentIndex + 1);
     this.currentIndex = this.currentIndex + 1;
 
-    var state = {
+    const state = {
       action: action,
       frameIndex: action.state ?
         action.state.frameIndex :
@@ -72,18 +72,18 @@
       uuid: pskl.utils.Uuid.generate()
     };
 
-    var isSnapshot = action.type === ns.HistoryService.SNAPSHOT;
-    var isAtAutoSnapshotInterval =
+    const isSnapshot = action.type === ns.HistoryService.SNAPSHOT;
+    const isAtAutoSnapshotInterval =
       this.currentIndex % ns.HistoryService.SNAPSHOT_PERIOD === 0;
     if (isSnapshot || isAtAutoSnapshotInterval) {
-      var piskel = this.piskelController.getPiskel();
+      const piskel = this.piskelController.getPiskel();
       state.piskel = this.serializer.serialize(piskel);
     }
 
     // If the new state pushes over MAX_SAVED_STATES, erase all states between the first and
     // second snapshot states.
     if (this.stateQueue.length > ns.HistoryService.MAX_SAVED_STATES) {
-      var firstSnapshotIndex = this.getNextSnapshotIndex_(1);
+      const firstSnapshotIndex = this.getNextSnapshotIndex_(1);
       this.stateQueue.splice(0, firstSnapshotIndex);
       this.currentIndex = this.currentIndex - firstSnapshotIndex;
     }
@@ -92,7 +92,7 @@
   };
 
   ns.HistoryService.prototype.getCurrentStateId = function () {
-    var state = this.stateQueue[this.currentIndex];
+    const state = this.stateQueue[this.currentIndex];
     if (!state) {
       return false;
     }
@@ -109,9 +109,9 @@
   };
 
   ns.HistoryService.prototype.isLoadStateAllowed_ = function (index) {
-    var timeOk =
+    const timeOk =
       Date.now() - this.lastLoadState > ns.HistoryService.LOAD_STATE_INTERVAL;
-    var indexInRange = index >= 0 && index < this.stateQueue.length;
+    const indexInRange = index >= 0 && index < this.stateQueue.length;
     return timeOk && indexInRange;
   };
 
@@ -134,12 +134,12 @@
       if (this.isLoadStateAllowed_(index)) {
         this.lastLoadState = Date.now();
 
-        var snapshotIndex = this.getPreviousSnapshotIndex_(index);
+        const snapshotIndex = this.getPreviousSnapshotIndex_(index);
         if (snapshotIndex < 0) {
           throw 'Could not find previous SNAPSHOT saved in history stateQueue';
         }
-        var serializedPiskel = this.getSnapshotFromState_(snapshotIndex);
-        var onPiskelLoadedCb = this.onPiskelLoaded_.bind(
+        const serializedPiskel = this.getSnapshotFromState_(snapshotIndex);
+        const onPiskelLoadedCb = this.onPiskelLoaded_.bind(
           this,
           index,
           snapshotIndex);
@@ -163,8 +163,8 @@
   };
 
   ns.HistoryService.prototype.getSnapshotFromState_ = function (stateIndex) {
-    var state = this.stateQueue[stateIndex];
-    var piskelSnapshot = state.piskel;
+    const state = this.stateQueue[stateIndex];
+    const piskelSnapshot = state.piskel;
 
     state.piskel = piskelSnapshot;
 
@@ -176,20 +176,20 @@
     snapshotIndex,
     piskel
   ) {
-    var originalSize = this.getPiskelSize_();
+    const originalSize = this.getPiskelSize_();
     piskel.setDescriptor(this.piskelController.piskel.getDescriptor());
     // propagate save path to the new piskel instance
     piskel.savePath = this.piskelController.piskel.savePath;
     this.piskelController.setPiskel(piskel);
 
-    for (var i = snapshotIndex + 1; i <= index; i++) {
-      var state = this.stateQueue[i];
+    for (let i = snapshotIndex + 1; i <= index; i++) {
+      const state = this.stateQueue[i];
       this.setupState(state);
       this.replayState(state);
     }
 
     // Should only do this when going backwards
-    var lastState = this.stateQueue[index + 1];
+    const lastState = this.stateQueue[index + 1];
     if (lastState) {
       this.setupState(lastState);
     }
@@ -215,10 +215,10 @@
   };
 
   ns.HistoryService.prototype.replayState = function (state) {
-    var action = state.action;
-    var type = action.type;
-    var layer = this.piskelController.getLayerAt(state.layerIndex);
-    var frame = layer.getFrameAt(state.frameIndex);
+    const action = state.action;
+    const type = action.type;
+    const layer = this.piskelController.getLayerAt(state.layerIndex);
+    const frame = layer.getFrameAt(state.frameIndex);
     action.scope.replay(frame, action.replay);
   };
 })();

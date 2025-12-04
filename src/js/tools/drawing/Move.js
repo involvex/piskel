@@ -4,7 +4,7 @@
  * @require pskl.utils
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing');
+  const ns = $.namespace('pskl.tools.drawing');
 
   ns.Move = function () {
     this.toolId = ns.Move.TOOL_ID;
@@ -41,8 +41,8 @@
   };
 
   ns.Move.prototype.moveToolAt = function (col, row, frame, overlay, event) {
-    var colDiff = col - this.startCol;
-    var rowDiff = row - this.startRow;
+    const colDiff = col - this.startCol;
+    const rowDiff = row - this.startRow;
     this.shiftFrame(colDiff, rowDiff, frame, this.currentFrameClone, event);
   };
 
@@ -53,13 +53,13 @@
     reference,
     event
   ) {
-    var color;
-    var w = frame.getWidth();
-    var h = frame.getHeight();
-    for (var col = 0; col < w; col++) {
-      for (var row = 0; row < h; row++) {
-        var x = col - colDiff;
-        var y = row - rowDiff;
+    let color;
+    const w = frame.getWidth();
+    const h = frame.getHeight();
+    for (let col = 0; col < w; col++) {
+      for (let row = 0; row < h; row++) {
+        let x = col - colDiff;
+        let y = row - rowDiff;
         if (event.altKey) {
           x = (x + w) % w;
           y = (y + h) % h;
@@ -78,18 +78,18 @@
    * @override
    */
   ns.Move.prototype.releaseToolAt = function (col, row, frame, overlay, event) {
-    var colDiff = col - this.startCol;
-    var rowDiff = row - this.startRow;
+    const colDiff = col - this.startCol;
+    const rowDiff = row - this.startRow;
 
-    var ctrlKey = pskl.utils.UserAgent.isMac ? event.metaKey : event.ctrlKey;
+    const ctrlKey = pskl.utils.UserAgent.isMac ? event.metaKey : event.ctrlKey;
     pskl.tools.ToolsHelper.getTargetFrames(ctrlKey, event.shiftKey).forEach(
-      function (f) {
+      (f) => {
         // for the current frame, the backup clone should be reused as reference
         // the current frame has been modified by the user action already
-        var reference =
+        const reference =
           this.currentFrame == f ? this.currentFrameClone : f.clone();
         this.shiftFrame(colDiff, rowDiff, f, reference, event);
-      }.bind(this));
+      });
     this.raiseSaveStateEvent({
       colDiff: colDiff,
       rowDiff: rowDiff,
@@ -100,7 +100,7 @@
   };
 
   ns.Move.prototype.replay = function (frame, replayData) {
-    var event = {
+    const event = {
       shiftKey: replayData.shiftKey,
       altKey: replayData.altKey,
       ctrlKey: replayData.ctrlKey
@@ -109,14 +109,14 @@
       event.ctrlKey,
       event.shiftKey
     ).forEach(
-      function (frame) {
+      (frame) => {
         this.shiftFrame(
           replayData.colDiff,
           replayData.rowDiff,
           frame,
           frame.clone(),
           event);
-      }.bind(this));
+      });
   };
 
   ns.Move.prototype.supportsAlt = function () {

@@ -1,26 +1,26 @@
-describe("Palette Service", function () {
-  var paletteService = null;
-  var localStorage = {};
+describe("Palette Service", () => {
+  let paletteService = null;
+  let localStorage = {};
 
-  var localStorageGlobal;
+  let localStorageGlobal;
 
-  var addPalette = function (id, name, color) {
-    var palette = new pskl.model.Palette(id, name, [color]);
+  const addPalette = function (id, name, color) {
+    const palette = new pskl.model.Palette(id, name, [color]);
     paletteService.savePalette(palette);
   };
 
-  var verifyPaletteIsStored = function (paletteId) {
-    var palette = paletteService.getPaletteById(paletteId);
+  const verifyPaletteIsStored = function (paletteId) {
+    const palette = paletteService.getPaletteById(paletteId);
     expect(palette).not.toBeNull();
     return palette;
   };
 
-  var verifyPaletteIsNotStored = function (paletteId) {
-    var palette = paletteService.getPaletteById(paletteId);
+  const verifyPaletteIsNotStored = function (paletteId) {
+    const palette = paletteService.getPaletteById(paletteId);
     expect(palette).toBeNull();
   };
 
-  beforeEach(function () {
+  beforeEach(() => {
     localStorage = {};
 
     localStorageGlobal = {
@@ -40,26 +40,26 @@ describe("Palette Service", function () {
     paletteService.localStorageGlobal = localStorageGlobal;
   });
 
-  it("returns an empty array when no palette is stored", function () {
+  it("returns an empty array when no palette is stored", () => {
     spyOn(localStorageGlobal, "getItem").and.callThrough();
 
-    var palettes = paletteService.getPalettes();
+    const palettes = paletteService.getPalettes();
     expect(Array.isArray(palettes)).toBe(true);
     expect(palettes.length).toBe(0);
     expect(localStorageGlobal.getItem).toHaveBeenCalled();
   });
 
-  it("can store a palette", function () {
+  it("can store a palette", () => {
     // when
     spyOn(localStorageGlobal, "setItem").and.callThrough();
 
-    var paletteId = "palette-id";
-    var paletteName = "palette-name";
-    var paletteColor = "#001122";
+    const paletteId = "palette-id";
+    const paletteName = "palette-name";
+    const paletteColor = "#001122";
 
     // then
     addPalette(paletteId, paletteName, paletteColor);
-    var palettes = paletteService.getPalettes();
+    const palettes = paletteService.getPalettes();
 
     // verify
     expect(localStorageGlobal.setItem).toHaveBeenCalled();
@@ -67,40 +67,40 @@ describe("Palette Service", function () {
     expect(Array.isArray(palettes)).toBe(true);
     expect(palettes.length).toBe(1);
 
-    var retrievedPalette = paletteService.getPaletteById(paletteId);
+    const retrievedPalette = paletteService.getPaletteById(paletteId);
     expect(retrievedPalette).toBeDefined();
     expect(retrievedPalette.id).toBe(paletteId);
     expect(retrievedPalette.name).toBe(paletteName);
 
-    var colors = retrievedPalette.getColors();
+    const colors = retrievedPalette.getColors();
     expect(Array.isArray(colors)).toBe(true);
     expect(colors.length).toBe(1);
 
-    var color = colors[0];
+    const color = colors[0];
     expect(color).toBe(paletteColor);
   });
 
-  it("updates a palette", function () {
+  it("updates a palette", () => {
     // when
-    var paletteId = "palette-id";
-    var paletteName = "palette-name";
-    var paletteColor1 = "#001122";
-    var paletteColor2 = "#334455";
+    const paletteId = "palette-id";
+    const paletteName = "palette-name";
+    const paletteColor1 = "#001122";
+    const paletteColor2 = "#334455";
 
     // then
     addPalette(paletteId, paletteName, paletteColor1);
     addPalette(paletteId, paletteName, paletteColor2);
 
     // verify
-    var palettes = paletteService.getPalettes();
+    const palettes = paletteService.getPalettes();
     expect(palettes.length).toBe(1);
 
-    var retrievedPalette = paletteService.getPaletteById(paletteId);
-    var color = retrievedPalette.get(0);
+    const retrievedPalette = paletteService.getPaletteById(paletteId);
+    const color = retrievedPalette.get(0);
     expect(color).toBe(paletteColor2);
   });
 
-  it("can delete a palette", function () {
+  it("can delete a palette", () => {
     // when
     addPalette("palette-id", "palette-name", ["#001122"]);
 
@@ -108,23 +108,23 @@ describe("Palette Service", function () {
     paletteService.deletePaletteById("palette-id");
 
     // verify
-    var palettes = paletteService.getPalettes();
+    const palettes = paletteService.getPalettes();
     expect(palettes.length).toBe(0);
   });
 
-  it("attempts to delete unexisting palette without side effect", function () {
+  it("attempts to delete unexisting palette without side effect", () => {
     // when
     addPalette("palette-id", "palette-name", ["#001122"]);
 
     // then
-    var palettes = paletteService.getPalettes();
+    const palettes = paletteService.getPalettes();
     paletteService.deletePaletteById("some-other-palette-id");
 
     // verify
     expect(palettes.length).toBe(1);
   });
 
-  it("deletes the correct palette when several palettes are stored", function () {
+  it("deletes the correct palette when several palettes are stored", () => {
     // when
     addPalette("palette-id-0", "palette-name-0", ["#000000"]);
     addPalette("palette-id-1", "palette-name-1", ["#111111"]);
@@ -134,7 +134,7 @@ describe("Palette Service", function () {
     paletteService.deletePaletteById("palette-id-1");
 
     // verify
-    var palettes = paletteService.getPalettes();
+    const palettes = paletteService.getPalettes();
     expect(palettes.length).toBe(2);
     verifyPaletteIsStored("palette-id-0");
     verifyPaletteIsNotStored("palette-id-1");

@@ -4,14 +4,14 @@
  */
 
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
   ns.Environment = {
     detectNodeWebkit: function () {
-      var isNode =
+      const isNode =
         typeof window.process !== 'undefined' &&
         typeof window.require !== 'undefined';
-      var isNodeWebkit = false;
+      let isNodeWebkit = false;
       if (isNode) {
         try {
           isNodeWebkit = typeof window.require('nw.gui') !== 'undefined';

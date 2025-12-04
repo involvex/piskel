@@ -4,7 +4,7 @@
  * @require pskl.utils
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing.selection');
+  const ns = $.namespace('pskl.tools.drawing.selection');
 
   ns.BaseSelect = function () {
     this.secondaryToolId = pskl.tools.drawing.Move.TOOL_ID;
@@ -139,7 +139,7 @@
   ns.BaseSelect.prototype.isInSelection = function (col, row) {
     return (
       this.selection &&
-      this.selection.pixels.some(function (pixel) {
+      this.selection.pixels.some((pixel) => {
         return pixel.col === col && pixel.row === row;
       })
     );
@@ -163,7 +163,7 @@
    * Protected method, should be called when the selection is dismissed.
    */
   ns.BaseSelect.prototype.onSelectionDismissed_ = function () {
-    var overlay = pskl.app.drawingController.overlayFrame;
+    const overlay = pskl.app.drawingController.overlayFrame;
     overlay.clear();
     this.hasSelection = false;
   };
@@ -173,11 +173,11 @@
    * @protected
    */
   ns.BaseSelect.prototype.drawSelectionOnOverlay_ = function (overlay) {
-    var pixels = this.selection.pixels;
-    for (var i = 0, l = pixels.length; i < l; i++) {
-      var pixel = pixels[i];
-      var hasColor = pixel.color && pixel.color !== Constants.TRANSPARENT_COLOR;
-      var color = hasColor ?
+    const pixels = this.selection.pixels;
+    for (let i = 0, l = pixels.length; i < l; i++) {
+      const pixel = pixels[i];
+      const hasColor = pixel.color && pixel.color !== Constants.TRANSPARENT_COLOR;
+      const color = hasColor ?
         this.getTransparentVariant_(pixel.color) :
         Constants.SELECTION_TRANSPARENT_COLOR;
 
@@ -186,8 +186,8 @@
   };
 
   ns.BaseSelect.prototype.getTransparentVariant_ =
-    pskl.utils.FunctionUtils.memo(function (colorStr) {
-      var color = window.tinycolor(colorStr);
+    pskl.utils.FunctionUtils.memo((colorStr) => {
+      let color = window.tinycolor(colorStr);
       color = window.tinycolor.lighten(color, 10);
       color.setAlpha(0.5);
       return color.toRgbString();
@@ -223,11 +223,11 @@
     frame,
     overlay
   ) {
-    var deltaCol = col - this.lastMoveCol;
-    var deltaRow = row - this.lastMoveRow;
+    const deltaCol = col - this.lastMoveCol;
+    const deltaRow = row - this.lastMoveRow;
 
-    var colDiff = col - this.startCol;
-    var rowDiff = row - this.startRow;
+    const colDiff = col - this.startCol;
+    const rowDiff = row - this.startRow;
 
     this.selection.move(deltaCol, deltaRow);
 

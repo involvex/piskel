@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs');
+  const ns = $.namespace('pskl.controller.dialogs');
 
   ns.UnsupportedBrowserController = function () {};
 
@@ -10,7 +10,7 @@
 
   ns.UnsupportedBrowserController.prototype.init = function () {
     this.superclass.init.call(this);
-    var currentUserAgentElement = document.querySelector('#current-user-agent');
+    const currentUserAgentElement = document.querySelector('#current-user-agent');
     currentUserAgentElement.innerText = pskl.utils.UserAgent.getDisplayName();
   };
 })();

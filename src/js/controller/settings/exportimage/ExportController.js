@@ -1,23 +1,23 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings.exportimage');
+  const ns = $.namespace('pskl.controller.settings.exportimage');
 
-  var tabs = {
+  const tabs = {
     png: {
       template: 'templates/settings/export/png.html',
-      controller: ns.PngExportController
+      controller: ns.PngExportController,
     },
     gif: {
       template: 'templates/settings/export/gif.html',
-      controller: ns.GifExportController
+      controller: ns.GifExportController,
     },
     zip: {
       template: 'templates/settings/export/zip.html',
-      controller: ns.ZipExportController
+      controller: ns.ZipExportController,
     },
     misc: {
       template: 'templates/settings/export/misc.html',
-      controller: ns.MiscExportController
-    }
+      controller: ns.MiscExportController,
+    },
   };
 
   ns.ExportController = function (piskelController) {
@@ -25,13 +25,15 @@
     this.tabsWidget = new pskl.widgets.Tabs(
       tabs,
       this,
-      pskl.UserSettings.EXPORT_TAB);
+      pskl.UserSettings.EXPORT_TAB
+    );
     this.onSizeInputChange_ = this.onSizeInputChange_.bind(this);
   };
 
   pskl.utils.inherit(
     ns.ExportController,
-    pskl.controller.settings.AbstractSettingController);
+    pskl.controller.settings.AbstractSettingController
+  );
   ns.ExportController.prototype.init = function () {
     // Initialize zoom controls
     this.scaleInput = document.querySelector('.export-scale .scale-input');
@@ -40,19 +42,19 @@
 
     this.widthInput = document.querySelector('.export-resize .resize-width');
     this.heightInput = document.querySelector('.export-resize .resize-height');
-    var scale = pskl.UserSettings.get(pskl.UserSettings.EXPORT_SCALE);
+    const scale = pskl.UserSettings.get(pskl.UserSettings.EXPORT_SCALE);
     this.sizeInputWidget = new pskl.widgets.SizeInput({
       widthInput: this.widthInput,
       heightInput: this.heightInput,
       initWidth: this.piskelController.getWidth() * scale,
       initHeight: this.piskelController.getHeight() * scale,
-      onChange: this.onSizeInputChange_
+      onChange: this.onSizeInputChange_,
     });
 
     this.onSizeInputChange_();
 
     // Initialize tabs and panel
-    var container = document.querySelector('.settings-section-export');
+    const container = document.querySelector('.settings-section-export');
     this.tabsWidget.init(container);
   };
 
@@ -63,7 +65,7 @@
   };
 
   ns.ExportController.prototype.onScaleChange_ = function () {
-    var value = parseFloat(this.scaleInput.value);
+    const value = parseFloat(this.scaleInput.value);
     if (!isNaN(value)) {
       if (Math.round(this.getExportZoom()) != value) {
         this.sizeInputWidget.setWidth(this.piskelController.getWidth() * value);
@@ -74,12 +76,12 @@
 
   ns.ExportController.prototype.updateScaleText_ = function (scale) {
     scale = scale.toFixed(1);
-    var scaleText = document.querySelector('.export-scale .scale-text');
+    const scaleText = document.querySelector('.export-scale .scale-text');
     scaleText.innerHTML = scale + 'x';
   };
 
   ns.ExportController.prototype.onSizeInputChange_ = function () {
-    var zoom = this.getExportZoom();
+    const zoom = this.getExportZoom();
     if (isNaN(zoom)) {
       return;
     }
@@ -97,5 +99,24 @@
     return (
       parseInt(this.widthInput.value, 10) / this.piskelController.getWidth()
     );
+  };
+
+  ns.ExportController.prototype.exportPng = function () {
+    // Open the export settings and switch to PNG tab
+    pskl.app.settingsController.loadSetting('export');
+
+    // Switch to PNG tab
+    const pngTab = document.querySelector('[data-tab="png"]');
+    if (pngTab) {
+      pngTab.click();
+    }
+
+    // Trigger the download after a small delay to allow UI to update
+    setTimeout(() => {
+      const downloadButton = document.querySelector('.png-download-button');
+      if (downloadButton) {
+        downloadButton.click();
+      }
+    }, 100);
   };
 })();

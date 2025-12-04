@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings');
+  const ns = $.namespace('pskl.controller.settings');
 
   ns.ImportController = function (piskelController) {
     this.piskelController = piskelController;
@@ -58,7 +58,7 @@
   };
 
   ns.ImportController.prototype.onOpenPiskelChange_ = function (evt) {
-    var files = this.hiddenOpenPiskelInput.files;
+    const files = this.hiddenOpenPiskelInput.files;
     if (files.length == 1) {
       this.openPiskelFile_(files[0]);
     }
@@ -103,9 +103,9 @@
   };
 
   ns.ImportController.prototype.importPictureFromFile_ = function () {
-    var files = this.hiddenFileInput.files;
+    const files = this.hiddenFileInput.files;
     // TODO : Simply filter and remove stuff
-    var areImages = Array.prototype.every.call(files, function (file) {
+    const areImages = Array.prototype.every.call(files, (file) => {
       return file.type.indexOf('image') === 0;
     });
     if (areImages) {

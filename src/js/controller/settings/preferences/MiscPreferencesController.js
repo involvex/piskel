@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings.preferences');
+  const ns = $.namespace('pskl.controller.settings.preferences');
 
   ns.MiscPreferencesController = function (
     piskelController,
@@ -20,22 +20,22 @@
       'click',
       this.onBackgroundClick_);
     // Highlight selected background :
-    var background = pskl.UserSettings.get(pskl.UserSettings.CANVAS_BACKGROUND);
-    var selectedBackground = this.backgroundContainer.querySelector(
+    const background = pskl.UserSettings.get(pskl.UserSettings.CANVAS_BACKGROUND);
+    const selectedBackground = this.backgroundContainer.querySelector(
       '[data-background=' + background + ']');
     if (selectedBackground) {
       selectedBackground.classList.add('selected');
     }
 
     // Max FPS
-    var maxFpsInput = document.querySelector('.max-fps-input');
+    const maxFpsInput = document.querySelector('.max-fps-input');
     maxFpsInput.value = pskl.UserSettings.get(pskl.UserSettings.MAX_FPS);
     this.addEventListener(maxFpsInput, 'change', this.onMaxFpsChange_);
 
     // Color format
-    var colorFormat = pskl.UserSettings.get(pskl.UserSettings.COLOR_FORMAT);
-    var colorFormatSelect = document.querySelector('.color-format-select');
-    var selectedColorFormatOption = colorFormatSelect.querySelector(
+    const colorFormat = pskl.UserSettings.get(pskl.UserSettings.COLOR_FORMAT);
+    const colorFormatSelect = document.querySelector('.color-format-select');
+    const selectedColorFormatOption = colorFormatSelect.querySelector(
       'option[value="' + colorFormat + '"]');
     if (selectedColorFormatOption) {
       selectedColorFormatOption.setAttribute('selected', 'selected');
@@ -45,7 +45,7 @@
       'change',
       this.onColorFormatChange_);
     // Layer preview opacity
-    var layerOpacityInput = document.querySelector('.layer-opacity-input');
+    const layerOpacityInput = document.querySelector('.layer-opacity-input');
     layerOpacityInput.value = pskl.UserSettings.get(
       pskl.UserSettings.LAYER_OPACITY);
     this.addEventListener(
@@ -60,11 +60,11 @@
   };
 
   ns.MiscPreferencesController.prototype.onBackgroundClick_ = function (evt) {
-    var target = evt.target;
-    var background = target.dataset.background;
+    const target = evt.target;
+    const background = target.dataset.background;
     if (background) {
       pskl.UserSettings.set(pskl.UserSettings.CANVAS_BACKGROUND, background);
-      var selected = this.backgroundContainer.querySelector('.selected');
+      const selected = this.backgroundContainer.querySelector('.selected');
       if (selected) {
         selected.classList.remove('selected');
       }
@@ -77,8 +77,8 @@
   };
 
   ns.MiscPreferencesController.prototype.onMaxFpsChange_ = function (evt) {
-    var target = evt.target;
-    var fps = parseInt(target.value, 10);
+    const target = evt.target;
+    const fps = parseInt(target.value, 10);
     if (fps && !isNaN(fps)) {
       pskl.UserSettings.set(pskl.UserSettings.MAX_FPS, fps);
     } else {
@@ -89,8 +89,8 @@
   ns.MiscPreferencesController.prototype.onLayerOpacityChange_ = function (
     evt
   ) {
-    var target = evt.target;
-    var opacity = parseFloat(target.value);
+    const target = evt.target;
+    const opacity = parseFloat(target.value);
     if (!isNaN(opacity)) {
       pskl.UserSettings.set(pskl.UserSettings.LAYER_OPACITY, opacity);
       pskl.UserSettings.set(pskl.UserSettings.LAYER_PREVIEW, opacity !== 0);
@@ -103,7 +103,7 @@
   ns.MiscPreferencesController.prototype.updateLayerOpacityText_ = function (
     opacity
   ) {
-    var layerOpacityText = document.querySelector('.layer-opacity-text');
+    const layerOpacityText = document.querySelector('.layer-opacity-text');
     layerOpacityText.innerHTML = (opacity * 1).toFixed(2);
   };
 })();

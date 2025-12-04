@@ -4,7 +4,7 @@
  * @require pskl.utils
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing');
+  const ns = $.namespace('pskl.tools.drawing');
 
   ns.BaseTool = function () {
     pskl.tool.Tool.call(this);
@@ -71,12 +71,12 @@
       overlay.clear();
     }
 
-    var frameColor = pskl.utils.intToColor(frame.getPixel(col, row));
-    var highlightColor = this.getHighlightColor_(frameColor);
-    var size = this.supportsDynamicPenSize() ?
+    const frameColor = pskl.utils.intToColor(frame.getPixel(col, row));
+    const highlightColor = this.getHighlightColor_(frameColor);
+    const size = this.supportsDynamicPenSize() ?
       pskl.app.penSizeService.getPenSize() :
       1;
-    pskl.PixelUtils.resizePixel(col, row, size).forEach(function (point) {
+    pskl.PixelUtils.resizePixel(col, row, size).forEach((point) => {
       overlay.setPixel(point[0], point[1], highlightColor);
     });
 
@@ -89,7 +89,7 @@
       return Constants.TOOL_HIGHLIGHT_COLOR_DARK;
     }
 
-    var luminance = window.tinycolor(frameColor).toHsl().l;
+    const luminance = window.tinycolor(frameColor).toHsl().l;
     if (luminance > 0.5) {
       return Constants.TOOL_HIGHLIGHT_COLOR_DARK;
     } else {

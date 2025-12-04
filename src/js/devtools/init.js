@@ -1,10 +1,10 @@
 (function () {
-  var ns = $.namespace('pskl.devtools');
+  const ns = $.namespace('pskl.devtools');
 
   ns.init = function () {
-    var href = document.location.href.toLowerCase();
+    const href = document.location.href.toLowerCase();
     // test tools
-    var testModeOn = href.indexOf('test=true') !== -1;
+    const testModeOn = href.indexOf('test=true') !== -1;
     if (testModeOn) {
       this.testRecorder = new pskl.devtools.DrawingTestRecorder(
         pskl.app.piskelController);
@@ -16,17 +16,17 @@
     }
 
     // test tools
-    var runTestModeOn = href.indexOf('test-run=') !== -1;
+    const runTestModeOn = href.indexOf('test-run=') !== -1;
     if (runTestModeOn) {
-      var testPath = href.split('test-run=')[1];
+      const testPath = href.split('test-run=')[1];
       this.testRunner = new pskl.devtools.DrawingTestRunner(testPath);
       this.testRunner.start();
     }
 
     // test tools
-    var runSuiteModeOn = href.indexOf('test-suite=') !== -1;
+    const runSuiteModeOn = href.indexOf('test-suite=') !== -1;
     if (runSuiteModeOn) {
-      var suitePath = href.split('test-suite=')[1];
+      const suitePath = href.split('test-suite=')[1];
       this.testSuiteController = new pskl.devtools.DrawingTestSuiteController(
         suitePath);
       this.testSuiteController.init();

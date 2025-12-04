@@ -1,8 +1,8 @@
-var callFactory = function (method) {
+const callFactory = function (method) {
   return {
     times: function (times) {
-      var results = [];
-      for (var i = 0; i < times; i++) {
+      const results = [];
+      for (let i = 0; i < times; i++) {
         results.push(method());
       }
       return results;
@@ -13,16 +13,16 @@ var callFactory = function (method) {
   };
 };
 
-describe("History Service suite", function () {
-  var SERIALIZED_PISKEL = "serialized-piskel";
-  var historyService = null;
+describe("History Service suite", () => {
+  const SERIALIZED_PISKEL = "serialized-piskel";
+  let historyService = null;
 
-  var getLastState = function () {
+  const getLastState = function () {
     return historyService.stateQueue[historyService.currentIndex];
   };
 
-  var createMockHistoryService = function () {
-    var mockPiskelController = {
+  const createMockHistoryService = function () {
+    const mockPiskelController = {
       getWrappedPiskelController: function () {
         return {
           getPiskel: function () {},
@@ -32,7 +32,7 @@ describe("History Service suite", function () {
         };
       },
     };
-    var mockShortcutService = {
+    const mockShortcutService = {
       registerShortcuts: function () {},
       registerShortcut: function () {},
     };
@@ -48,19 +48,19 @@ describe("History Service suite", function () {
     );
   };
 
-  it("starts at -1", function () {
+  it("starts at -1", () => {
     historyService = createMockHistoryService();
     expect(historyService.currentIndex).toBe(-1);
   });
 
-  it("is at 0 after init", function () {
+  it("is at 0 after init", () => {
     historyService = createMockHistoryService();
     historyService.init();
     expect(historyService.currentIndex).toBe(0);
   });
 
-  var sendSaveEvents = function (type) {
-    return callFactory(function () {
+  const sendSaveEvents = function (type) {
+    return callFactory(() => {
       $.publish(Events.PISKEL_SAVE_STATE, {
         type: type,
         scope: {},
@@ -69,9 +69,9 @@ describe("History Service suite", function () {
     });
   };
 
-  it("stores a piskel snapshot after 5 SAVE", function () {
+  it("stores a piskel snapshot after 5 SAVE", () => {
     // BEFORE
-    var SNAPSHOT_PERIOD_BACKUP = pskl.service.HistoryService.SNAPSHOT_PERIOD;
+    const SNAPSHOT_PERIOD_BACKUP = pskl.service.HistoryService.SNAPSHOT_PERIOD;
     pskl.service.HistoryService.SNAPSHOT_PERIOD = 5;
 
     historyService = createMockHistoryService();

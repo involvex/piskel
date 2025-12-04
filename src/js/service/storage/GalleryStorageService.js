@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service.storage');
+  const ns = $.namespace('pskl.service.storage');
 
   ns.GalleryStorageService = function (piskelController) {
     this.piskelController = piskelController;
@@ -8,12 +8,12 @@
   ns.GalleryStorageService.prototype.init = function () {};
 
   ns.GalleryStorageService.prototype.save = function (piskel) {
-    var descriptor = piskel.getDescriptor();
-    var deferred = Q.defer();
+    const descriptor = piskel.getDescriptor();
+    const deferred = Q.defer();
 
-    var serialized = pskl.utils.serialization.Serializer.serialize(piskel);
+    const serialized = pskl.utils.serialization.Serializer.serialize(piskel);
 
-    var data = {
+    const data = {
       framesheet: serialized,
       fps: this.piskelController.getFPS(),
       name: descriptor.name,
@@ -32,11 +32,11 @@
       data.public = true;
     }
 
-    var successCallback = function (response) {
+    const successCallback = function (response) {
       deferred.resolve();
     };
 
-    var errorCallback = function (response) {
+    const errorCallback = function (response) {
       deferred.reject(this.getErrorMessage_(response));
     };
 
@@ -49,7 +49,7 @@
   };
 
   ns.GalleryStorageService.prototype.getErrorMessage_ = function (response) {
-    var errorMessage = '';
+    let errorMessage = '';
     if (response.status === 401) {
       errorMessage = 'Session expired, please log in again.';
     } else if (response.status === 403) {

@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller');
+  const ns = $.namespace('pskl.controller');
 
   ns.ProgressBarController = function () {
     this.template = pskl.utils.Template.get('progress-bar-template');
@@ -26,12 +26,12 @@
   };
 
   ns.ProgressBarController.prototype.onTimerExpired_ = function (progressInfo) {
-    var progressBarHtml = pskl.utils.Template.replace(this.template, {
+    const progressBarHtml = pskl.utils.Template.replace(this.template, {
       name: progressInfo.name,
       status: 0
     });
 
-    var progressBarEl = pskl.utils.Template.createFromHTML(progressBarHtml);
+    const progressBarEl = pskl.utils.Template.createFromHTML(progressBarHtml);
     document.body.appendChild(progressBarEl);
 
     this.progressBar = document.querySelector('.progress-bar');
@@ -43,9 +43,9 @@
     progressInfo
   ) {
     if (this.progressBar && this.progressBarStatus) {
-      var progress = progressInfo.progress;
-      var width = this.progressBar.offsetWidth;
-      var progressWidth = width - (progress * width) / 100;
+      const progress = progressInfo.progress;
+      const width = this.progressBar.offsetWidth;
+      const progressWidth = width - (progress * width) / 100;
       this.progressBar.style.backgroundPosition = -progressWidth + 'px 0';
       this.progressBarStatus.innerHTML = progress + '%';
     }
@@ -62,7 +62,7 @@
   };
 
   ns.ProgressBarController.prototype.removeProgressBar_ = function () {
-    var progressBarContainer = document.querySelector(
+    const progressBarContainer = document.querySelector(
       '.progress-bar-container');
     if (progressBarContainer) {
       progressBarContainer.parentNode.removeChild(progressBarContainer);

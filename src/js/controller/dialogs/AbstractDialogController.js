@@ -1,10 +1,10 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs');
+  const ns = $.namespace('pskl.controller.dialogs');
 
   ns.AbstractDialogController = function () {};
 
   ns.AbstractDialogController.prototype.init = function () {
-    var closeButton = document.querySelector('.dialog-close');
+    const closeButton = document.querySelector('.dialog-close');
     this.addEventListener_(closeButton, 'click', this.closeDialog);
   };
 
@@ -25,7 +25,7 @@
   };
 
   ns.AbstractDialogController.prototype.setTitle = function (title) {
-    var dialogTitle = document.querySelector('.dialog-title');
+    const dialogTitle = document.querySelector('.dialog-title');
     if (dialogTitle) {
       dialogTitle.innerText = title;
     }

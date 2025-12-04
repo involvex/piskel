@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.service');
+  const ns = $.namespace('pskl.service');
 
-  var BUTTON_UNSET = null;
+  const BUTTON_UNSET = null;
 
   /**
    * This service exists mostly due to a FF/IE bug.

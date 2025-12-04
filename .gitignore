@@ -42,3 +42,6 @@ report
 
 # Test artifacts
 tests/e2e/playwright/tmp
+dist
+dist-electron
+electron-dist

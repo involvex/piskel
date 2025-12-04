@@ -5,7 +5,7 @@
  * @require pskl.utils
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing');
+  const ns = $.namespace('pskl.tools.drawing');
 
   ns.Eraser = function () {
     this.superclass.constructor.call(this);

@@ -1,8 +1,8 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
-  var ua = navigator.userAgent;
+  const ns = $.namespace('pskl.utils');
+  const ua = navigator.userAgent;
 
-  var hasChrome = (ns.UserAgent = {
+  const hasChrome = (ns.UserAgent = {
     isIE: /MSIE/i.test(ua),
     isIE11: /trident/i.test(ua),
     isEdge: /edge\//i.test(ua),
@@ -38,7 +38,7 @@
 
   ns.UserAgent.isUnsupported = function () {
     // Check that none of the supported UAs are set to true.
-    return ns.UserAgent.supportedUserAgents.every(function (uaTest) {
+    return ns.UserAgent.supportedUserAgents.every((uaTest) => {
       return !ns.UserAgent[uaTest];
     });
   };

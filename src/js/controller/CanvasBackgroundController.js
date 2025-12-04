@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller');
+  const ns = $.namespace('pskl.controller');
 
   ns.CanvasBackgroundController = function () {
     this.body = document.body;
@@ -28,7 +28,7 @@
   ns.CanvasBackgroundController.prototype.updateBackgroundClass_ = function (
     newClass
   ) {
-    var currentClass = this.body.dataset.currentBackgroundClass;
+    const currentClass = this.body.dataset.currentBackgroundClass;
     if (currentClass) {
       this.body.classList.remove(currentClass);
     }

@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
-  var pad = function (num) {
+  const pad = function (num) {
     if (num < 10) {
       return '0' + num;
     } else {

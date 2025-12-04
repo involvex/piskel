@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service');
+  const ns = $.namespace('pskl.service');
 
   ns.SelectedColorsService = function () {
     this.primaryColor_ = Constants.DEFAULT_PEN_COLOR;

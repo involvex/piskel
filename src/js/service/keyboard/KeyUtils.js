@@ -1,17 +1,17 @@
 (function () {
-  var ns = $.namespace('pskl.service.keyboard');
+  const ns = $.namespace('pskl.service.keyboard');
 
   ns.KeyUtils = {
     createKeyFromString: function (shortcutKeyString) {
       shortcutKeyString = shortcutKeyString.toLowerCase();
-      var modifiers = {
+      const modifiers = {
         alt: shortcutKeyString.indexOf('alt+') != -1,
         shift: shortcutKeyString.indexOf('shift+') != -1,
         ctrl: shortcutKeyString.indexOf('ctrl+') != -1
       };
 
-      var parts = shortcutKeyString.split(/\+(?!$)/);
-      var key = parts[parts.length - 1];
+      const parts = shortcutKeyString.split(/\+(?!$)/);
+      const key = parts[parts.length - 1];
 
       return {
         key: key.toUpperCase(),
@@ -20,8 +20,8 @@
     },
 
     createKeyFromEvent: function (evt) {
-      var keycode = evt.which;
-      var key = ns.KeycodeTranslator.toChar(keycode);
+      const keycode = evt.which;
+      const key = ns.KeycodeTranslator.toChar(keycode);
       if (!key) {
         return null;
       }
@@ -42,7 +42,7 @@
       key2 =
         typeof key2 === 'string' ? ns.KeyUtils.createKeyFromString(key2) : key2;
 
-      var isKeyMatching =
+      const isKeyMatching =
         key1.key === key2.key &&
         key1.modifiers.alt === key2.modifiers.alt &&
         key1.modifiers.shift === key2.modifiers.shift &&
@@ -52,7 +52,7 @@
     },
 
     stringify: function (shortcutKeyObject) {
-      var modifierString = ns.KeyUtils.getModifiersString(
+      const modifierString = ns.KeyUtils.getModifiersString(
         shortcutKeyObject.modifiers);
       if (modifierString) {
         return modifierString + '+' + shortcutKeyObject.key;
@@ -62,7 +62,7 @@
     },
 
     getModifiersString: function (modifiers) {
-      var keyBuffer = [];
+      const keyBuffer = [];
 
       if (modifiers.alt) {
         keyBuffer.push('alt');

@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.rendering.frame');
+  const ns = $.namespace('pskl.rendering.frame');
 
   /**
    * FrameRenderer will display a given frame inside a canvas element.
@@ -83,10 +83,10 @@
 
   ns.FrameRenderer.prototype.setZoom = function (zoom) {
     // Minimum zoom is one to ensure one sprite pixel occupies at least one pixel on screen.
-    var minimumZoom = 1;
+    const minimumZoom = 1;
     // Maximum zoom is relative to the display dimensions to ensure at least 10 pixels can
     // be drawn on screen.
-    var maximumZoom = Math.min(this.displayWidth, this.displayHeight) / 10;
+    const maximumZoom = Math.min(this.displayWidth, this.displayHeight) / 10;
     zoom = pskl.utils.Math.minmax(zoom, minimumZoom, maximumZoom);
 
     if (zoom == this.zoom) {
@@ -94,8 +94,8 @@
     }
 
     // back up center coordinates
-    var centerX = this.offset.x + this.displayWidth / (2 * this.zoom);
-    var centerY = this.offset.y + this.displayHeight / (2 * this.zoom);
+    const centerX = this.offset.x + this.displayWidth / (2 * this.zoom);
+    const centerY = this.offset.y + this.displayHeight / (2 * this.zoom);
 
     this.zoom = zoom;
     // recenter
@@ -133,11 +133,11 @@
   };
 
   ns.FrameRenderer.prototype.setOffset = function (x, y) {
-    var width = pskl.app.piskelController.getWidth();
-    var height = pskl.app.piskelController.getHeight();
-    var maxX = width - this.displayWidth / this.zoom;
+    const width = pskl.app.piskelController.getWidth();
+    const height = pskl.app.piskelController.getHeight();
+    const maxX = width - this.displayWidth / this.zoom;
     x = pskl.utils.Math.minmax(x, 0, maxX);
-    var maxY = height - this.displayHeight / this.zoom;
+    const maxY = height - this.displayHeight / this.zoom;
     y = pskl.utils.Math.minmax(y, 0, maxY);
 
     this.offset.x = x;
@@ -177,12 +177,12 @@
    * particularly for the current zoom level
    */
   ns.FrameRenderer.prototype.computeGridWidthForDisplay_ = function () {
-    var gridSpacing = this.getGridSpacing();
+    const gridSpacing = this.getGridSpacing();
     if (this.zoom * gridSpacing < 6) {
       return 0;
     }
 
-    var gridWidth = this.getGridWidth();
+    let gridWidth = this.getGridWidth();
     while (gridWidth > 1 && this.zoom < 6 * gridWidth) {
       gridWidth--;
     }
@@ -191,16 +191,16 @@
   };
 
   ns.FrameRenderer.prototype.updateMargins_ = function (frame) {
-    var deltaX = this.displayWidth - this.zoom * frame.getWidth();
+    const deltaX = this.displayWidth - this.zoom * frame.getWidth();
     this.margin.x = Math.max(0, deltaX) / 2;
 
-    var deltaY = this.displayHeight - this.zoom * frame.getHeight();
+    const deltaY = this.displayHeight - this.zoom * frame.getHeight();
     this.margin.y = Math.max(0, deltaY) / 2;
   };
 
   ns.FrameRenderer.prototype.createDisplayCanvas_ = function () {
-    var height = this.displayHeight;
-    var width = this.displayWidth;
+    const height = this.displayHeight;
+    const width = this.displayWidth;
 
     this.displayCanvas = pskl.utils.CanvasUtils.createCanvas(
       width,
@@ -215,7 +215,7 @@
     settingName,
     settingValue
   ) {
-    var settings = pskl.UserSettings;
+    const settings = pskl.UserSettings;
     if (
       settingName == settings.GRID_WIDTH ||
       settingName == settings.GRID_SPACING ||
@@ -227,14 +227,14 @@
   };
 
   ns.FrameRenderer.prototype.getUserGridWidth_ = function () {
-    var gridEnabled = pskl.UserSettings.get(pskl.UserSettings.GRID_ENABLED);
-    var width = pskl.UserSettings.get(pskl.UserSettings.GRID_WIDTH);
+    const gridEnabled = pskl.UserSettings.get(pskl.UserSettings.GRID_ENABLED);
+    const width = pskl.UserSettings.get(pskl.UserSettings.GRID_WIDTH);
     return gridEnabled ? width : 0;
   };
 
   ns.FrameRenderer.prototype.getUserGridSpacing_ = function () {
-    var gridEnabled = pskl.UserSettings.get(pskl.UserSettings.GRID_ENABLED);
-    var spacing = pskl.UserSettings.get(pskl.UserSettings.GRID_SPACING);
+    const gridEnabled = pskl.UserSettings.get(pskl.UserSettings.GRID_ENABLED);
+    const spacing = pskl.UserSettings.get(pskl.UserSettings.GRID_SPACING);
     return gridEnabled ? spacing : 0;
   };
 
@@ -244,7 +244,7 @@
    * @public
    */
   ns.FrameRenderer.prototype.getCoordinates = function (x, y) {
-    var containerRect = this.container.getBoundingClientRect();
+    const containerRect = this.container.getBoundingClientRect();
     x = x - containerRect.left;
     y = y - containerRect.top;
 
@@ -252,7 +252,7 @@
     x = x - this.margin.x;
     y = y - this.margin.y;
 
-    var cellSize = this.zoom;
+    const cellSize = this.zoom;
     // apply frame offset
     x = x + this.offset.x * cellSize;
     y = y + this.offset.y * cellSize;
@@ -264,7 +264,7 @@
   };
 
   ns.FrameRenderer.prototype.reverseCoordinates = function (x, y) {
-    var cellSize = this.zoom;
+    const cellSize = this.zoom;
 
     x = x * cellSize;
     y = y * cellSize;
@@ -275,7 +275,7 @@
     x = x + this.margin.x;
     y = y + this.margin.y;
 
-    var containerRect = this.container.getBoundingClientRect();
+    const containerRect = this.container.getBoundingClientRect();
     x = x + containerRect.left;
     y = y + containerRect.top;
 
@@ -299,22 +299,22 @@
         frame.getHeight());
     }
 
-    var w = this.canvas.width;
-    var h = this.canvas.height;
-    var z = this.zoom;
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+    const z = this.zoom;
 
     // Draw in canvas
     pskl.utils.FrameUtils.drawToCanvas(frame, this.canvas);
 
     this.updateMargins_(frame);
 
-    var displayContext = this.displayCanvas.getContext('2d');
+    const displayContext = this.displayCanvas.getContext('2d');
     displayContext.save();
 
-    var translateX = this.margin.x - this.offset.x * z;
-    var translateY = this.margin.y - this.offset.y * z;
+    const translateX = this.margin.x - this.offset.x * z;
+    const translateY = this.margin.y - this.offset.y * z;
 
-    var isZoomedOut = translateX > 0 || translateY > 0;
+    const isZoomedOut = translateX > 0 || translateY > 0;
     // Draw the background / zoomed-out color only if needed. Otherwise the clearRect
     // happening after that will clear "out of bounds" and seems to be doing nothing
     // on some chromebooks (cf https://github.com/piskelapp/piskel/issues/651)
@@ -349,14 +349,14 @@
     displayContext.drawImage(this.canvas, 0, 0);
 
     // Draw grid.
-    var gridWidth = this.computeGridWidthForDisplay_();
-    var gridSpacing = this.getGridSpacing();
+    const gridWidth = this.computeGridWidthForDisplay_();
+    const gridSpacing = this.getGridSpacing();
     if (gridWidth > 0) {
-      var gridColor = this.getGridColor();
+      const gridColor = this.getGridColor();
       // Scale out before drawing the grid.
       displayContext.scale(1 / z, 1 / z);
 
-      var drawOrClear;
+      let drawOrClear;
       if (gridColor === Constants.TRANSPARENT_COLOR) {
         drawOrClear = displayContext.clearRect.bind(displayContext);
       } else {
@@ -365,13 +365,13 @@
       }
 
       // Draw or clear vertical lines.
-      for (var i = 1; i < frame.getWidth(); i++) {
+      for (let i = 1; i < frame.getWidth(); i++) {
         if (i % gridSpacing == 0) {
           drawOrClear(i * z - gridWidth / 2, 0, gridWidth, h * z);
         }
       }
       // Draw or clear horizontal lines.
-      for (var j = 1; j < frame.getHeight(); j++) {
+      for (let j = 1; j < frame.getHeight(); j++) {
         if (j % gridSpacing == 0) {
           drawOrClear(0, j * z - gridWidth / 2, w * z, gridWidth);
         }
@@ -393,7 +393,7 @@
     h,
     z
   ) {
-    var opacity = pskl.UserSettings.get('SEAMLESS_OPACITY');
+    let opacity = pskl.UserSettings.get('SEAMLESS_OPACITY');
     opacity = pskl.utils.Math.minmax(opacity, 0, 1);
     context.fillStyle = 'rgba(255, 255, 255, ' + opacity + ')';
     [
@@ -405,7 +405,7 @@
       [1, -1],
       [1, 0],
       [1, 1]
-    ].forEach(function (d) {
+    ].forEach((d) => {
       context.drawImage(image, d[0] * w * z, d[1] * h * z);
       context.fillRect(d[0] * w * z, d[1] * h * z, w * z, h * z);
     });

@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.devtools');
+  const ns = $.namespace('pskl.devtools');
 
   ns.DrawingTestRecorder = function (piskelController) {
     this.piskelController = piskelController;
@@ -25,9 +25,9 @@
     $.subscribe(Events.CLIPBOARD_CUT, this.onClipboardEvent_.bind(this));
     $.subscribe(Events.CLIPBOARD_PASTE, this.onClipboardEvent_.bind(this));
 
-    for (var key in this.piskelController) {
+    for (const key in this.piskelController) {
       if (typeof this.piskelController[key] == 'function') {
-        var methodTriggersReset =
+        const methodTriggersReset =
           this.piskelController[key]
             .toString()
             .indexOf('Events.PISKEL_RESET') != -1;
@@ -44,8 +44,8 @@
     object,
     methodName
   ) {
-    var method = object[methodName];
-    var testRecorder = this;
+    const method = object[methodName];
+    const testRecorder = this;
     return function () {
       testRecorder.onInstrumentedMethod_(object, methodName, arguments);
       return method.apply(this, arguments);
@@ -74,10 +74,10 @@
   ns.DrawingTestRecorder.prototype.stopRecord = function () {
     this.isRecording = false;
 
-    var renderer = new pskl.rendering.PiskelRenderer(this.piskelController);
-    var png = renderer.renderAsCanvas().toDataURL();
+    const renderer = new pskl.rendering.PiskelRenderer(this.piskelController);
+    const png = renderer.renderAsCanvas().toDataURL();
 
-    var testRecord = JSON.stringify(
+    const testRecord = JSON.stringify(
       {
         events: this.events,
         initialState: this.initialState,
@@ -102,7 +102,7 @@
 
   ns.DrawingTestRecorder.prototype.onKeyboardEvent_ = function (evt, domEvent) {
     if (this.isRecording) {
-      var recordEvent = {};
+      const recordEvent = {};
       recordEvent.type = 'keyboard-event';
       recordEvent.event = {
         which: domEvent.which,
@@ -123,7 +123,7 @@
     color
   ) {
     if (this.isRecording) {
-      var recordEvent = {};
+      const recordEvent = {};
       recordEvent.type = 'color-event';
       recordEvent.color = color;
       recordEvent.isPrimary = isPrimary;
@@ -133,7 +133,7 @@
 
   ns.DrawingTestRecorder.prototype.onToolEvent_ = function (evt, tool) {
     if (this.isRecording) {
-      var recordEvent = {};
+      const recordEvent = {};
       recordEvent.type = 'tool-event';
       recordEvent.toolId = tool.toolId;
       this.events.push(recordEvent);
@@ -142,7 +142,7 @@
 
   ns.DrawingTestRecorder.prototype.onPenSizeChanged_ = function (evt) {
     if (this.isRecording) {
-      var recordEvent = {};
+      const recordEvent = {};
       recordEvent.type = 'pensize-event';
       recordEvent.penSize = pskl.app.penSizeService.getPenSize();
       this.events.push(recordEvent);
@@ -155,7 +155,7 @@
     domEvent
   ) {
     if (this.isRecording) {
-      var recordEvent = {};
+      const recordEvent = {};
       recordEvent.type = 'transformtool-event';
       recordEvent.toolId = toolId;
       recordEvent.event = {
@@ -169,7 +169,7 @@
 
   ns.DrawingTestRecorder.prototype.onClipboardEvent_ = function (evt) {
     if (this.isRecording) {
-      var recordEvent = {};
+      const recordEvent = {};
       recordEvent.type = 'clipboard-event';
       recordEvent.event = evt;
       this.events.push(recordEvent);
@@ -182,7 +182,7 @@
     args
   ) {
     if (this.isRecording) {
-      var recordEvent = {};
+      const recordEvent = {};
       recordEvent.type = 'instrumented-event';
       recordEvent.methodName = methodName;
       recordEvent.args = Array.prototype.slice.call(args, 0);
@@ -197,11 +197,11 @@
   };
 
   ns.DrawingTestRecorder.prototype.recordMouseEvent_ = function (mouseEvent) {
-    var coords = pskl.app.drawingController.getSpriteCoordinates(
+    const coords = pskl.app.drawingController.getSpriteCoordinates(
       mouseEvent.clientX,
       mouseEvent.clientY);
-    var recordEvent = new ns.MouseEvent(mouseEvent, coords);
-    var lastEvent = this.events[this.events.length - 1];
+    const recordEvent = new ns.MouseEvent(mouseEvent, coords);
+    const lastEvent = this.events[this.events.length - 1];
 
     if (!recordEvent.equals(lastEvent)) {
       this.events.push(recordEvent);

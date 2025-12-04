@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service');
+  const ns = $.namespace('pskl.service');
 
   ns.CurrentColorsService = function (piskelController) {
     this.piskelController = piskelController;
@@ -29,7 +29,7 @@
   };
 
   ns.CurrentColorsService.prototype.setCurrentColors = function (colors) {
-    var historyIndex = pskl.app.historyService.currentIndex;
+    const historyIndex = pskl.app.historyService.currentIndex;
     this.cache[historyIndex] = colors;
     if (colors.join('') !== this.currentColors.join('')) {
       this.currentColors = colors;
@@ -39,15 +39,15 @@
 
   ns.CurrentColorsService.prototype.isCurrentColorsPaletteSelected_ =
     function () {
-      var paletteId = pskl.UserSettings.get(pskl.UserSettings.SELECTED_PALETTE);
-      var palette = this.paletteService.getPaletteById(paletteId);
+      const paletteId = pskl.UserSettings.get(pskl.UserSettings.SELECTED_PALETTE);
+      const palette = this.paletteService.getPaletteById(paletteId);
 
       return palette.id === Constants.CURRENT_COLORS_PALETTE_ID;
     };
 
   ns.CurrentColorsService.prototype.loadColorsFromCache_ = function () {
-    var historyIndex = pskl.app.historyService.currentIndex;
-    var colors = this.cache[historyIndex];
+    const historyIndex = pskl.app.historyService.currentIndex;
+    const colors = this.cache[historyIndex];
     if (colors) {
       this.setCurrentColors(colors);
     } else {
@@ -55,16 +55,16 @@
     }
   };
 
-  var batchAll = function (frames, job) {
-    var batches = [];
+  const batchAll = function (frames, job) {
+    const batches = [];
     frames = frames.slice(0);
     while (frames.length) {
       batches.push(frames.splice(0, 10));
     }
-    var result = Q([]);
-    batches.forEach(function (batch) {
-      result = result.then(function (results) {
-        return Q.all(batch.map(job)).then(function (partials) {
+    let result = Q([]);
+    batches.forEach((batch) => {
+      result = result.then((results) => {
+        return Q.all(batch.map(job)).then((partials) => {
           return results.concat(partials);
         });
       });
@@ -73,51 +73,51 @@
   };
 
   ns.CurrentColorsService.prototype.updateCurrentColors_ = function () {
-    var layers = this.piskelController.getLayers();
+    const layers = this.piskelController.getLayers();
 
     // Concatenate all frames in a single array.
-    var frames = layers
-      .map(function (l) {
+    const frames = layers
+      .map((l) => {
         return l.getFrames();
       })
-      .reduce(function (p, n) {
+      .reduce((p, n) => {
         return p.concat(n);
       });
 
     batchAll(
       frames,
-      function (frame) {
+      (frame) => {
         return this.cachedFrameProcessor.get(frame);
-      }.bind(this)
+      }
     ).then(
-      function (results) {
-        var colors = {};
-        results.forEach(function (result) {
-          Object.keys(result).forEach(function (color) {
+      (results) => {
+        const colors = {};
+        results.forEach((result) => {
+          Object.keys(result).forEach((color) => {
             colors[color] = true;
           });
         });
         // Remove transparent color from used colors
         delete colors[pskl.utils.colorToInt(Constants.TRANSPARENT_COLOR)];
 
-        var hexColors = Object.keys(colors).map(function (color) {
+        const hexColors = Object.keys(colors).map((color) => {
           return pskl.utils.intToHex(color);
         });
         this.setCurrentColors(hexColors);
-      }.bind(this));
+      });
   };
 
   ns.CurrentColorsService.prototype.isCurrentColorsPaletteSelected_ =
     function () {
-      var paletteId = pskl.UserSettings.get(pskl.UserSettings.SELECTED_PALETTE);
-      var palette = this.paletteService.getPaletteById(paletteId);
+      const paletteId = pskl.UserSettings.get(pskl.UserSettings.SELECTED_PALETTE);
+      const palette = this.paletteService.getPaletteById(paletteId);
 
       return palette && palette.id === Constants.CURRENT_COLORS_PALETTE_ID;
     };
 
   ns.CurrentColorsService.prototype.loadColorsFromCache_ = function () {
-    var historyIndex = pskl.app.historyService.currentIndex;
-    var colors = this.cache[historyIndex];
+    const historyIndex = pskl.app.historyService.currentIndex;
+    const colors = this.cache[historyIndex];
     if (colors) {
       this.setCurrentColors(colors);
     }
@@ -127,15 +127,15 @@
     frame,
     processorCallback
   ) {
-    var frameColorsWorker = new pskl.worker.framecolors.FrameColors(
+    const frameColorsWorker = new pskl.worker.framecolors.FrameColors(
       frame,
-      function (event) {
+      ((event) => {
         processorCallback(event.data.colors);
-      },
-      function () {},
-      function (event) {
+      }),
+      (() => {}),
+      ((event) => {
         processorCallback({});
-      });
+      }));
     frameColorsWorker.process();
   };
 })();

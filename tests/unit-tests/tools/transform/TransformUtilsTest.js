@@ -1,25 +1,25 @@
-describe("TransformUtils suite", function () {
-  var A = "#000000";
-  var B = "#ff0000";
-  var O = Constants.TRANSPARENT_COLOR;
+describe("TransformUtils suite", () => {
+  const A = "#000000";
+  const B = "#ff0000";
+  const O = Constants.TRANSPARENT_COLOR;
 
-  var HORIZONTAL = pskl.tools.transform.TransformUtils.HORIZONTAL;
-  var VERTICAL = pskl.tools.transform.TransformUtils.VERTICAL;
+  const HORIZONTAL = pskl.tools.transform.TransformUtils.HORIZONTAL;
+  const VERTICAL = pskl.tools.transform.TransformUtils.VERTICAL;
 
-  var CLOCKWISE = pskl.tools.transform.TransformUtils.CLOCKWISE;
-  var COUNTERCLOCKWISE = pskl.tools.transform.TransformUtils.COUNTERCLOCKWISE;
+  const CLOCKWISE = pskl.tools.transform.TransformUtils.CLOCKWISE;
+  const COUNTERCLOCKWISE = pskl.tools.transform.TransformUtils.COUNTERCLOCKWISE;
 
   // shortcuts
-  var frameEqualsGrid = test.testutils.frameEqualsGrid;
-  var toFrameGrid = test.testutils.toFrameGrid;
+  const frameEqualsGrid = test.testutils.frameEqualsGrid;
+  const toFrameGrid = test.testutils.toFrameGrid;
 
   /*******************************/
   /************ FLIP *************/
   /*******************************/
 
-  it("flips a frame vertically", function () {
+  it("flips a frame vertically", () => {
     // create frame
-    var frame = pskl.model.Frame.fromPixelGrid(
+    const frame = pskl.model.Frame.fromPixelGrid(
       toFrameGrid([
         [A, O],
         [O, B],
@@ -34,9 +34,9 @@ describe("TransformUtils suite", function () {
     ]);
   });
 
-  it("flips a frame horizontally", function () {
+  it("flips a frame horizontally", () => {
     // create frame
-    var frame = pskl.model.Frame.fromPixelGrid(
+    const frame = pskl.model.Frame.fromPixelGrid(
       toFrameGrid([
         [A, O],
         [O, B],
@@ -51,9 +51,9 @@ describe("TransformUtils suite", function () {
     ]);
   });
 
-  it("flips rectangular frame", function () {
+  it("flips rectangular frame", () => {
     // create frame
-    var frame = pskl.model.Frame.fromPixelGrid(
+    const frame = pskl.model.Frame.fromPixelGrid(
       toFrameGrid([
         [A, O],
         [A, O],
@@ -82,9 +82,9 @@ describe("TransformUtils suite", function () {
   /*********** ROTATE ************/
   /*******************************/
 
-  it("rotates a frame counterclockwise", function () {
+  it("rotates a frame counterclockwise", () => {
     // create frame
-    var frame = pskl.model.Frame.fromPixelGrid(
+    const frame = pskl.model.Frame.fromPixelGrid(
       toFrameGrid([
         [A, O],
         [O, B],
@@ -120,9 +120,9 @@ describe("TransformUtils suite", function () {
     ]);
   });
 
-  it("rotates a frame clockwise", function () {
+  it("rotates a frame clockwise", () => {
     // create frame
-    var frame = pskl.model.Frame.fromPixelGrid(
+    const frame = pskl.model.Frame.fromPixelGrid(
       toFrameGrid([
         [A, O],
         [O, B],
@@ -158,9 +158,9 @@ describe("TransformUtils suite", function () {
     ]);
   });
 
-  it("rotates a rectangular frame", function () {
+  it("rotates a rectangular frame", () => {
     // create frame
-    var frame = pskl.model.Frame.fromPixelGrid(
+    const frame = pskl.model.Frame.fromPixelGrid(
       toFrameGrid([
         [A, O],
         [A, O],
@@ -206,9 +206,9 @@ describe("TransformUtils suite", function () {
     ]);
   });
 
-  it("rotates a rectangular (horizontal) frame", function () {
+  it("rotates a rectangular (horizontal) frame", () => {
     // create frame
-    var frame = pskl.model.Frame.fromPixelGrid(
+    const frame = pskl.model.Frame.fromPixelGrid(
       toFrameGrid([
         [O, O, O, O],
         [A, A, B, B],
@@ -248,9 +248,9 @@ describe("TransformUtils suite", function () {
   /*********** CENTER ************/
   /*******************************/
 
-  it("centers a frame", function () {
+  it("centers a frame", () => {
     // create frame
-    var frame = pskl.model.Frame.fromPixelGrid(
+    const frame = pskl.model.Frame.fromPixelGrid(
       toFrameGrid([
         [A, B, O, O],
         [B, A, O, O],

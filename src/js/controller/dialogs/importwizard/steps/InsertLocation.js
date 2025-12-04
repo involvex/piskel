@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs.importwizard.steps');
+  const ns = $.namespace('pskl.controller.dialogs.importwizard.steps');
 
   ns.InsertLocation = function () {
     this.superclass.constructor.apply(this, arguments);
@@ -32,7 +32,7 @@
   };
 
   ns.InsertLocation.prototype.onInsertModeChange_ = function () {
-    var value = this.insertModeContainer.querySelector(':checked').value;
+    const value = this.insertModeContainer.querySelector(':checked').value;
     this.mergeData.insertMode = value;
 
     if (this.mergeData.insertMode === ns.InsertLocation.MODES.ADD) {
@@ -47,7 +47,7 @@
     // container's offsetWidth and offsetHeight.
     this.currentPiskelFramePickerWidget.init();
 
-    var currentFrameIndex = this.piskelController.getCurrentFrameIndex();
+    const currentFrameIndex = this.piskelController.getCurrentFrameIndex();
     this.currentPiskelFramePickerWidget.setFrameIndex(currentFrameIndex + 1);
     this.currentPiskelFramePickerWidget.setFirstFrameIndex(0);
 
@@ -55,7 +55,7 @@
   };
 
   ns.InsertLocation.prototype.onNextClick = function () {
-    var insertIndex = this.currentPiskelFramePickerWidget.getFrameIndex();
+    const insertIndex = this.currentPiskelFramePickerWidget.getFrameIndex();
     this.mergeData.insertIndex = insertIndex;
     this.superclass.onNextClick.call(this);
   };

@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.controller');
+  const ns = $.namespace('pskl.controller');
 
-  var ACTION = {
+  const ACTION = {
     SELECT: 'select',
     CLONE: 'clone',
     DELETE: 'delete',
@@ -75,19 +75,19 @@
   };
 
   ns.FramesListController.prototype.updateScrollerOverflows = function () {
-    var scroller = this.previewListScroller;
-    var scrollerHeight = scroller.offsetHeight;
-    var scrollTop = scroller.scrollTop;
-    var scrollerContentHeight = this.previewList.offsetHeight;
-    var treshold = this.container.querySelector('.top-overflow').offsetHeight;
-    var overflowTop = false;
-    var overflowBottom = false;
+    const scroller = this.previewListScroller;
+    const scrollerHeight = scroller.offsetHeight;
+    const scrollTop = scroller.scrollTop;
+    const scrollerContentHeight = this.previewList.offsetHeight;
+    const treshold = this.container.querySelector('.top-overflow').offsetHeight;
+    let overflowTop = false;
+    let overflowBottom = false;
 
     if (scrollerHeight < scrollerContentHeight) {
       if (scrollTop > treshold) {
         overflowTop = true;
       }
-      var scrollBottom = scrollerContentHeight - scrollTop - scrollerHeight;
+      const scrollBottom = scrollerContentHeight - scrollTop - scrollerHeight;
       if (scrollBottom > treshold) {
         overflowBottom = true;
       }
@@ -97,16 +97,16 @@
   };
 
   ns.FramesListController.prototype.onContainerClick_ = function (event) {
-    var target = pskl.utils.Dom.getParentWithData(event.target, 'tileAction');
+    const target = pskl.utils.Dom.getParentWithData(event.target, 'tileAction');
     if (!target) {
       return;
     }
-    var action = target.dataset.tileAction;
-    var index = parseInt(target.dataset.tileNumber, 10);
+    const action = target.dataset.tileAction;
+    const index = parseInt(target.dataset.tileNumber, 10);
 
     if (action === ACTION.CLONE) {
       this.piskelController.duplicateFrameAt(index);
-      var clonedTile = this.createPreviewTile_(index + 1);
+      const clonedTile = this.createPreviewTile_(index + 1);
       this.previewList.insertBefore(clonedTile, this.tiles[index].nextSibling);
       this.tiles.splice(index, 0, clonedTile);
       this.updateScrollerOverflows();
@@ -119,7 +119,7 @@
       this.piskelController.setCurrentFrameIndex(index);
     } else if (action === ACTION.NEW_FRAME) {
       this.piskelController.addFrame();
-      var newtile = this.createPreviewTile_(this.tiles.length);
+      const newtile = this.createPreviewTile_(this.tiles.length);
       this.tiles.push(newtile);
       this.previewList.insertBefore(newtile, this.addFrameTile);
       this.updateScrollerOverflows();
@@ -131,8 +131,8 @@
   };
 
   ns.FramesListController.prototype.updatePreviews_ = function () {
-    var i;
-    var length;
+    let i;
+    let length;
 
     for (i = 0, length = this.tiles.length; i < length; i++) {
       // Remove selected class
@@ -151,7 +151,7 @@
       }
 
       // Check if any tile is updated
-      var hash = this.piskelController
+      const hash = this.piskelController
         .getCurrentLayer()
         .getFrameAt(i)
         .getHash();
@@ -176,9 +176,9 @@
     }
 
     // Hide/Show buttons if needed
-    var buttons = this.container.querySelectorAll(
+    const buttons = this.container.querySelectorAll(
       '.delete-frame-action, .dnd-action');
-    var display = this.piskelController.getFrameCount() > 1 ? 'block' : 'none';
+    const display = this.piskelController.getFrameCount() > 1 ? 'block' : 'none';
     for (i = 0, length = buttons.length; i < length; i++) {
       buttons[i].style.display = display;
     }
@@ -192,20 +192,20 @@
     this.previewList.innerHTML = '';
 
     // Manually remove tooltips since mouseout events were shortcut by the DOM refresh:
-    var tooltips = document.querySelectorAll('.tooltip');
-    Array.prototype.forEach.call(tooltips, function (tooltip) {
+    const tooltips = document.querySelectorAll('.tooltip');
+    Array.prototype.forEach.call(tooltips, (tooltip) => {
       tooltip.parentNode.removeChild(tooltip);
     });
 
-    var frameCount = this.piskelController.getFrameCount();
+    const frameCount = this.piskelController.getFrameCount();
 
-    for (var i = 0; i < frameCount; i++) {
-      var tile = this.createPreviewTile_(i);
+    for (let i = 0; i < frameCount; i++) {
+      const tile = this.createPreviewTile_(i);
       this.previewList.appendChild(tile);
       this.tiles[i] = tile;
     }
     // Append 'new empty frame' button
-    var newFrameButton = document.createElement('div');
+    const newFrameButton = document.createElement('div');
     newFrameButton.id = 'add-frame-action';
     newFrameButton.className = 'add-frame-action';
     newFrameButton.setAttribute('data-tile-action', ACTION.NEW_FRAME);
@@ -237,15 +237,15 @@
    * @private
    */
   ns.FramesListController.prototype.onUpdate_ = function (event, ui) {
-    var movedItem = ui.item.get(0);
-    var originFrameId = parseInt(movedItem.dataset.tileNumber, 10);
-    var tiles = document.querySelectorAll('.preview-tile');
-    var targetInsertionId = Array.prototype.indexOf.call(tiles, movedItem);
+    const movedItem = ui.item.get(0);
+    const originFrameId = parseInt(movedItem.dataset.tileNumber, 10);
+    const tiles = document.querySelectorAll('.preview-tile');
+    const targetInsertionId = Array.prototype.indexOf.call(tiles, movedItem);
 
     this.piskelController.moveFrame(originFrameId, targetInsertionId);
     this.piskelController.setCurrentFrameIndex(targetInsertionId);
 
-    var tile = this.tiles.splice(originFrameId, 1)[0];
+    const tile = this.tiles.splice(originFrameId, 1)[0];
     this.tiles.splice(targetInsertionId, 0, tile);
     this.flagForRedraw_();
   };
@@ -257,9 +257,9 @@
     this.justDropped = true;
 
     this.resizeTimer = window.setTimeout(
-      function () {
+      () => {
         this.justDropped = false;
-      }.bind(this),
+      },
       200);
   };
 
@@ -267,11 +267,11 @@
    * @private
    */
   ns.FramesListController.prototype.createPreviewTile_ = function (tileNumber) {
-    var currentFrame = this.piskelController
+    const currentFrame = this.piskelController
       .getCurrentLayer()
       .getFrameAt(tileNumber);
 
-    var previewTileRoot = document.createElement('li');
+    const previewTileRoot = document.createElement('li');
     previewTileRoot.setAttribute('data-tile-number', tileNumber);
     previewTileRoot.setAttribute('data-tile-hash', currentFrame.getHash());
     previewTileRoot.setAttribute('data-tile-action', ACTION.SELECT);
@@ -280,29 +280,29 @@
       previewTileRoot.classList.add('selected');
     }
 
-    var canvasContainer = document.createElement('div');
+    const canvasContainer = document.createElement('div');
     canvasContainer.classList.add(
       'canvas-container',
       pskl.UserSettings.get(pskl.UserSettings.CANVAS_BACKGROUND));
-    var height =
+    const height =
       this.zoom * this.piskelController.getCurrentFrame().getHeight();
-    var horizontalMargin = (Constants.PREVIEW_FILM_SIZE - height) / 2;
+    const horizontalMargin = (Constants.PREVIEW_FILM_SIZE - height) / 2;
     canvasContainer.style.marginTop = horizontalMargin + 'px';
 
-    var width = this.zoom * this.piskelController.getCurrentFrame().getWidth();
-    var verticalMargin = (Constants.PREVIEW_FILM_SIZE - width) / 2;
+    const width = this.zoom * this.piskelController.getCurrentFrame().getWidth();
+    const verticalMargin = (Constants.PREVIEW_FILM_SIZE - width) / 2;
     canvasContainer.style.marginLeft = verticalMargin + 'px';
     canvasContainer.style.marginRight = verticalMargin + 'px';
 
     // Add canvas background and canvas
-    var canvasBackground = document.createElement('div');
+    const canvasBackground = document.createElement('div');
     canvasBackground.className = 'canvas-background';
     canvasContainer.appendChild(canvasBackground);
     canvasContainer.appendChild(this.getCanvasForFrame(currentFrame));
     previewTileRoot.appendChild(canvasContainer);
 
     // Add clone button
-    var cloneFrameButton = document.createElement('button');
+    const cloneFrameButton = document.createElement('button');
     cloneFrameButton.setAttribute('rel', 'tooltip');
     cloneFrameButton.setAttribute('data-placement', 'right');
     cloneFrameButton.setAttribute('data-tile-number', tileNumber);
@@ -313,7 +313,7 @@
     previewTileRoot.appendChild(cloneFrameButton);
 
     // Add delete button
-    var deleteButton = document.createElement('button');
+    const deleteButton = document.createElement('button');
     deleteButton.setAttribute('rel', 'tooltip');
     deleteButton.setAttribute('data-placement', 'right');
     deleteButton.setAttribute('title', 'Delete this frame');
@@ -324,12 +324,12 @@
     previewTileRoot.appendChild(deleteButton);
 
     // Add 'dragndrop handle'.
-    var dndHandle = document.createElement('div');
+    const dndHandle = document.createElement('div');
     dndHandle.className = 'tile-overlay dnd-action icon-frame-dragndrop-white';
     previewTileRoot.appendChild(dndHandle);
 
     // Add tile count
-    var tileCount = document.createElement('button');
+    const tileCount = document.createElement('button');
     tileCount.setAttribute('rel', 'tooltip');
     tileCount.setAttribute('title', 'Toggle for preview');
     tileCount.setAttribute('data-tile-number', tileNumber);
@@ -342,20 +342,20 @@
   };
 
   ns.FramesListController.prototype.getCanvasForFrame = function (frame) {
-    var canvas = this.cachedFrameProcessor.get(frame, this.zoom);
+    const canvas = this.cachedFrameProcessor.get(frame, this.zoom);
     return canvas;
   };
 
   ns.FramesListController.prototype.frameToPreviewCanvas_ = function (frame) {
-    var canvasRenderer = new pskl.rendering.CanvasRenderer(frame, this.zoom);
+    const canvasRenderer = new pskl.rendering.CanvasRenderer(frame, this.zoom);
     canvasRenderer.drawTransparentAs(Constants.TRANSPARENT_COLOR);
-    var canvas = canvasRenderer.render();
+    const canvas = canvasRenderer.render();
     canvas.classList.add('tile-view', 'canvas');
     return canvas;
   };
 
   ns.FramesListController.prototype.clonePreviewCanvas_ = function (canvas) {
-    var clone = pskl.utils.CanvasUtils.clone(canvas);
+    const clone = pskl.utils.CanvasUtils.clone(canvas);
     clone.classList.add('tile-view', 'canvas');
     return clone;
   };
@@ -364,8 +364,8 @@
    * Calculate the preview zoom depending on the piskel size
    */
   ns.FramesListController.prototype.calculateZoom_ = function () {
-    var frame = this.piskelController.getCurrentFrame();
-    var frameSize = Math.max(frame.getHeight(), frame.getWidth());
+    const frame = this.piskelController.getCurrentFrame();
+    const frameSize = Math.max(frame.getHeight(), frame.getWidth());
 
     return Constants.PREVIEW_FILM_SIZE / frameSize;
   };

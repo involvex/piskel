@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.widgets');
+  const ns = $.namespace('pskl.widgets');
 
   ns.Tabs = function (tabs, parentController, settingsName) {
     this.tabs = tabs;
@@ -20,7 +20,7 @@
       this
     );
 
-    var tab = pskl.UserSettings.get(this.settingsName);
+    const tab = pskl.UserSettings.get(this.settingsName);
     if (tab) {
       this.selectTab(tab);
     }
@@ -53,7 +53,7 @@
     this.currentTab = tabId;
     pskl.UserSettings.set(this.settingsName, tabId);
 
-    var selectedTab = this.tabListEl.querySelector('.selected');
+    const selectedTab = this.tabListEl.querySelector('.selected');
     if (selectedTab) {
       selectedTab.classList.remove('selected');
     }
@@ -63,7 +63,7 @@
   };
 
   ns.Tabs.prototype.onTabsClicked_ = function (e) {
-    var tabId = pskl.utils.Dom.getData(e.target, 'tabId');
+    const tabId = pskl.utils.Dom.getData(e.target, 'tabId');
     this.selectTab(tabId);
   };
 })();

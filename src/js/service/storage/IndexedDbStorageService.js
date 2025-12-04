@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service.storage');
+  const ns = $.namespace('pskl.service.storage');
 
   ns.IndexedDbStorageService = function (piskelController) {
     this.piskelController = piskelController;
@@ -7,17 +7,17 @@
   };
 
   ns.IndexedDbStorageService.prototype.init = function () {
-    this.piskelDatabase.init().catch(function (e) {
+    this.piskelDatabase.init().catch((e) => {
       console.log(
         'Failed to initialize PiskelDatabase, local browser saves will be unavailable.');
     });
   };
 
   ns.IndexedDbStorageService.prototype.save = function (piskel) {
-    var name = piskel.getDescriptor().name;
-    var description = piskel.getDescriptor().description;
-    var date = Date.now();
-    var serialized = pskl.utils.serialization.Serializer.serialize(piskel);
+    const name = piskel.getDescriptor().name;
+    const description = piskel.getDescriptor().description;
+    const date = Date.now();
+    const serialized = pskl.utils.serialization.Serializer.serialize(piskel);
 
     return this.save_(name, description, date, serialized);
   };
@@ -29,7 +29,7 @@
     serialized
   ) {
     return this.piskelDatabase.get(name).then(
-      function (piskelData) {
+      (piskelData) => {
         if (typeof piskelData !== 'undefined') {
           return this.piskelDatabase.update(
             name,
@@ -43,16 +43,16 @@
             date,
             serialized);
         }
-      }.bind(this));
+      });
   };
 
   ns.IndexedDbStorageService.prototype.load = function (name) {
-    return this.piskelDatabase.get(name).then(function (piskelData) {
+    return this.piskelDatabase.get(name).then((piskelData) => {
       if (typeof piskelData !== 'undefined') {
-        var serialized = piskelData.serialized;
+        const serialized = piskelData.serialized;
         pskl.utils.serialization.Deserializer.deserialize(
           JSON.parse(serialized),
-          function (piskel) {
+          (piskel) => {
             pskl.app.piskelController.setPiskel(piskel);
           });
       } else {

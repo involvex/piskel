@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.devtools');
+  const ns = $.namespace('pskl.devtools');
 
   ns.DrawingTestSuiteRunner = function (testPaths) {
     if (Array.isArray(testPaths)) {
@@ -27,7 +27,7 @@
 
   ns.DrawingTestSuiteRunner.prototype.runTest = function (testIndex) {
     this.currentIndex = testIndex;
-    var path = this.testPaths[testIndex];
+    const path = this.testPaths[testIndex];
     if (path) {
       pskl.utils.Xhr.get(path, this.onTestLoaded_.bind(this));
     } else {
@@ -36,9 +36,9 @@
   };
 
   ns.DrawingTestSuiteRunner.prototype.onTestLoaded_ = function (response) {
-    var testRecord = JSON.parse(response.responseText);
+    const testRecord = JSON.parse(response.responseText);
 
-    var testPlayer = new ns.DrawingTestPlayer(testRecord);
+    const testPlayer = new ns.DrawingTestPlayer(testRecord);
 
     testPlayer.addEndTestCallback(this.onTestEnd_.bind(this));
     testPlayer.start();
@@ -47,7 +47,7 @@
   ns.DrawingTestSuiteRunner.prototype.onTestEnd_ = function (
     data /* {success, performance} */
   ) {
-    var path = this.testPaths[this.currentIndex];
+    const path = this.testPaths[this.currentIndex];
     this.testStatus[path] = data;
 
     $.publish(Events.TEST_CASE_END, [path, data.success, data.performance]);
@@ -56,14 +56,14 @@
   };
 
   ns.DrawingTestSuiteRunner.prototype.onTestSuiteEnd_ = function () {
-    var success = this.testPaths.every(
-      function (path) {
+    const success = this.testPaths.every(
+      (path) => {
         return this.testStatus[path].success;
-      }.bind(this));
-    var performance = this.testPaths.reduce(
-      function (p, path) {
+      });
+    const performance = this.testPaths.reduce(
+      (p, path) => {
         return this.testStatus[path].performance + p;
-      }.bind(this),
+      },
       0);
     this.status = success ?
       ns.DrawingTestSuiteRunner.STATUS.SUCCESS :

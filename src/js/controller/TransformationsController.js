@@ -1,6 +1,6 @@
 (function () {
-  var ns = $.namespace('pskl.controller');
-  var SHOW_MORE_CLASS = 'show-more';
+  const ns = $.namespace('pskl.controller');
+  const SHOW_MORE_CLASS = 'show-more';
 
   ns.TransformationsController = function () {
     this.tools = [
@@ -34,25 +34,25 @@
 
   ns.TransformationsController.prototype.applyTool = function (toolId, evt) {
     this.tools.forEach(
-      function (tool) {
+      (tool) => {
         if (tool.toolId === toolId) {
           $.publish(Events.TRANSFORMATION_EVENT, [toolId, evt]);
           tool.applyTransformation(evt);
         }
-      }.bind(this));
+      });
   };
 
   ns.TransformationsController.prototype.onTransformationClick_ = function (
     evt
   ) {
-    var toolId = evt.target.dataset.toolId;
+    const toolId = evt.target.dataset.toolId;
     if (toolId) {
       this.applyTool(toolId, evt);
     }
   };
 
   ns.TransformationsController.prototype.toggleShowMoreTools_ = function (evt) {
-    var showMore = pskl.UserSettings.get(pskl.UserSettings.TRANSFORM_SHOW_MORE);
+    const showMore = pskl.UserSettings.get(pskl.UserSettings.TRANSFORM_SHOW_MORE);
     pskl.UserSettings.set(pskl.UserSettings.TRANSFORM_SHOW_MORE, !showMore);
   };
 
@@ -66,7 +66,7 @@
   };
 
   ns.TransformationsController.prototype.updateShowMoreLink_ = function () {
-    var showMoreEnabled = pskl.UserSettings.get(
+    const showMoreEnabled = pskl.UserSettings.get(
       pskl.UserSettings.TRANSFORM_SHOW_MORE);
     this.container.classList.toggle(SHOW_MORE_CLASS, showMoreEnabled);
 
@@ -75,12 +75,12 @@
   };
 
   ns.TransformationsController.prototype.createToolsDom_ = function () {
-    var html = this.tools.reduce(
-      function (p, tool) {
+    const html = this.tools.reduce(
+      (p, tool) => {
         return p + this.toolIconBuilder.createIcon(tool, 'left');
-      }.bind(this),
+      },
       '');
-    var toolsContainer = this.container.querySelector('.tools-wrapper');
+    const toolsContainer = this.container.querySelector('.tools-wrapper');
     toolsContainer.innerHTML = html;
   };
 })();

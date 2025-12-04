@@ -1,8 +1,8 @@
-describe("PiskelDatabase test", function () {
+describe("PiskelDatabase test", () => {
   // Test object.
-  var piskelDatabase;
+  let piskelDatabase;
 
-  var _toSnapshot = function (session_id, name, description, date, serialized) {
+  const _toSnapshot = function (session_id, name, description, date, serialized) {
     return {
       session_id: session_id,
       name: name,
@@ -12,19 +12,19 @@ describe("PiskelDatabase test", function () {
     };
   };
 
-  var _checkPiskel = function (actual, expected) {
+  const _checkPiskel = function (actual, expected) {
     expect(actual.name).toBe(expected[0]);
     expect(actual.description).toBe(expected[1]);
     expect(actual.date).toBe(expected[2]);
     expect(actual.serialized).toBe(expected[3]);
   };
 
-  var _addPiskels = function (piskels) {
+  const _addPiskels = function (piskels) {
     var _add = function (index) {
-      var piskelData = piskels[index];
+      const piskelData = piskels[index];
       return piskelDatabase.create
         .apply(piskelDatabase, piskelData)
-        .then(function () {
+        .then(() => {
           if (piskels[index + 1]) {
             return _add(index + 1);
           } else {
@@ -36,39 +36,39 @@ describe("PiskelDatabase test", function () {
     return _add(0);
   };
 
-  beforeEach(function (done) {
+  beforeEach((done) => {
     // Mock the migration script.
     spyOn(pskl.database.migrate.MigrateLocalStorageToIndexedDb, "migrate");
 
     // Drop the database before each test.
-    var dbName = pskl.database.PiskelDatabase.DB_NAME;
-    var req = window.indexedDB.deleteDatabase(dbName);
+    const dbName = pskl.database.PiskelDatabase.DB_NAME;
+    const req = window.indexedDB.deleteDatabase(dbName);
     req.onsuccess = done;
   });
 
-  afterEach(function () {
+  afterEach(() => {
     // Close the database if it was still open.
     if (piskelDatabase && piskelDatabase.db) {
       piskelDatabase.db.close();
     }
   });
 
-  it("initializes the DB and returns a promise", function (done) {
+  it("initializes the DB and returns a promise", (done) => {
     piskelDatabase = new pskl.database.PiskelDatabase();
     piskelDatabase.init().then(done);
   });
 
-  it("can add a piskel and retrieve it", function (done) {
+  it("can add a piskel and retrieve it", (done) => {
     piskelDatabase = new pskl.database.PiskelDatabase();
     piskelDatabase
       .init()
-      .then(function (db) {
+      .then((db) => {
         return piskelDatabase.create("name", "desc", 0, "serialized");
       })
-      .then(function () {
+      .then(() => {
         return piskelDatabase.get("name");
       })
-      .then(function (piskel) {
+      .then((piskel) => {
         expect(piskel.name).toBe("name");
         expect(piskel.description).toBe("desc");
         expect(piskel.date).toBe(0);
@@ -77,8 +77,8 @@ describe("PiskelDatabase test", function () {
       });
   });
 
-  it("can delete piskel by name", function (done) {
-    var piskels = [
+  it("can delete piskel by name", (done) => {
+    const piskels = [
       ["n1", "d1", 10, "s1"],
       ["n2", "d2", 20, "s2"],
       ["n3", "d3", 30, "s3"],
@@ -87,31 +87,31 @@ describe("PiskelDatabase test", function () {
     piskelDatabase = new pskl.database.PiskelDatabase();
     piskelDatabase
       .init()
-      .then(function (db) {
+      .then((db) => {
         return _addPiskels(piskels);
       })
-      .then(function () {
+      .then(() => {
         return piskelDatabase.delete("n2");
       })
-      .then(function () {
+      .then(() => {
         return piskelDatabase.get("n1");
       })
-      .then(function (piskelData) {
+      .then((piskelData) => {
         _checkPiskel(piskelData, piskels[0]);
         return piskelDatabase.get("n3");
       })
-      .then(function (piskelData) {
+      .then((piskelData) => {
         _checkPiskel(piskelData, piskels[2]);
         return piskelDatabase.get("n2");
       })
-      .then(function (piskelData) {
+      .then((piskelData) => {
         expect(piskelData).toBe(undefined);
         done();
       });
   });
 
-  it("can list piskels", function (done) {
-    var piskels = [
+  it("can list piskels", (done) => {
+    const piskels = [
       ["n1", "d1", 10, "s1"],
       ["n2", "d2", 20, "s2"],
       ["n3", "d3", 30, "s3"],
@@ -120,15 +120,15 @@ describe("PiskelDatabase test", function () {
     piskelDatabase = new pskl.database.PiskelDatabase();
     piskelDatabase
       .init()
-      .then(function (db) {
+      .then((db) => {
         return _addPiskels(piskels);
       })
-      .then(function () {
+      .then(() => {
         return piskelDatabase.list();
       })
-      .then(function (piskels) {
+      .then((piskels) => {
         expect(piskels.length).toBe(3);
-        piskels.forEach(function (piskelData) {
+        piskels.forEach((piskelData) => {
           expect(piskelData.name).toMatch(/n[1-3]/);
           expect(piskelData.description).toMatch(/d[1-3]/);
           expect(piskelData.date).toBeDefined();
@@ -138,8 +138,8 @@ describe("PiskelDatabase test", function () {
       });
   });
 
-  it("can update piskel with same name", function (done) {
-    var piskels = [
+  it("can update piskel with same name", (done) => {
+    const piskels = [
       ["n1", "d1", 10, "s1"],
       ["n2", "d2", 20, "s2"],
       ["n3", "d3", 30, "s3"],
@@ -148,18 +148,18 @@ describe("PiskelDatabase test", function () {
     piskelDatabase = new pskl.database.PiskelDatabase();
     piskelDatabase
       .init()
-      .then(function (db) {
+      .then((db) => {
         return _addPiskels(piskels);
       })
-      .then(function () {
+      .then(() => {
         return piskelDatabase.update("n2", "d2_updated", 40, "s2_updated");
       })
-      .then(function (piskels) {
+      .then((piskels) => {
         return piskelDatabase.list();
       })
-      .then(function (piskels) {
+      .then((piskels) => {
         expect(piskels.length).toBe(3);
-        var p2 = piskels.filter(function (p) {
+        const p2 = piskels.filter((p) => {
           return p.name === "n2";
         })[0];
         expect(p2.name).toBe("n2");
@@ -168,7 +168,7 @@ describe("PiskelDatabase test", function () {
 
         return piskelDatabase.get("n2");
       })
-      .then(function (piskel) {
+      .then((piskel) => {
         _checkPiskel(piskel, ["n2", "d2_updated", 40, "s2_updated"]);
         done();
       });

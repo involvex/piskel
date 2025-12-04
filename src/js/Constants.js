@@ -1,5 +1,5 @@
 // TODO(grosbouddha): put under pskl namespace.
-var Constants = {
+const Constants = {
   DEFAULT: {
     HEIGHT: 32,
     WIDTH: 32,
@@ -69,3 +69,6 @@ var Constants = {
   // SERVICE URLS
   APPENGINE_SAVE_URL: 'save'
 };
+
+// Make Constants available globally for legacy code
+window.Constants = Constants;

@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service.keyboard');
+  const ns = $.namespace('pskl.service.keyboard');
 
   ns.ShortcutService = function () {
     this.shortcuts_ = [];
@@ -36,8 +36,8 @@
   };
 
   ns.ShortcutService.prototype.unregisterShortcut = function (shortcut) {
-    var index = -1;
-    this.shortcuts_.forEach(function (s, i) {
+    let index = -1;
+    this.shortcuts_.forEach((s, i) => {
       if (s.shortcut === shortcut) {
         index = i;
       }
@@ -51,44 +51,44 @@
    * @private
    */
   ns.ShortcutService.prototype.onKeyDown_ = function (evt) {
-    var eventKey = ns.KeyUtils.createKeyFromEvent(evt);
+    const eventKey = ns.KeyUtils.createKeyFromEvent(evt);
     if (this.isInInput_(evt) || !eventKey) {
       return;
     }
 
     this.shortcuts_.forEach(
-      function (shortcutInfo) {
+      (shortcutInfo) => {
         shortcutInfo.shortcut.getKeys().forEach(
-          function (shortcutKey) {
+          (shortcutKey) => {
             if (!ns.KeyUtils.equals(shortcutKey, eventKey)) {
               return;
             }
 
-            var bubble = shortcutInfo.callback(eventKey.key);
+            const bubble = shortcutInfo.callback(eventKey.key);
             if (bubble !== true) {
               evt.preventDefault();
             }
             $.publish(Events.KEYBOARD_EVENT, [evt]);
-          }.bind(this));
-      }.bind(this));
+          });
+      });
   };
 
   ns.ShortcutService.prototype.isInInput_ = function (evt) {
-    var targetTagName = evt.target.nodeName.toUpperCase();
+    const targetTagName = evt.target.nodeName.toUpperCase();
     return targetTagName === 'INPUT' || targetTagName === 'TEXTAREA';
   };
 
   ns.ShortcutService.prototype.getShortcutById = function (id) {
-    return pskl.utils.Array.find(this.getShortcuts(), function (shortcut) {
+    return pskl.utils.Array.find(this.getShortcuts(), (shortcut) => {
       return shortcut.getId() === id;
     });
   };
 
   ns.ShortcutService.prototype.getShortcuts = function () {
-    var shortcuts = [];
-    ns.Shortcuts.CATEGORIES.forEach(function (category) {
-      var shortcutMap = ns.Shortcuts[category];
-      Object.keys(shortcutMap).forEach(function (shortcutKey) {
+    const shortcuts = [];
+    ns.Shortcuts.CATEGORIES.forEach((category) => {
+      const shortcutMap = ns.Shortcuts[category];
+      Object.keys(shortcutMap).forEach((shortcutKey) => {
         shortcuts.push(shortcutMap[shortcutKey]);
       });
     });
@@ -99,9 +99,9 @@
     shortcut,
     keyAsString
   ) {
-    var key = keyAsString.replace(/\s/g, '');
+    const key = keyAsString.replace(/\s/g, '');
 
-    var isForbiddenKey = ns.Shortcuts.FORBIDDEN_KEYS.indexOf(key) != -1;
+    const isForbiddenKey = ns.Shortcuts.FORBIDDEN_KEYS.indexOf(key) != -1;
     if (isForbiddenKey) {
       $.publish(Events.SHOW_NOTIFICATION, [
         {
@@ -117,7 +117,7 @@
   };
 
   ns.ShortcutService.prototype.removeKeyFromAllShortcuts_ = function (key) {
-    this.getShortcuts().forEach(function (s) {
+    this.getShortcuts().forEach((s) => {
       if (s.removeKeys([key])) {
         $.publish(Events.SHOW_NOTIFICATION, [
           {
@@ -133,7 +133,7 @@
    * Restore the default piskel key for all shortcuts
    */
   ns.ShortcutService.prototype.restoreDefaultShortcuts = function () {
-    this.getShortcuts().forEach(function (shortcut) {
+    this.getShortcuts().forEach((shortcut) => {
       shortcut.restoreDefault();
     });
     $.publish(Events.SHORTCUTS_CHANGED);

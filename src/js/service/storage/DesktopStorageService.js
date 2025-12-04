@@ -1,6 +1,6 @@
 (function () {
-  var ns = $.namespace('pskl.service.storage');
-  var PISKEL_EXTENSION = '.piskel';
+  const ns = $.namespace('pskl.service.storage');
+  const PISKEL_EXTENSION = '.piskel';
 
   ns.DesktopStorageService = function (piskelController) {
     this.piskelController = piskelController || pskl.app.piskelController;
@@ -13,8 +13,8 @@
     if (piskel.savePath && !saveAsNew) {
       return this.saveAtPath_(piskel, piskel.savePath);
     } else {
-      var name = piskel.getDescriptor().name;
-      var filenamePromise = pskl.utils.FileUtilsDesktop.chooseFilenameDialog(
+      const name = piskel.getDescriptor().name;
+      const filenamePromise = pskl.utils.FileUtilsDesktop.chooseFilenameDialog(
         name,
         PISKEL_EXTENSION);
       return filenamePromise.then(this.saveAtPath_.bind(this, piskel));
@@ -26,7 +26,7 @@
       return Q.reject('Invalid file name');
     }
 
-    var serialized = pskl.utils.serialization.Serializer.serialize(piskel);
+    const serialized = pskl.utils.serialization.Serializer.serialize(piskel);
     savePath = this.addExtensionIfNeeded_(savePath);
     piskel.savePath = savePath;
     piskel.setName(this.extractFilename_(savePath));
@@ -38,8 +38,8 @@
   };
 
   ns.DesktopStorageService.prototype.load = function (savePath) {
-    pskl.utils.FileUtilsDesktop.readFile(savePath).then(function (content) {
-      pskl.utils.PiskelFileUtils.decodePiskelFile(content, function (piskel) {
+    pskl.utils.FileUtilsDesktop.readFile(savePath).then((content) => {
+      pskl.utils.PiskelFileUtils.decodePiskelFile(content, (piskel) => {
         // store save path so we can re-save without opening the save dialog
         piskel.savePath = savePath;
         pskl.app.piskelController.setPiskel(piskel);
@@ -50,7 +50,7 @@
   ns.DesktopStorageService.prototype.addExtensionIfNeeded_ = function (
     filename
   ) {
-    var hasExtension =
+    const hasExtension =
       filename.substr(-PISKEL_EXTENSION.length) === PISKEL_EXTENSION;
     if (!hasExtension) {
       return filename + PISKEL_EXTENSION;
@@ -59,7 +59,7 @@
   };
 
   ns.DesktopStorageService.prototype.extractFilename_ = function (savePath) {
-    var matches = /[\/\\]([^\/\\]*)\.piskel$/gi.exec(savePath);
+    const matches = /[\/\\]([^\/\\]*)\.piskel$/gi.exec(savePath);
     if (matches && matches[1]) {
       return matches[1];
     }

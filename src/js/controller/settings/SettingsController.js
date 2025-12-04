@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings');
+  const ns = $.namespace('pskl.controller.settings');
 
-  var settings = {
+  const settings = {
     user: {
       template: 'templates/settings/preferences.html',
       controller: ns.PreferencesController
@@ -28,8 +28,8 @@
     }
   };
 
-  var SEL_SETTING_CLS = 'has-expanded-drawer';
-  var EXP_DRAWER_CLS = 'expanded';
+  const SEL_SETTING_CLS = 'has-expanded-drawer';
+  const EXP_DRAWER_CLS = 'expanded';
 
   ns.SettingsController = function (piskelController) {
     this.piskelController = piskelController;
@@ -59,7 +59,7 @@
   };
 
   ns.SettingsController.prototype.onSettingsContainerClick_ = function (evt) {
-    var setting = pskl.utils.Dom.getData(evt.target, 'setting');
+    const setting = pskl.utils.Dom.getData(evt.target, 'setting');
     if (!setting) {
       return;
     }
@@ -75,13 +75,13 @@
   };
 
   ns.SettingsController.prototype.onBodyClick_ = function (evt) {
-    var target = evt.target;
+    const target = evt.target;
 
-    var isInDrawerContainer = pskl.utils.Dom.isParent(
+    const isInDrawerContainer = pskl.utils.Dom.isParent(
       target,
       this.drawerContainer);
-    var isInSettingsIcon = target.dataset.setting;
-    var isInSettingsContainer = isInDrawerContainer || isInSettingsIcon;
+    const isInSettingsIcon = target.dataset.setting;
+    const isInSettingsContainer = isInDrawerContainer || isInSettingsIcon;
 
     if (this.isExpanded && !isInSettingsContainer) {
       this.closeDrawer_();
@@ -103,7 +103,7 @@
       this.closeDrawerShortcut,
       this.closeDrawer_.bind(this));
     pskl.utils.Dom.removeClass(SEL_SETTING_CLS);
-    var selectedSettingButton = document.querySelector(
+    const selectedSettingButton = document.querySelector(
       '[data-setting=' + setting + ']');
     if (selectedSettingButton) {
       selectedSettingButton.classList.add(SEL_SETTING_CLS);

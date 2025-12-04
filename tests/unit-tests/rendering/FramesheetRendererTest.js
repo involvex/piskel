@@ -1,48 +1,48 @@
-describe("Framesheet Renderer test", function () {
-  var B = "#000000";
-  var W = "#ffffff";
-  var T = Constants.TRANSPARENT_COLOR;
+describe("Framesheet Renderer test", () => {
+  const B = "#000000";
+  const W = "#ffffff";
+  const T = Constants.TRANSPARENT_COLOR;
 
-  var toFrameGrid = test.testutils.toFrameGrid;
-  var frameEqualsGrid = test.testutils.frameEqualsGrid;
+  const toFrameGrid = test.testutils.toFrameGrid;
+  const frameEqualsGrid = test.testutils.frameEqualsGrid;
 
-  beforeEach(function () {});
-  afterEach(function () {});
+  beforeEach(() => {});
+  afterEach(() => {});
 
-  var toFrame = function (array) {
+  const toFrame = function (array) {
     return pskl.model.Frame.fromPixelGrid(toFrameGrid(array));
   };
 
-  it("draws frames side by side by default", function () {
+  it("draws frames side by side by default", () => {
     // create frames
-    var f1 = toFrame([
+    const f1 = toFrame([
       [B, T],
       [B, W],
     ]);
-    var f2 = toFrame([
+    const f2 = toFrame([
       [W, B],
       [T, B],
     ]);
 
-    var renderer = new pskl.rendering.FramesheetRenderer([f1, f2]);
-    var canvas = renderer.renderAsCanvas();
+    const renderer = new pskl.rendering.FramesheetRenderer([f1, f2]);
+    const canvas = renderer.renderAsCanvas();
     frameEqualsGrid(pskl.utils.FrameUtils.createFromImage(canvas), [
       [B, T, W, B],
       [B, W, T, B],
     ]);
   });
 
-  it("renderAsCanvas accepts columns argument", function () {
+  it("renderAsCanvas accepts columns argument", () => {
     // create frames
-    var f1 = toFrame([[B, B]]);
-    var f2 = toFrame([[W, W]]);
-    var f3 = toFrame([[T, W]]);
-    var f4 = toFrame([[B, W]]);
-    var frames = [f1, f2, f3, f4];
+    const f1 = toFrame([[B, B]]);
+    const f2 = toFrame([[W, W]]);
+    const f3 = toFrame([[T, W]]);
+    const f4 = toFrame([[B, W]]);
+    const frames = [f1, f2, f3, f4];
 
     // columns = 4
-    var renderer = new pskl.rendering.FramesheetRenderer(frames);
-    var canvas = renderer.renderAsCanvas(4);
+    let renderer = new pskl.rendering.FramesheetRenderer(frames);
+    let canvas = renderer.renderAsCanvas(4);
     frameEqualsGrid(pskl.utils.FrameUtils.createFromImage(canvas), [
       [B, B, W, W, T, W, B, W],
     ]);

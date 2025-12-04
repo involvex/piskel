@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service.performance');
+  const ns = $.namespace('pskl.service.performance');
 
   /**
    * We consider that piskel should behave correctly for a sprite with the following specs:
@@ -15,18 +15,18 @@
    *        (not part of the piskel model so has to be provided separately).
    */
   ns.PerformanceReport = function (piskel, colorsCount) {
-    var pixels = piskel.getWidth() * piskel.getHeight();
+    const pixels = piskel.getWidth() * piskel.getHeight();
     this.resolution = pixels > 512 * 512;
 
-    var layersCount = piskel.getLayers().length;
+    const layersCount = piskel.getLayers().length;
     this.layers = layersCount > 25;
 
-    var framesCount = piskel.getLayerAt(0).size();
+    const framesCount = piskel.getLayerAt(0).size();
     this.frames = framesCount > 100;
 
     this.colors = colorsCount >= 256;
 
-    var overallScore =
+    const overallScore =
       pixels / 2620 + layersCount * 4 + framesCount + (colorsCount * 100) / 256;
     this.overall = overallScore > 200;
   };

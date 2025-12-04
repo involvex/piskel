@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service.palette.reader');
+  const ns = $.namespace('pskl.service.palette.reader');
 
   ns.AbstractPaletteFileReader = function (
     file,
@@ -21,18 +21,18 @@
   };
 
   ns.AbstractPaletteFileReader.prototype.onFileLoaded_ = function (content) {
-    var text = pskl.utils.Base64.toText(content);
-    var lines = text.match(/[^\r\n]+/g);
+    const text = pskl.utils.Base64.toText(content);
+    const lines = text.match(/[^\r\n]+/g);
 
-    var colorLines = lines.filter(
-      function (l) {
+    const colorLines = lines.filter(
+      (l) => {
         return this.colorLineRegexp.test(l);
-      }.bind(this));
-    var colors = colorLines.map(this.extractColorFromLine.bind(this));
+      });
+    const colors = colorLines.map(this.extractColorFromLine.bind(this));
 
     if (colors.length) {
-      var uuid = pskl.utils.Uuid.generate();
-      var palette = new pskl.model.Palette(uuid, this.file.name, colors);
+      const uuid = pskl.utils.Uuid.generate();
+      const palette = new pskl.model.Palette(uuid, this.file.name, colors);
       this.onSuccess(palette);
     } else {
       this.onError();

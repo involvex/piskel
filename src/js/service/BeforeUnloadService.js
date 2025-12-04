@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service');
+  const ns = $.namespace('pskl.service');
 
   ns.BeforeUnloadService = function (piskelController) {
     this.piskelController = piskelController;
@@ -8,7 +8,7 @@
   ns.BeforeUnloadService.prototype.init = function () {
     if (pskl.utils.Environment.detectNodeWebkit()) {
       // Add a dedicated listener to window 'close' event in nwjs environment.
-      var win = require('nw.gui').Window.get();
+      const win = require('nw.gui').Window.get();
       win.on('close', this.onNwWindowClose.bind(this, win));
     }
 
@@ -20,7 +20,7 @@
    * Polyfill the behavior here.
    */
   ns.BeforeUnloadService.prototype.onNwWindowClose = function (win) {
-    var msg = this.onBeforeUnload();
+    const msg = this.onBeforeUnload();
     if (msg) {
       if (!window.confirm(msg)) {
         return false;
@@ -34,7 +34,7 @@
     // nature of IndexedDB.
     pskl.app.backupService.backup();
     if (pskl.app.savedStatusService.isDirty()) {
-      var confirmationMessage =
+      const confirmationMessage =
         'Your current sprite has unsaved changes. Are you sure you want to quit?';
 
       evt = evt || window.event;

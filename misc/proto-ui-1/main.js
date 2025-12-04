@@ -1,18 +1,18 @@
-$().ready(function () {
-  var body = $("body");
-  var mainWrapper = $(".main-wrapper");
-  var canvas = $("#canvas");
+$().ready(() => {
+  const body = $("body");
+  const mainWrapper = $(".main-wrapper");
+  const canvas = $("#canvas");
 
-  var resizeCanvas = function () {
+  const resizeCanvas = function () {
     canvas.height(mainWrapper.height());
     canvas.width(mainWrapper.height());
   };
 
-  var selectTile = function (tileElement) {
+  const selectTile = function (tileElement) {
     $(".preview-item").removeClass("selected");
     tileElement.addClass("selected");
     if (body.hasClass("hor-list-mode")) {
-      var index = $(".preview-item:not(.drop-target)").index(tileElement);
+      const index = $(".preview-item:not(.drop-target)").index(tileElement);
       console.log(index);
       $(".previewlist").animate(
         {
@@ -24,15 +24,15 @@ $().ready(function () {
   };
   selectTile($(".preview-item").eq(4));
 
-  $(document).on("click", ".tile-close", function (evt) {
+  $(document).on("click", ".tile-close", (evt) => {
     $(evt.target).closest(".preview-item").remove();
   });
 
-  $(document).on("click", ".preview-item", function (evt) {
+  $(document).on("click", ".preview-item", (evt) => {
     selectTile($(evt.target).closest(".preview-item"));
   });
 
-  $(document).on("click", ".tool", function (evt) {
+  $(document).on("click", ".tool", (evt) => {
     $(".tool").removeClass("selected");
     $(evt.target).closest(".tool").addClass("selected");
   });
@@ -44,7 +44,7 @@ $().ready(function () {
    * Admin stuff
    */
 
-  $(document).on("click", "#toggle-frame-mode", function (evt) {
+  $(document).on("click", "#toggle-frame-mode", (evt) => {
     if (body.hasClass("grid-mode")) {
       $("body").removeClass("grid-mode");
       $("body").addClass("hor-list-mode");
@@ -58,12 +58,12 @@ $().ready(function () {
     resizeCanvas();
   });
 
-  $(document).on("click", "#toggle-dnd-state", function (evt) {
+  $(document).on("click", "#toggle-dnd-state", (evt) => {
     body.toggleClass("dnd-state1");
   });
 
-  $("#change-draw-area").change(function () {
-    var str = "";
+  $("#change-draw-area").change(() => {
+    let str = "";
     $("#change-draw-area option:selected").each(function () {
       str = $(this).val();
     });

@@ -1,8 +1,8 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
-  var getFileInputElement = function (nwsaveas, accept) {
-    var fileInputElement = document.createElement('INPUT');
+  const getFileInputElement = function (nwsaveas, accept) {
+    const fileInputElement = document.createElement('INPUT');
     fileInputElement.setAttribute('type', 'file');
     fileInputElement.setAttribute('nwworkingdir', '');
     if (nwsaveas) {
@@ -17,8 +17,8 @@
 
   ns.FileUtilsDesktop = {
     chooseFilenameDialog: function (nwsaveas, accept) {
-      var deferred = Q.defer();
-      var fileInputElement = getFileInputElement(nwsaveas, accept);
+      const deferred = Q.defer();
+      const fileInputElement = getFileInputElement(nwsaveas, accept);
       var changeListener = function (evt) {
         fileInputElement.removeEventListener('change', changeListener);
         document.removeEventListener('click', changeListener);
@@ -26,7 +26,7 @@
       };
 
       // fix for issue #322 :
-      window.setTimeout(function () {
+      window.setTimeout(() => {
         fileInputElement.click();
         fileInputElement.addEventListener('change', changeListener);
         // there is no way to detect a cancelled fileInput popup
@@ -47,9 +47,9 @@
      * @callback callback
      */
     saveToFile: function (content, filename) {
-      var deferred = Q.defer();
-      var fs = window.require('fs');
-      fs.writeFile(filename, content, function (err) {
+      const deferred = Q.defer();
+      const fs = window.require('fs');
+      fs.writeFile(filename, content, (err) => {
         if (err) {
           deferred.reject(
             'FileUtilsDesktop::savetoFile() - error saving file: ' +
@@ -66,10 +66,10 @@
     },
 
     readFile: function (filename) {
-      var deferred = Q.defer();
-      var fs = window.require('fs');
+      const deferred = Q.defer();
+      const fs = window.require('fs');
       // NOTE: currently loading everything as utf8, which may not be desirable in future
-      fs.readFile(filename, 'utf8', function (err, data) {
+      fs.readFile(filename, 'utf8', (err, data) => {
         if (err) {
           deferred.reject(
             'FileUtilsDesktop::readFile() - error reading file: ' +

@@ -1,11 +1,11 @@
 (function () {
-  var ns = $.namespace('pskl.rendering.frame');
+  const ns = $.namespace('pskl.rendering.frame');
 
   ns.BackgroundImageFrameRenderer = function (container, zoom) {
     this.container = container;
     this.setZoom(zoom);
 
-    var containerDocument = container.ownerDocument;
+    const containerDocument = container.ownerDocument;
     this.frameContainer = containerDocument.createElement('div');
     this.frameContainer.classList.add('background-image-frame-container');
     container.appendChild(this.frameContainer);
@@ -16,7 +16,7 @@
   };
 
   ns.BackgroundImageFrameRenderer.prototype.frameToDataUrl_ = function (frame) {
-    var canvas;
+    let canvas;
     if (frame instanceof pskl.model.frame.RenderedFrame) {
       canvas = pskl.utils.ImageResizer.scale(
         frame.getRenderedFrame(),
@@ -28,7 +28,7 @@
   };
 
   ns.BackgroundImageFrameRenderer.prototype.render = function (frame) {
-    var imageSrc = this.cachedFrameProcessor.get(frame, this.zoom);
+    const imageSrc = this.cachedFrameProcessor.get(frame, this.zoom);
     this.frameContainer.style.backgroundImage = 'url(' + imageSrc + ')';
   };
 
@@ -47,7 +47,7 @@
   };
 
   ns.BackgroundImageFrameRenderer.prototype.setRepeated = function (repeat) {
-    var repeatValue;
+    let repeatValue;
     if (repeat) {
       repeatValue = 'repeat';
     } else {

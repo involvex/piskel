@@ -1,13 +1,13 @@
 (function () {
-  var ns = $.namespace('pskl.tools.transform');
+  const ns = $.namespace('pskl.tools.transform');
 
   ns.AbstractTransformTool = function () {};
 
   pskl.utils.inherit(ns.AbstractTransformTool, pskl.tools.Tool);
 
   ns.AbstractTransformTool.prototype.applyTransformation = function (evt) {
-    var allFrames = evt.shiftKey;
-    var allLayers = pskl.utils.UserAgent.isMac ? evt.metaKey : evt.ctrlKey;
+    const allFrames = evt.shiftKey;
+    const allLayers = pskl.utils.UserAgent.isMac ? evt.metaKey : evt.ctrlKey;
 
     this.applyTool_(evt.altKey, allFrames, allLayers);
 
@@ -25,21 +25,21 @@
     allFrames,
     allLayers
   ) {
-    var currentFrameIndex = pskl.app.piskelController.getCurrentFrameIndex();
-    var layers = allLayers ?
+    const currentFrameIndex = pskl.app.piskelController.getCurrentFrameIndex();
+    const layers = allLayers ?
       pskl.app.piskelController.getLayers() :
       [pskl.app.piskelController.getCurrentLayer()];
     layers.forEach(
-      function (layer) {
-        var frames = allFrames ?
+      (layer) => {
+        const frames = allFrames ?
           layer.getFrames() :
           [layer.getFrameAt(currentFrameIndex)];
         frames.forEach(
-          function (frame) {
+          (frame) => {
             this.applyToolOnFrame_(frame, altKey);
-          }.bind(this)
+          }
         );
-      }.bind(this)
+      }
     );
   };
 

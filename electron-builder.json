@@ -1,0 +1,43 @@
+{
+  "appId": "com.piskelapp.piskel",
+  "productName": "Piskel",
+  "directories": {
+    "output": "electron-dist"
+  },
+  "files": ["dest/prod/**/*", "electron/**/*", "package.json"],
+  "mac": {
+    "category": "public.app-category.graphics-design",
+    "target": "dmg",
+    "icon": "dest/prod/logo.png"
+  },
+  "win": {
+    "target": "nsis",
+    "icon": "dest/prod/logo.png"
+  },
+  "linux": {
+    "target": "AppImage",
+    "icon": "dest/prod/logo.png",
+    "category": "Graphics"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Piskel"
+  },
+  "dmg": {
+    "contents": [
+      {
+        "x": 130,
+        "y": 220
+      },
+      {
+        "x": 410,
+        "y": 220,
+        "type": "link",
+        "path": "/Applications"
+      }
+    ]
+  }
+}

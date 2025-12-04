@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service.performance');
+  const ns = $.namespace('pskl.service.performance');
 
   ns.PerformanceReportService = function (
     piskelController,
@@ -16,7 +16,7 @@
   };
 
   ns.PerformanceReportService.prototype.createReport_ = function () {
-    var report = new ns.PerformanceReport(
+    const report = new ns.PerformanceReport(
       this.piskelController.getPiskel(),
       this.currentColorsService.getCurrentColors().length);
     if (!report.equals(this.currentReport)) {

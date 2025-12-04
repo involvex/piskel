@@ -1,9 +1,9 @@
 (function () {
-  var ns = $.namespace('pskl.widgets');
+  const ns = $.namespace('pskl.widgets');
 
-  var OPTION_CLASSNAME = 'anchor-option';
+  const OPTION_CLASSNAME = 'anchor-option';
   // Maybe move to HTML ...
-  var WIDGET_TEMPLATE =
+  const WIDGET_TEMPLATE =
     '<div class="anchor-option"  title="top left"      data-origin="TOPLEFT"></div>' +
     '<div class="anchor-option"  title="top"           data-origin="TOP"></div>' +
     '<div class="anchor-option"  title="top right"     data-origin="TOPRIGHT"></div>' +
@@ -51,7 +51,7 @@
   };
 
   ns.AnchorWidget.prototype.onResizeOriginClick_ = function (evt) {
-    var origin = evt.target.dataset.origin;
+    const origin = evt.target.dataset.origin;
     if (origin && ns.AnchorWidget.ORIGIN[origin] && !this.disabled) {
       this.setOrigin(origin);
     }
@@ -59,14 +59,14 @@
 
   ns.AnchorWidget.prototype.setOrigin = function (origin) {
     this.origin = origin;
-    var previous = this.wrapper.querySelector(
+    const previous = this.wrapper.querySelector(
       '.' + OPTION_CLASSNAME + '.selected'
     );
     if (previous) {
       previous.classList.remove('selected');
     }
 
-    var selected = this.wrapper.querySelector(
+    const selected = this.wrapper.querySelector(
       '.' + OPTION_CLASSNAME + '[data-origin="' + origin + '"]'
     );
     if (selected) {
@@ -99,12 +99,12 @@
   };
 
   ns.AnchorWidget.prototype.refreshNeighbors_ = function (selected) {
-    var options = this.wrapper.querySelectorAll('.' + OPTION_CLASSNAME);
-    for (var i = 0; i < options.length; i++) {
+    const options = this.wrapper.querySelectorAll('.' + OPTION_CLASSNAME);
+    for (let i = 0; i < options.length; i++) {
       options[i].removeAttribute('data-neighbor');
     }
 
-    var selectedIndex = Array.prototype.indexOf.call(options, selected);
+    const selectedIndex = Array.prototype.indexOf.call(options, selected);
 
     this.setNeighborhood_(options[selectedIndex - 1], 'left');
     this.setNeighborhood_(options[selectedIndex + 1], 'right');
@@ -113,8 +113,8 @@
   };
 
   ns.AnchorWidget.prototype.setNeighborhood_ = function (el, neighborhood) {
-    var origin = this.origin.toLowerCase();
-    var isNeighborhoodValid = origin.indexOf(neighborhood) === -1;
+    const origin = this.origin.toLowerCase();
+    const isNeighborhoodValid = origin.indexOf(neighborhood) === -1;
     if (isNeighborhoodValid) {
       el.setAttribute('data-neighbor', neighborhood);
     }

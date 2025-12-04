@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.preview');
+  const ns = $.namespace('pskl.controller.preview');
 
   ns.PreviewActionsController = function (previewController, container) {
     this.previewController = previewController;
@@ -43,7 +43,7 @@
     this.fpsRangeInput.addEventListener(
       'input',
       this.onFpsRangeInputUpdate_.bind(this));
-    var addEvent = pskl.utils.Event.addEventListener;
+    const addEvent = pskl.utils.Event.addEventListener;
     addEvent(this.toggleOnionSkinButton, 'click', this.toggleOnionSkin_, this);
     addEvent(
       this.openPopupPreview,
@@ -52,19 +52,19 @@
       this);
     addEvent(this.toggleGridButton, 'click', this.toggleGrid_, this);
 
-    var registerShortcut = pskl.app.shortcutService.registerShortcut.bind(
+    const registerShortcut = pskl.app.shortcutService.registerShortcut.bind(
       pskl.app.shortcutService);
     registerShortcut(this.onionSkinShortcut, this.toggleOnionSkin_.bind(this));
     registerShortcut(this.toggleGridShortcut, this.toggleGrid_.bind(this));
 
-    var onionSkinTooltip = pskl.utils.TooltipFormatter.format(
+    const onionSkinTooltip = pskl.utils.TooltipFormatter.format(
       'Toggle onion skin',
       this.onionSkinShortcut);
     this.toggleOnionSkinButton.setAttribute('title', onionSkinTooltip);
 
-    for (var size in this.previewSizes) {
+    for (const size in this.previewSizes) {
       if (this.previewSizes.hasOwnProperty(size)) {
-        var previewSize = this.previewSizes[size];
+        const previewSize = this.previewSizes[size];
         addEvent(
           previewSize.button,
           'click',
@@ -74,7 +74,7 @@
         registerShortcut(
           previewSize.shortcut,
           this.onChangePreviewSize_.bind(this, size));
-        var tooltip = pskl.utils.TooltipFormatter.format(
+        const tooltip = pskl.utils.TooltipFormatter.format(
           previewSize.tooltip,
           previewSize.shortcut);
         previewSize.button.setAttribute('title', tooltip);
@@ -99,7 +99,7 @@
   };
 
   ns.PreviewActionsController.prototype.updateToggleGridButton_ = function () {
-    var gridEnabled = pskl.UserSettings.get(pskl.UserSettings.GRID_ENABLED);
+    const gridEnabled = pskl.UserSettings.get(pskl.UserSettings.GRID_ENABLED);
     this.toggleGridButton.classList.toggle(
       'icon-minimap-grid-white',
       !gridEnabled);
@@ -112,17 +112,17 @@
   };
 
   ns.PreviewActionsController.prototype.toggleGrid_ = function () {
-    var gridEnabled = pskl.UserSettings.get(pskl.UserSettings.GRID_ENABLED);
+    const gridEnabled = pskl.UserSettings.get(pskl.UserSettings.GRID_ENABLED);
     pskl.UserSettings.set(pskl.UserSettings.GRID_ENABLED, !gridEnabled);
   };
 
   ns.PreviewActionsController.prototype.updatePreviewSizeButtons_ =
     function () {
-      var fullZoom = this.previewController.getZoom();
-      var bestZoom = Math.floor(fullZoom);
-      var seamlessModeEnabled = pskl.UserSettings.get(
+      const fullZoom = this.previewController.getZoom();
+      const bestZoom = Math.floor(fullZoom);
+      const seamlessModeEnabled = pskl.UserSettings.get(
         pskl.UserSettings.SEAMLESS_MODE);
-      var validSizes;
+      let validSizes;
       if (fullZoom < 1) {
         this.disablePreviewSizeWidget_('No other option available');
         validSizes = ['full'];
@@ -148,10 +148,10 @@
 
       // Update buttons content and status.
       this.previewSizes.best.button.textContent = Math.floor(fullZoom) + 'x';
-      for (var size in this.previewSizes) {
+      for (const size in this.previewSizes) {
         if (this.previewSizes.hasOwnProperty(size)) {
-          var previewSize = this.previewSizes[size];
-          var isSizeEnabled = validSizes.indexOf(size) != -1;
+          const previewSize = this.previewSizes[size];
+          const isSizeEnabled = validSizes.indexOf(size) != -1;
 
           // classList.toggle is not available on IE11.
           if (isSizeEnabled) {
@@ -165,7 +165,7 @@
       }
 
       // Update the selected preview size if the currently selected size is not valid.
-      var selectedSize = pskl.UserSettings.get(pskl.UserSettings.PREVIEW_SIZE);
+      const selectedSize = pskl.UserSettings.get(pskl.UserSettings.PREVIEW_SIZE);
       if (validSizes.indexOf(selectedSize) === -1) {
         this.onChangePreviewSize_(validSizes[0]);
       }
@@ -190,8 +190,8 @@
   };
 
   ns.PreviewActionsController.prototype.onChangePreviewSize_ = function (size) {
-    var previewSize = this.previewSizes[size];
-    var isEnabled = !previewSize.button.classList.contains(
+    const previewSize = this.previewSizes[size];
+    const isEnabled = !previewSize.button.classList.contains(
       'preview-contextual-action-hidden');
     if (isEnabled) {
       pskl.UserSettings.set(pskl.UserSettings.PREVIEW_SIZE, size);
@@ -217,8 +217,8 @@
   };
 
   ns.PreviewActionsController.prototype.updateOnionSkinPreview_ = function () {
-    var enabledClassname = 'preview-toggle-onion-skin-enabled';
-    var isEnabled = pskl.UserSettings.get(pskl.UserSettings.ONION_SKIN);
+    const enabledClassname = 'preview-toggle-onion-skin-enabled';
+    const isEnabled = pskl.UserSettings.get(pskl.UserSettings.ONION_SKIN);
 
     // classList.toggle is not available on IE11.
     if (isEnabled) {
@@ -229,18 +229,18 @@
   };
 
   ns.PreviewActionsController.prototype.selectPreviewSizeButton_ = function () {
-    var currentlySelected = document.querySelector('.size-button-selected');
+    const currentlySelected = document.querySelector('.size-button-selected');
     if (currentlySelected) {
       currentlySelected.classList.remove('size-button-selected');
     }
 
-    var selectedSize = pskl.UserSettings.get(pskl.UserSettings.PREVIEW_SIZE);
-    var previewSize = this.previewSizes[selectedSize];
+    const selectedSize = pskl.UserSettings.get(pskl.UserSettings.PREVIEW_SIZE);
+    const previewSize = this.previewSizes[selectedSize];
     previewSize.button.classList.add('size-button-selected');
   };
 
   ns.PreviewActionsController.prototype.updateMaxFPS_ = function () {
-    var maxFps = pskl.UserSettings.get(pskl.UserSettings.MAX_FPS);
+    const maxFps = pskl.UserSettings.get(pskl.UserSettings.MAX_FPS);
     this.fpsRangeInput.setAttribute('max', maxFps);
     this.piskelController.setFPS(
       Math.min(maxFps, this.piskelController.getFPS()));
@@ -252,7 +252,7 @@
   ns.PreviewActionsController.prototype.onFpsRangeInputUpdate_ = function (
     evt
   ) {
-    var fps = parseInt(this.fpsRangeInput.value, 10);
+    const fps = parseInt(this.fpsRangeInput.value, 10);
     this.piskelController.setFPS(fps);
     // blur only on 'change' events, as blurring on 'input' breaks on Firefox
     if (evt.type === 'change') {
@@ -261,7 +261,7 @@
   };
 
   ns.PreviewActionsController.prototype.updateFPS_ = function () {
-    var fps = this.piskelController.getFPS();
+    const fps = this.piskelController.getFPS();
     if (fps !== this.fpsRangeInput.value) {
       // reset
       this.fpsRangeInput.value = 0;
@@ -272,7 +272,7 @@
   };
 
   ns.PreviewActionsController.prototype.toggleOnionSkin_ = function () {
-    var currentValue = pskl.UserSettings.get(pskl.UserSettings.ONION_SKIN);
+    const currentValue = pskl.UserSettings.get(pskl.UserSettings.ONION_SKIN);
     pskl.UserSettings.set(pskl.UserSettings.ONION_SKIN, !currentValue);
   };
 })();

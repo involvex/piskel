@@ -4,7 +4,7 @@
  * @require pskl.utils
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing');
+  const ns = $.namespace('pskl.tools.drawing');
 
   ns.DitheringTool = function () {
     ns.SimplePen.call(this);
@@ -32,12 +32,12 @@
     this.previousCol = col;
     this.previousRow = row;
 
-    var penSize = pskl.app.penSizeService.getPenSize();
-    var points = pskl.PixelUtils.resizePixel(col, row, penSize);
+    const penSize = pskl.app.penSizeService.getPenSize();
+    const points = pskl.PixelUtils.resizePixel(col, row, penSize);
     points.forEach(
-      function (point) {
+      (point) => {
         this.applyToolOnPixel(point[0], point[1], frame, overlay, event);
-      }.bind(this));
+      });
   };
 
   ns.DitheringTool.prototype.applyToolOnPixel = function (
@@ -47,13 +47,13 @@
     overlay,
     event
   ) {
-    var usePrimaryColor = (col + row) % 2;
+    let usePrimaryColor = (col + row) % 2;
 
     if (pskl.app.mouseStateService.isRightButtonPressed()) {
       usePrimaryColor = !usePrimaryColor;
     }
 
-    var ditheringColor = usePrimaryColor ?
+    const ditheringColor = usePrimaryColor ?
       pskl.app.selectedColorsService.getPrimaryColor() :
       pskl.app.selectedColorsService.getSecondaryColor();
 

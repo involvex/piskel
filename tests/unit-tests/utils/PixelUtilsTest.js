@@ -1,31 +1,31 @@
-describe("PixelUtils test suite", function () {
-  beforeEach(function () {});
-  afterEach(function () {});
+describe("PixelUtils test suite", () => {
+  beforeEach(() => {});
+  afterEach(() => {});
 
-  var checkPixel = function (pixel, col, row) {
+  const checkPixel = function (pixel, col, row) {
     expect(pixel.col).toBe(col);
     expect(pixel.row).toBe(row);
   };
 
-  var checkPixels = function (pixels /*, expectedPoints ... */) {
-    var expectedPoints = Array.prototype.slice.call(arguments, 1);
-    pixels.forEach(function (pixel, i) {
+  const checkPixels = function (pixels /*, expectedPoints ... */) {
+    const expectedPoints = Array.prototype.slice.call(arguments, 1);
+    pixels.forEach((pixel, i) => {
       checkPixel(pixel, expectedPoints[i][0], expectedPoints[i][1]);
     });
   };
 
-  var logPixels = function (pixels) {
-    var buffer = [];
-    pixels.forEach(function (p) {
+  const logPixels = function (pixels) {
+    const buffer = [];
+    pixels.forEach((p) => {
       buffer.push("[" + p.col + "," + p.row + "]");
     });
     console.log(buffer.join(","));
   };
 
-  it("calculates line pixels", function () {
+  it("calculates line pixels", () => {
     // single point
     console.log("Check getLinePixels(0, 0, 0, 0)");
-    var pixels = pskl.PixelUtils.getLinePixels(0, 0, 0, 0);
+    let pixels = pskl.PixelUtils.getLinePixels(0, 0, 0, 0);
     expect(pixels.length).toBe(1);
     checkPixel(pixels[0], 0, 0);
 
@@ -61,10 +61,10 @@ describe("PixelUtils test suite", function () {
     );
   });
 
-  it("calculates uniform line pixels", function () {
+  it("calculates uniform line pixels", () => {
     // single point
     console.log("Check getUniformLinePixels(0, 0, 0, 0)");
-    var pixels = pskl.PixelUtils.getUniformLinePixels(0, 0, 0, 0);
+    let pixels = pskl.PixelUtils.getUniformLinePixels(0, 0, 0, 0);
     expect(pixels.length).toBe(1);
     checkPixel(pixels[0], 0, 0);
 

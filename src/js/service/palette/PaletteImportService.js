@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.service.palette');
+  const ns = $.namespace('pskl.service.palette');
 
-  var fileReaders = {
+  const fileReaders = {
     gpl: ns.reader.PaletteGplReader,
     pal: ns.reader.PalettePalReader,
     txt: ns.reader.PaletteTxtReader,
@@ -12,7 +12,7 @@
   ns.PaletteImportService.prototype.init = function () {};
 
   ns.PaletteImportService.prototype.read = function (file, onSuccess, onError) {
-    var reader = this.getReader_(file, onSuccess, onError);
+    const reader = this.getReader_(file, onSuccess, onError);
     if (reader) {
       reader.read();
     } else {
@@ -29,7 +29,7 @@
     onSuccess,
     onError
   ) {
-    var ReaderClass = this.getReaderClass_(file);
+    const ReaderClass = this.getReaderClass_(file);
     if (ReaderClass) {
       return new ReaderClass(file, onSuccess, onError);
     } else {
@@ -38,19 +38,19 @@
   };
 
   ns.PaletteImportService.prototype.getReaderClass_ = function (file) {
-    var ReaderClass;
+    let ReaderClass;
     if (this.isImage_(file)) {
       ReaderClass = fileReaders.img;
     } else {
-      var extension = this.getExtension_(file);
+      const extension = this.getExtension_(file);
       ReaderClass = fileReaders[extension];
     }
     return ReaderClass;
   };
 
   ns.PaletteImportService.prototype.getExtension_ = function (file) {
-    var parts = file.name.split('.');
-    var extension = parts[parts.length - 1];
+    const parts = file.name.split('.');
+    const extension = parts[parts.length - 1];
     return extension.toLowerCase();
   };
 })();

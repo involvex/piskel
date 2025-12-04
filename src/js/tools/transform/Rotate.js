@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.tools.transform');
+  const ns = $.namespace('pskl.tools.transform');
 
   ns.Rotate = function () {
     this.toolId = 'tool-rotate';
@@ -14,7 +14,7 @@
   pskl.utils.inherit(ns.Rotate, ns.AbstractTransformTool);
 
   ns.Rotate.prototype.applyToolOnFrame_ = function (frame, altKey) {
-    var direction;
+    let direction;
 
     if (altKey) {
       direction = ns.TransformUtils.CLOCKWISE;

@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service');
+  const ns = $.namespace('pskl.service');
 
   ns.FileDropperService = function (piskelController) {
     this.piskelController = piskelController;
@@ -29,20 +29,20 @@
       y: event.clientY
     };
 
-    var files = event.dataTransfer.files;
+    const files = event.dataTransfer.files;
     this.isMultipleFiles_ = files.length > 1;
 
-    for (var i = 0; i < files.length; i++) {
+    for (let i = 0; i < files.length; i++) {
       var file = files[i];
-      var isImage = file.type.indexOf('image') === 0;
-      var isPiskel = /\.piskel$/i.test(file.name);
-      var isPalette = /\.(gpl|txt|pal)$/i.test(file.name);
+      const isImage = file.type.indexOf('image') === 0;
+      const isPiskel = /\.piskel$/i.test(file.name);
+      const isPalette = /\.(gpl|txt|pal)$/i.test(file.name);
       if (isImage) {
         pskl.utils.FileUtils.readImageFile(
           file,
-          function (image) {
+          (image) => {
             this.onImageLoaded_(image, file);
-          }.bind(this));
+          });
       } else if (isPiskel) {
         pskl.utils.PiskelFileUtils.loadFromFile(
           file,
@@ -75,8 +75,8 @@
     importedImage,
     file
   ) {
-    var piskelWidth = pskl.app.piskelController.getWidth();
-    var piskelHeight = pskl.app.piskelController.getHeight();
+    const piskelWidth = pskl.app.piskelController.getWidth();
+    const piskelHeight = pskl.app.piskelController.getHeight();
 
     if (this.isMultipleFiles_) {
       this.piskelController.addFrameAtCurrentIndex();
@@ -96,13 +96,13 @@
       return;
     }
 
-    var currentFrame = this.piskelController.getCurrentFrame();
+    const currentFrame = this.piskelController.getCurrentFrame();
     // Convert client coordinates to sprite coordinates
-    var spriteDropPosition = pskl.app.drawingController.getSpriteCoordinates(
+    const spriteDropPosition = pskl.app.drawingController.getSpriteCoordinates(
       this.dropPosition_.x,
       this.dropPosition_.y);
-    var x = spriteDropPosition.x;
-    var y = spriteDropPosition.y;
+    const x = spriteDropPosition.x;
+    const y = spriteDropPosition.y;
 
     pskl.utils.FrameUtils.addImageToFrame(currentFrame, importedImage, x, y);
 

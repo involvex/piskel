@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs');
+  const ns = $.namespace('pskl.controller.dialogs');
 
   ns.BrowseLocalController = function (piskelController) {};
 
@@ -21,8 +21,8 @@
   };
 
   ns.BrowseLocalController.prototype.onPiskelsListClick_ = function (evt) {
-    var action = evt.target.getAttribute('data-action');
-    var name = evt.target.getAttribute('data-name');
+    const action = evt.target.getAttribute('data-action');
+    const name = evt.target.getAttribute('data-name');
     if (action === 'load') {
       if (window.confirm('This will erase your current piskel. Continue ?')) {
         this.service_.load(name);
@@ -42,9 +42,9 @@
 
   ns.BrowseLocalController.prototype.fillLocalPiskelsList_ = function () {
     this.service_.getKeys().then(
-      function (keys) {
-        var html = '';
-        keys.sort(function (k1, k2) {
+      (keys) => {
+        let html = '';
+        keys.sort((k1, k2) => {
           if (k1.date < k2.date) {
             return 1;
           }
@@ -55,8 +55,8 @@
         });
 
         keys.forEach(
-          function (key) {
-            var date = pskl.utils.DateUtils.format(
+          (key) => {
+            const date = pskl.utils.DateUtils.format(
               key.date,
               '{{Y}}/{{M}}/{{D}} {{H}}:{{m}}');
             html += pskl.utils.Template.replace(
@@ -65,9 +65,9 @@
                 name: key.name,
                 date: date
               });
-          }.bind(this));
-        var tableBody_ = this.piskelList.tBodies[0];
+          });
+        const tableBody_ = this.piskelList.tBodies[0];
         tableBody_.innerHTML = html;
-      }.bind(this));
+      });
   };
 })();

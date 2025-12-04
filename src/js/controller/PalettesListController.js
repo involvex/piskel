@@ -1,8 +1,8 @@
 (function () {
-  var ns = $.namespace('pskl.controller');
+  const ns = $.namespace('pskl.controller');
 
-  var PRIMARY_COLOR_CLASSNAME = 'palettes-list-primary-color';
-  var SECONDARY_COLOR_CLASSNAME = 'palettes-list-secondary-color';
+  const PRIMARY_COLOR_CLASSNAME = 'palettes-list-primary-color';
+  const SECONDARY_COLOR_CLASSNAME = 'palettes-list-secondary-color';
 
   ns.PalettesListController = function (usedColorService) {
     this.usedColorService = usedColorService;
@@ -15,8 +15,8 @@
     this.colorListContainer_ = document.querySelector('.palettes-list-colors');
     this.colorPaletteSelect_ = document.querySelector('.palettes-list-select');
 
-    var createPaletteButton_ = document.querySelector('.create-palette-button');
-    var editPaletteButton_ = document.querySelector('.edit-palette-button');
+    const createPaletteButton_ = document.querySelector('.create-palette-button');
+    const editPaletteButton_ = document.querySelector('.edit-palette-button');
 
     this.colorPaletteSelect_.addEventListener(
       'change',
@@ -48,7 +48,7 @@
     $.subscribe(
       Events.USER_SETTINGS_CHANGED,
       this.onUserSettingsChange_.bind(this));
-    var shortcuts = pskl.service.keyboard.Shortcuts;
+    const shortcuts = pskl.service.keyboard.Shortcuts;
     pskl.app.shortcutService.registerShortcut(
       shortcuts.COLOR.PREVIOUS_COLOR,
       this.selectPreviousColor_.bind(this));
@@ -64,10 +64,10 @@
   };
 
   ns.PalettesListController.prototype.fillPaletteList = function () {
-    var palettes = this.paletteService.getPalettes();
+    const palettes = this.paletteService.getPalettes();
 
-    var html = palettes
-      .map(function (palette) {
+    const html = palettes
+      .map((palette) => {
         return pskl.utils.Template.replace(
           '<option value="{{id}}">{{name}}</option>',
           palette);
@@ -77,21 +77,21 @@
   };
 
   ns.PalettesListController.prototype.fillColorListContainer = function () {
-    var colors = this.getSelectedPaletteColors_();
+    const colors = this.getSelectedPaletteColors_();
 
     if (colors.length > 0) {
-      var html = colors
-        .filter(function (color) {
+      const html = colors
+        .filter((color) => {
           return !!color;
         })
         .map(
-          function (color, index) {
+          (color, index) => {
             return pskl.utils.Template.replace(this.paletteColorTemplate_, {
               color: color,
               index: index + 1,
               title: color.toUpperCase()
             });
-          }.bind(this)
+          }
         )
         .join('');
       this.colorListContainer_.innerHTML = html;
@@ -112,8 +112,8 @@
   };
 
   ns.PalettesListController.prototype.getSelectedPaletteColors_ = function () {
-    var colors = [];
-    var palette = this.getSelectedPalette_();
+    let colors = [];
+    const palette = this.getSelectedPalette_();
     if (palette) {
       colors = palette.getColors();
     }
@@ -126,7 +126,7 @@
   };
 
   ns.PalettesListController.prototype.getSelectedPalette_ = function () {
-    var paletteId = pskl.UserSettings.get(pskl.UserSettings.SELECTED_PALETTE);
+    const paletteId = pskl.UserSettings.get(pskl.UserSettings.SELECTED_PALETTE);
     return this.paletteService.getPaletteById(paletteId);
   };
 
@@ -139,8 +139,8 @@
   };
 
   ns.PalettesListController.prototype.getCurrentColorIndex_ = function () {
-    var currentIndex = 0;
-    var selectedColor = document.querySelector('.' + PRIMARY_COLOR_CLASSNAME);
+    let currentIndex = 0;
+    const selectedColor = document.querySelector('.' + PRIMARY_COLOR_CLASSNAME);
     if (selectedColor) {
       currentIndex = parseInt(selectedColor.dataset.colorIndex, 10) - 1;
     }
@@ -148,14 +148,14 @@
   };
 
   ns.PalettesListController.prototype.selectColorForKey_ = function (key) {
-    var index = parseInt(key, 10);
+    let index = parseInt(key, 10);
     index = (index + 9) % 10;
     this.selectColor_(index);
   };
 
   ns.PalettesListController.prototype.selectColor_ = function (index) {
-    var colors = this.getSelectedPaletteColors_();
-    var color = colors[index];
+    const colors = this.getSelectedPaletteColors_();
+    const color = colors[index];
     if (color) {
       $.publish(Events.SELECT_PRIMARY_COLOR, [color]);
     }
@@ -172,13 +172,13 @@
   };
 
   ns.PalettesListController.prototype.updateFromUserSettings = function () {
-    var paletteId = pskl.UserSettings.get(pskl.UserSettings.SELECTED_PALETTE);
+    const paletteId = pskl.UserSettings.get(pskl.UserSettings.SELECTED_PALETTE);
     this.fillColorListContainer();
     this.colorPaletteSelect_.value = paletteId;
   };
 
   ns.PalettesListController.prototype.onPaletteSelected_ = function (evt) {
-    var paletteId = this.colorPaletteSelect_.value;
+    const paletteId = this.colorPaletteSelect_.value;
     this.selectPalette(paletteId);
     this.colorPaletteSelect_.blur();
   };
@@ -190,7 +190,7 @@
   };
 
   ns.PalettesListController.prototype.onEditPaletteClick_ = function (evt) {
-    var paletteId = this.colorPaletteSelect_.value;
+    const paletteId = this.colorPaletteSelect_.value;
     $.publish(Events.DIALOG_SHOW, {
       dialogId: 'create-palette',
       initArgs: paletteId
@@ -206,8 +206,8 @@
   ns.PalettesListController.prototype.onColorContainerMouseup = function (
     event
   ) {
-    var target = event.target;
-    var color = target.dataset.color;
+    const target = event.target;
+    const color = target.dataset.color;
 
     if (color) {
       if (event.button == Constants.LEFT_BUTTON) {
@@ -222,7 +222,7 @@
     this.removeClass_(PRIMARY_COLOR_CLASSNAME);
     this.removeClass_(SECONDARY_COLOR_CLASSNAME);
 
-    var colorContainer = this.getColorContainer_(
+    let colorContainer = this.getColorContainer_(
       pskl.app.selectedColorsService.getSecondaryColor());
     if (colorContainer) {
       colorContainer.classList.remove(PRIMARY_COLOR_CLASSNAME);
@@ -243,7 +243,7 @@
   };
 
   ns.PalettesListController.prototype.removeClass_ = function (cssClass) {
-    var element = document.querySelector('.' + cssClass);
+    const element = document.querySelector('.' + cssClass);
     if (element) {
       element.classList.remove(cssClass);
     }

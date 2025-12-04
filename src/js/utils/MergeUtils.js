@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
   ns.MergeUtils = {
     /**
@@ -17,7 +17,7 @@
      * @return {Piskel} The new Piskel instance created
      */
     merge: function (piskel, importedPiskel, options) {
-      var isImportedPiskelBigger =
+      const isImportedPiskelBigger =
         importedPiskel.getWidth() > piskel.getWidth() ||
         importedPiskel.getHeight() > piskel.getHeight();
 
@@ -38,7 +38,7 @@
         });
       }
 
-      var insertIndex = options.insertIndex;
+      let insertIndex = options.insertIndex;
       if (options.insertMode === 'insert') {
         // The index provided by the frame picker is 1-based.
         // When adding new frames, this works out fine, but if we want to
@@ -47,9 +47,9 @@
         insertIndex = insertIndex - 1;
       }
       // Add necessary frames in the original piskel.
-      var importedFrameCount = importedPiskel.getFrameCount();
-      for (var i = 0; i < importedFrameCount; i++) {
-        var index = i + insertIndex;
+      const importedFrameCount = importedPiskel.getFrameCount();
+      for (let i = 0; i < importedFrameCount; i++) {
+        const index = i + insertIndex;
         // For a given index, a new frame should be added either if we are using "add" insert mode
         // or if the current index is not supported by the original piskel.
         if (options.insertMode === 'add' || index >= piskel.getFrameCount()) {
@@ -58,12 +58,12 @@
       }
 
       // Import the layers in the original piskel.
-      importedPiskel.getLayers().forEach(function (layer) {
-        var name = layer.getName() + ' (imported)';
-        var importedLayer = new pskl.model.Layer(name);
-        for (var i = 0; i < piskel.getFrameCount(); i++) {
-          var importedIndex = i - insertIndex;
-          var frame = layer.getFrameAt(importedIndex);
+      importedPiskel.getLayers().forEach((layer) => {
+        const name = layer.getName() + ' (imported)';
+        const importedLayer = new pskl.model.Layer(name);
+        for (let i = 0; i < piskel.getFrameCount(); i++) {
+          const importedIndex = i - insertIndex;
+          let frame = layer.getFrameAt(importedIndex);
           if (!frame) {
             frame = ns.MergeUtils.createEmptyFrame_(piskel);
           }
@@ -81,7 +81,7 @@
     },
 
     addFrameToLayers_: function (piskel, index) {
-      piskel.getLayers().forEach(function (l) {
+      piskel.getLayers().forEach((l) => {
         l.addFrameAt(ns.MergeUtils.createEmptyFrame_(piskel), index);
       });
     }

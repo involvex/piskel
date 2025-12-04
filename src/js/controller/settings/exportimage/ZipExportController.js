@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings.exportimage');
+  const ns = $.namespace('pskl.controller.settings.exportimage');
 
   ns.ZipExportController = function (piskelController, exportController) {
     this.piskelController = piskelController;
@@ -25,7 +25,7 @@
       '.zip-use-layer-names-checkbox');
     this.toggleHideUseLayerNamesCheckbox();
 
-    var zipButton = document.querySelector('.zip-generate-button');
+    const zipButton = document.querySelector('.zip-generate-button');
     this.addEventListener(zipButton, 'click', this.onZipButtonClick_);
   };
 
@@ -42,7 +42,7 @@
   };
 
   ns.ZipExportController.prototype.onZipButtonClick_ = function () {
-    var zip = new window.JSZip();
+    const zip = new window.JSZip();
 
     if (this.splitByLayersCheckbox.checked) {
       this.splittedExport_(zip);
@@ -50,9 +50,9 @@
       this.mergedExport_(zip);
     }
 
-    var fileName = this.getPiskelName_() + '.zip';
+    const fileName = this.getPiskelName_() + '.zip';
 
-    var blob = zip.generate({
+    const blob = zip.generate({
       type: 'blob'
     });
 
@@ -60,14 +60,14 @@
   };
 
   ns.ZipExportController.prototype.mergedExport_ = function (zip) {
-    var paddingLength = ('' + this.piskelController.getFrameCount()).length;
-    var zoom = this.exportController.getExportZoom();
-    for (var i = 0; i < this.piskelController.getFrameCount(); i++) {
-      var render = this.piskelController.renderFrameAt(i, true);
-      var canvas = pskl.utils.ImageResizer.scale(render, zoom);
-      var basename = this.pngFilePrefixInput.value;
-      var id = pskl.utils.StringUtils.leftPad(i, paddingLength, '0');
-      var filename = basename + id + '.png';
+    const paddingLength = ('' + this.piskelController.getFrameCount()).length;
+    const zoom = this.exportController.getExportZoom();
+    for (let i = 0; i < this.piskelController.getFrameCount(); i++) {
+      const render = this.piskelController.renderFrameAt(i, true);
+      const canvas = pskl.utils.ImageResizer.scale(render, zoom);
+      const basename = this.pngFilePrefixInput.value;
+      const id = pskl.utils.StringUtils.leftPad(i, paddingLength, '0');
+      const filename = basename + id + '.png';
       zip.file(
         filename,
         pskl.utils.CanvasUtils.getBase64FromCanvas(canvas) + '\n',
@@ -76,23 +76,23 @@
   };
 
   ns.ZipExportController.prototype.splittedExport_ = function (zip) {
-    var layers = this.piskelController.getLayers();
-    var framePaddingLength = ('' + this.piskelController.getFrameCount())
+    const layers = this.piskelController.getLayers();
+    const framePaddingLength = ('' + this.piskelController.getFrameCount())
       .length;
-    var layerPaddingLength = ('' + layers.length).length;
-    var zoom = this.exportController.getExportZoom();
-    for (var j = 0; this.piskelController.hasLayerAt(j); j++) {
-      var layer = this.piskelController.getLayerAt(j);
-      var layerid = pskl.utils.StringUtils.leftPad(j, layerPaddingLength, '0');
-      for (var i = 0; i < this.piskelController.getFrameCount(); i++) {
-        var render = pskl.utils.LayerUtils.renderFrameAt(layer, i, true);
-        var canvas = pskl.utils.ImageResizer.scale(render, zoom);
-        var basename = this.pngFilePrefixInput.value;
-        var frameid = pskl.utils.StringUtils.leftPad(
+    const layerPaddingLength = ('' + layers.length).length;
+    const zoom = this.exportController.getExportZoom();
+    for (let j = 0; this.piskelController.hasLayerAt(j); j++) {
+      const layer = this.piskelController.getLayerAt(j);
+      const layerid = pskl.utils.StringUtils.leftPad(j, layerPaddingLength, '0');
+      for (let i = 0; i < this.piskelController.getFrameCount(); i++) {
+        const render = pskl.utils.LayerUtils.renderFrameAt(layer, i, true);
+        const canvas = pskl.utils.ImageResizer.scale(render, zoom);
+        const basename = this.pngFilePrefixInput.value;
+        const frameid = pskl.utils.StringUtils.leftPad(
           i + 1,
           framePaddingLength,
           '0');
-        var filename = 'l' + layerid + '_' + basename + frameid + '.png';
+        let filename = 'l' + layerid + '_' + basename + frameid + '.png';
         if (this.useLayerNamesCheckbox.checked) {
           filename = layer.getName() + '_' + basename + frameid + '.png';
         }

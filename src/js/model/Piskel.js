@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.model');
+  const ns = $.namespace('pskl.model');
 
   /**
    * @constructor
@@ -32,9 +32,9 @@
    * @return {pskl.model.Piskel}
    */
   ns.Piskel.fromLayers = function (layers, fps, descriptor) {
-    var piskel = null;
+    let piskel = null;
     if (layers.length > 0 && layers[0].size() > 0) {
-      var sampleFrame = layers[0].getFrameAt(0);
+      const sampleFrame = layers[0].getFrameAt(0);
       piskel = new pskl.model.Piskel(
         sampleFrame.getWidth(),
         sampleFrame.getHeight(),
@@ -72,7 +72,7 @@
   };
 
   ns.Piskel.prototype.getLayersByName = function (name) {
-    return this.layers.filter(function (l) {
+    return this.layers.filter((l) => {
       return l.getName() == name;
     });
   };
@@ -90,14 +90,14 @@
   };
 
   ns.Piskel.prototype.moveLayerUp = function (layer, toTop) {
-    var index = this.layers.indexOf(layer);
-    var toIndex = toTop ? this.layers.length - 1 : index + 1;
+    const index = this.layers.indexOf(layer);
+    const toIndex = toTop ? this.layers.length - 1 : index + 1;
     this.moveLayer_(index, toIndex);
   };
 
   ns.Piskel.prototype.moveLayerDown = function (layer, toBottom) {
-    var index = this.layers.indexOf(layer);
-    var toIndex = toBottom ? 0 : index - 1;
+    const index = this.layers.indexOf(layer);
+    const toIndex = toBottom ? 0 : index - 1;
     this.moveLayer_(index, toIndex);
   };
 
@@ -109,12 +109,12 @@
       return;
     }
     toIndex = pskl.utils.Math.minmax(toIndex, 0, this.layers.length - 1);
-    var layer = this.layers.splice(fromIndex, 1)[0];
+    const layer = this.layers.splice(fromIndex, 1)[0];
     this.layers.splice(toIndex, 0, layer);
   };
 
   ns.Piskel.prototype.removeLayer = function (layer) {
-    var index = this.layers.indexOf(layer);
+    const index = this.layers.indexOf(layer);
     if (index != -1) {
       this.layers.splice(index, 1);
     }
@@ -140,7 +140,7 @@
 
   ns.Piskel.prototype.getHash = function () {
     return this.layers
-      .map(function (layer) {
+      .map((layer) => {
         return layer.getHash();
       })
       .join('-');

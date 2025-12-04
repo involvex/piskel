@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
   ns.PiskelFileUtils = {
     FAILURE: {
@@ -17,11 +17,11 @@
      * @param  {Function} onError NOT USED YET
      */
     loadFromFile: function (file, onSuccess, onError) {
-      pskl.utils.FileUtils.readFile(file, function (content) {
-        var rawPiskel = pskl.utils.Base64.toText(content);
+      pskl.utils.FileUtils.readFile(file, (content) => {
+        const rawPiskel = pskl.utils.Base64.toText(content);
         ns.PiskelFileUtils.decodePiskelFile(
           rawPiskel,
-          function (piskel) {
+          (piskel) => {
             // if using Node-Webkit, store the savePath on load
             // Note: the 'path' property is unique to Node-Webkit, and holds the full path
             if (pskl.utils.Environment.detectNodeWebkit()) {
@@ -35,7 +35,7 @@
     },
 
     decodePiskelFile: function (rawPiskel, onSuccess, onError) {
-      var serializedPiskel;
+      let serializedPiskel;
       if (rawPiskel.length === 0) {
         onError(ns.PiskelFileUtils.FAILURE.EMPTY);
         return;
@@ -48,11 +48,11 @@
         return;
       }
 
-      var piskel = serializedPiskel.piskel;
+      const piskel = serializedPiskel.piskel;
       pskl.utils.serialization.Deserializer.deserialize(
         serializedPiskel,
         onSuccess,
-        function () {
+        () => {
           onError(ns.PiskelFileUtils.FAILURE.DESERIALIZATION);
         }
       );

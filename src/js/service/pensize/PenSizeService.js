@@ -1,8 +1,8 @@
 (function () {
-  var ns = $.namespace('pskl.service.pensize');
+  const ns = $.namespace('pskl.service.pensize');
 
-  var MIN_PENSIZE = 1;
-  var MAX_PENSIZE = 32;
+  const MIN_PENSIZE = 1;
+  const MAX_PENSIZE = 32;
 
   /**
    * Service to retrieve and modify the current pen size.
@@ -14,7 +14,7 @@
   ns.PenSizeService.prototype.init = function () {
     this.size = pskl.UserSettings.get(pskl.UserSettings.PEN_SIZE);
 
-    var shortcuts = pskl.service.keyboard.Shortcuts;
+    const shortcuts = pskl.service.keyboard.Shortcuts;
     pskl.app.shortcutService.registerShortcut(
       shortcuts.MISC.INCREASE_PENSIZE,
       this.increasePenSize_.bind(this));

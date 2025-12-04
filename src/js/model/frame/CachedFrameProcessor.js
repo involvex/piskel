@@ -1,18 +1,18 @@
 (function () {
-  var ns = $.namespace('pskl.model.frame');
+  const ns = $.namespace('pskl.model.frame');
 
   // Maximum number of cache entries
-  var MAX_CACHE_ENTRIES = 100;
+  const MAX_CACHE_ENTRIES = 100;
 
-  var DEFAULT_FRAME_PROCESSOR = function (frame) {
+  const DEFAULT_FRAME_PROCESSOR = function (frame) {
     return pskl.utils.FrameUtils.toImage(frame);
   };
 
-  var DEFAULT_OUTPUT_CLONER = function (o) {
+  const DEFAULT_OUTPUT_CLONER = function (o) {
     return o;
   };
 
-  var DEFAULT_NAMESPACE = '__cache_default__';
+  const DEFAULT_NAMESPACE = '__cache_default__';
 
   ns.CachedFrameProcessor = function () {
     // Cache object.
@@ -60,16 +60,16 @@
    * @return {Object} the processed frame
    */
   ns.CachedFrameProcessor.prototype.get = function (frame, namespace) {
-    var processedFrame = null;
+    let processedFrame = null;
     namespace = namespace || DEFAULT_NAMESPACE;
 
     if (!this.cache_[namespace]) {
       this.cache_[namespace] = {};
     }
 
-    var cache = this.cache_[namespace];
+    const cache = this.cache_[namespace];
 
-    var cacheKey = frame.getHash();
+    const cacheKey = frame.getHash();
     if (cache[cacheKey]) {
       processedFrame = cache[cacheKey];
     } else {
@@ -77,7 +77,7 @@
       cache[cacheKey] = processedFrame;
       this.cacheQueue_.unshift([namespace, cacheKey]);
       if (this.cacheQueue_.length > MAX_CACHE_ENTRIES) {
-        var oldestItem = this.cacheQueue_.pop();
+        const oldestItem = this.cacheQueue_.pop();
         this.cache_[oldestItem[0]][oldestItem[1]] = null;
       }
     }

@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.widgets');
+  const ns = $.namespace('pskl.widgets');
 
   ns.SynchronizedInputs = function (options) {
     this.leftInput = options.leftInput;
@@ -41,7 +41,7 @@
   };
 
   ns.SynchronizedInputs.prototype.onInput_ = function (evt) {
-    var target = evt.target;
+    const target = evt.target;
     if (this.syncEnabled) {
       this.synchronize(target);
     }

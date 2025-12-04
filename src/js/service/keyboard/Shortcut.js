@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service.keyboard');
+  const ns = $.namespace('pskl.service.keyboard');
 
   /**
    * Keyboard shortcut wrapper, use it to register on the ShortcutService.
@@ -35,7 +35,7 @@
    * @return {Array<String>} array of keys
    */
   ns.Shortcut.prototype.getKeys = function () {
-    var keys =
+    const keys =
       pskl.UserSettings.get(this.getLocalStorageKey_()) || this.defaultKeys_;
 
     if (typeof keys === 'string') {
@@ -69,15 +69,15 @@
   };
 
   ns.Shortcut.prototype.isCustom = function () {
-    var keys = this.getKeys();
+    const keys = this.getKeys();
     if (keys.length !== this.defaultKeys_.length) {
       return true;
     }
 
     // for some default keys
-    return this.defaultKeys_.some(function (defaultKey) {
+    return this.defaultKeys_.some((defaultKey) => {
       // no match can be found in the current keys
-      return !keys.some(function (key) {
+      return !keys.some((key) => {
         return ns.KeyUtils.equals(key, defaultKey);
       });
     });
@@ -116,9 +116,9 @@
       return;
     }
 
-    var keys = this.getKeys();
-    var updatedKeys = keys.filter(function (key) {
-      return !keysToRemove.some(function (keyToRemove) {
+    const keys = this.getKeys();
+    const updatedKeys = keys.filter((key) => {
+      return !keysToRemove.some((keyToRemove) => {
         return ns.KeyUtils.equals(key, keyToRemove);
       });
     });

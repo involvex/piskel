@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.controller.preview');
+  const ns = $.namespace('pskl.controller.preview');
 
-  var POPUP_TITLE = 'Piskel - preview';
+  const POPUP_TITLE = 'Piskel - preview';
 
   ns.PopupPreviewController = function (piskelController) {
     this.piskelController = piskelController;
@@ -45,7 +45,7 @@
       'unload',
       this.onPopupClosed_,
       this);
-    var container = this.popup.document.querySelector('.preview-container');
+    const container = this.popup.document.querySelector('.preview-container');
     this.renderer = new pskl.rendering.frame.BackgroundImageFrameRenderer(
       container);
     this.updateZoom_();
@@ -65,32 +65,32 @@
   };
 
   ns.PopupPreviewController.prototype.updateZoom_ = function () {
-    var documentElement = this.popup.document.documentElement;
-    var wZoom = documentElement.clientWidth / this.piskelController.getWidth();
-    var hZoom =
+    const documentElement = this.popup.document.documentElement;
+    const wZoom = documentElement.clientWidth / this.piskelController.getWidth();
+    const hZoom =
       documentElement.clientHeight / this.piskelController.getHeight();
-    var zoom = Math.min(wZoom, hZoom);
+    const zoom = Math.min(wZoom, hZoom);
 
     this.renderer.setZoom(zoom);
 
-    var height = this.piskelController.getHeight() * zoom;
-    var width = this.piskelController.getWidth() * zoom;
+    const height = this.piskelController.getHeight() * zoom;
+    const width = this.piskelController.getWidth() * zoom;
 
-    var container = this.popup.document.querySelector('.preview-container');
+    const container = this.popup.document.querySelector('.preview-container');
     container.style.height = height + 'px';
     container.style.width = width + 'px';
 
-    var horizontalMargin = (documentElement.clientHeight - height) / 2;
+    const horizontalMargin = (documentElement.clientHeight - height) / 2;
     container.style.marginTop = horizontalMargin + 'px';
     container.style.marginBottom = horizontalMargin + 'px';
 
-    var verticalMargin = (documentElement.clientWidth - width) / 2;
+    const verticalMargin = (documentElement.clientWidth - width) / 2;
     container.style.marginLeft = verticalMargin + 'px';
     container.style.marginRight = verticalMargin + 'px';
   };
 
   ns.PopupPreviewController.prototype.onPopupClosed_ = function () {
-    var popup = this.popup;
+    const popup = this.popup;
     this.popup = null;
   };
 

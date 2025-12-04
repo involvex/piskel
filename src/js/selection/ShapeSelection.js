@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.selection');
+  const ns = $.namespace('pskl.selection');
 
   ns.ShapeSelection = function (pixels) {
     this.pixels = pixels;

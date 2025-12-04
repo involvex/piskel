@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs');
+  const ns = $.namespace('pskl.controller.dialogs');
 
-  var SHORTCUT_EDITING_CLASSNAME = 'cheatsheet-shortcut-editing';
+  const SHORTCUT_EDITING_CLASSNAME = 'cheatsheet-shortcut-editing';
 
   ns.CheatsheetController = function () {};
 
@@ -55,14 +55,14 @@
   };
 
   ns.CheatsheetController.prototype.onCheatsheetClick_ = function (evt) {
-    var shortcutEl = pskl.utils.Dom.getParentWithData(evt.target, 'shortcutId');
+    const shortcutEl = pskl.utils.Dom.getParentWithData(evt.target, 'shortcutId');
     if (!shortcutEl) {
       pskl.utils.Dom.removeClass(SHORTCUT_EDITING_CLASSNAME);
       return;
     }
 
-    var shortcutId = shortcutEl.dataset.shortcutId;
-    var shortcut = pskl.app.shortcutService.getShortcutById(shortcutId);
+    const shortcutId = shortcutEl.dataset.shortcutId;
+    const shortcut = pskl.app.shortcutService.getShortcutById(shortcutId);
 
     if (shortcutEl.classList.contains(SHORTCUT_EDITING_CLASSNAME)) {
       pskl.utils.Dom.removeClass(SHORTCUT_EDITING_CLASSNAME);
@@ -75,21 +75,21 @@
   };
 
   ns.CheatsheetController.prototype.onEventTrapKeydown_ = function (evt) {
-    var shortcutEl = document.querySelector('.' + SHORTCUT_EDITING_CLASSNAME);
+    const shortcutEl = document.querySelector('.' + SHORTCUT_EDITING_CLASSNAME);
     if (!shortcutEl) {
       return;
     }
 
-    var shortcutKeyObject =
+    const shortcutKeyObject =
       pskl.service.keyboard.KeyUtils.createKeyFromEvent(evt);
     if (!shortcutKeyObject) {
       return;
     }
 
-    var shortcutKeyString =
+    const shortcutKeyString =
       pskl.service.keyboard.KeyUtils.stringify(shortcutKeyObject);
-    var shortcutId = shortcutEl.dataset.shortcutId;
-    var shortcut = pskl.app.shortcutService.getShortcutById(shortcutId);
+    const shortcutId = shortcutEl.dataset.shortcutId;
+    const shortcut = pskl.app.shortcutService.getShortcutById(shortcutId);
     pskl.app.shortcutService.updateShortcut(shortcut, shortcutKeyString);
 
     shortcutEl.classList.remove(SHORTCUT_EDITING_CLASSNAME);
@@ -118,12 +118,12 @@
     container,
     iconClassProvider
   ) {
-    var shortcutMap = pskl.service.keyboard.Shortcuts[category];
+    const shortcutMap = pskl.service.keyboard.Shortcuts[category];
 
-    var descriptors = Object.keys(shortcutMap).map(
-      function (shortcutKey) {
+    const descriptors = Object.keys(shortcutMap).map(
+      (shortcutKey) => {
         return this.toDescriptor_(shortcutMap[shortcutKey], iconClassProvider);
-      }.bind(this));
+      });
     this.initMarkupForDescriptors_(descriptors, container);
   };
 
@@ -131,7 +131,7 @@
     shortcut,
     iconClassProvider
   ) {
-    var iconClass =
+    const iconClass =
       typeof iconClassProvider == 'function' ? iconClassProvider(shortcut) : '';
     return {
       shortcut: shortcut,
@@ -143,25 +143,25 @@
     descriptors,
     containerSelector
   ) {
-    var container = document.querySelector(containerSelector);
+    const container = document.querySelector(containerSelector);
     if (!container) {
       return;
     }
-    var markupArray = descriptors.map(this.getMarkupForDescriptor_.bind(this));
+    const markupArray = descriptors.map(this.getMarkupForDescriptor_.bind(this));
     container.innerHTML = markupArray.join('');
   };
 
   ns.CheatsheetController.prototype.getMarkupForDescriptor_ = function (
     descriptor
   ) {
-    var shortcutTemplate = pskl.utils.Template.get(
+    const shortcutTemplate = pskl.utils.Template.get(
       'cheatsheet-shortcut-template');
-    var shortcut = descriptor.shortcut;
-    var description = shortcut.isCustom() ?
+    const shortcut = descriptor.shortcut;
+    const description = shortcut.isCustom() ?
       shortcut.getDescription() + ' *' :
       shortcut.getDescription();
 
-    var shortcutClasses = [];
+    const shortcutClasses = [];
     if (shortcut.isUndefined()) {
       shortcutClasses.push('cheatsheet-shortcut-undefined');
     }
@@ -169,11 +169,11 @@
       shortcutClasses.push('cheatsheet-shortcut-editable');
     }
 
-    var title = shortcut.isEditable() ?
+    const title = shortcut.isEditable() ?
       'Click to edit the key' :
       'Shortcut cannot be remapped';
 
-    var markup = pskl.utils.Template.replace(shortcutTemplate, {
+    const markup = pskl.utils.Template.replace(shortcutTemplate, {
       id: shortcut.getId(),
       title: title,
       icon: descriptor.iconClass,
@@ -203,14 +203,14 @@
   };
 
   ns.CheatsheetController.prototype.getHelptextTitle_ = function () {
-    var helpItems = [
+    const helpItems = [
       'Click on a shortcut to change the key.',
       'When the shortcut blinks, press the key on your keyboard to assign it.',
       'White shortcuts can not be edited.',
       'Click on \'Restore default shortcuts\' to erase all custom shortcuts.'
     ];
 
-    var helptextTitle = helpItems.reduce(function (p, n) {
+    let helptextTitle = helpItems.reduce((p, n) => {
       return (
         p + '<div class="cheatsheet-helptext-tooltip-item">' + n + '</div>'
       );

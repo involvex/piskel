@@ -1,16 +1,16 @@
 (function () {
-  var ns = $.namespace('pskl.database.migrate');
+  const ns = $.namespace('pskl.database.migrate');
 
   // Simple migration helper to move local storage saves to indexed db.
   ns.MigrateLocalStorageToIndexedDb = {};
 
   ns.MigrateLocalStorageToIndexedDb.migrate = function (piskelDatabase) {
-    var deferred = Q.defer();
+    const deferred = Q.defer();
 
-    var localStorageService = pskl.app.localStorageService;
+    const localStorageService = pskl.app.localStorageService;
 
-    var localStorageKeys = localStorageService.getKeys();
-    var migrationData = localStorageKeys.map(function (key) {
+    const localStorageKeys = localStorageService.getKeys();
+    const migrationData = localStorageKeys.map((key) => {
       return {
         name: key.name,
         description: key.description,
@@ -21,9 +21,9 @@
 
     // Define the sequential migration process.
     // Wait for each sprite to be saved before saving the next one.
-    var success = true;
+    const success = true;
     var migrateSprite = function (index) {
-      var data = migrationData[index];
+      const data = migrationData[index];
       if (!data) {
         console.log(
           'Data migration from local storage to indexed db finished.');
@@ -36,11 +36,11 @@
         deferred.resolve();
       } else {
         ns.MigrateLocalStorageToIndexedDb.save_(piskelDatabase, data)
-          .then(function () {
+          .then(() => {
             migrateSprite(index + 1);
           })
-          .catch(function (e) {
-            var success = false;
+          .catch((e) => {
+            const success = false;
             console.error(
               'Failed to migrate local storage sprite for name: ' + data.name);
             migrateSprite(index + 1);
@@ -58,7 +58,7 @@
     piskelDatabase,
     piskelData
   ) {
-    return piskelDatabase.get(piskelData.name).then(function (data) {
+    return piskelDatabase.get(piskelData.name).then((data) => {
       if (typeof data !== 'undefined') {
         return piskelDatabase.update(
           piskelData.name,
@@ -76,10 +76,10 @@
   };
 
   ns.MigrateLocalStorageToIndexedDb.deleteLocalStoragePiskels = function () {
-    var localStorageKeys = pskl.app.localStorageService.getKeys();
+    const localStorageKeys = pskl.app.localStorageService.getKeys();
 
     // Remove all sprites.
-    localStorageKeys.forEach(function (key) {
+    localStorageKeys.forEach((key) => {
       window.localStorage.removeItem('piskel.' + key.name);
     });
 

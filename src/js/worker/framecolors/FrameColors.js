@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.worker.framecolors');
+  const ns = $.namespace('pskl.worker.framecolors');
 
   ns.FrameColors = function (frame, onSuccess, onStep, onError) {
     this.pixels = frame.pixels;

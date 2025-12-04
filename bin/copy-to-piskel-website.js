@@ -1,12 +1,12 @@
-var rmdir = require("rmdir");
-var path = require("path");
-var fs = require("fs");
-var fse = require("fs-extra");
+const rmdir = require("rmdir");
+const path = require("path");
+const fs = require("fs");
+const fse = require("fs-extra");
 
-var PISKEL_PATH = path.resolve(__dirname, "..");
-var PISKELAPP_PATH = path.resolve(__dirname, "../../piskel-website");
+const PISKEL_PATH = path.resolve(__dirname, "..");
+const PISKELAPP_PATH = path.resolve(__dirname, "../../piskel-website");
 
-var pjson = require("../package.json");
+const pjson = require("../package.json");
 
 // Callbacks sorted by call sequence.
 function onCopy(err) {
@@ -16,11 +16,11 @@ function onCopy(err) {
   }
 
   console.log("Copied static files to piskel-website...");
-  var previousPartialPath = path.resolve(
+  const previousPartialPath = path.resolve(
     PISKELAPP_PATH,
     "templates/editor/main-partial.html"
   );
-  fs.access(previousPartialPath, fs.constants.F_OK, function (err) {
+  fs.access(previousPartialPath, fs.constants.F_OK, (err) => {
     if (err) {
       // File does not exit, call next step directly.
       console.error("Previous main partial doesn't exist yet.");

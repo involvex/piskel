@@ -1,13 +1,13 @@
-describe("Array utils", function () {
-  beforeEach(function () {});
-  afterEach(function () {});
+describe("Array utils", () => {
+  beforeEach(() => {});
+  afterEach(() => {});
 
-  it("chunks correctly", function () {
+  it("chunks correctly", () => {
     // when
-    var array = [1, 2, 3, 4];
+    const array = [1, 2, 3, 4];
 
     // then
-    var chunks = pskl.utils.Array.chunk(array, 1);
+    let chunks = pskl.utils.Array.chunk(array, 1);
 
     // verify
     expect(chunks.length).toBe(1);

@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service.palette');
+  const ns = $.namespace('pskl.service.palette');
 
   ns.CurrentColorsPalette = function () {
     this.name = 'Current colors';
@@ -8,7 +8,7 @@
   };
 
   ns.CurrentColorsPalette.prototype.getColors = function () {
-    var currentColors = pskl.app.currentColorsService.getCurrentColors();
+    let currentColors = pskl.app.currentColorsService.getCurrentColors();
     currentColors = currentColors.slice(0, Constants.MAX_PALETTE_COLORS);
     return this.colorSorter.sort(currentColors);
   };

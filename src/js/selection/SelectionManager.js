@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.selection');
+  const ns = $.namespace('pskl.selection');
 
-  var SELECTION_REPLAY = {
+  const SELECTION_REPLAY = {
     PASTE: 'REPLAY_PASTE',
     ERASE: 'REPLAY_ERASE'
   };
@@ -24,7 +24,7 @@
     $.subscribe(Events.CLIPBOARD_CUT, this.copy.bind(this));
     $.subscribe(Events.CLIPBOARD_PASTE, this.paste.bind(this));
 
-    var shortcuts = pskl.service.keyboard.Shortcuts;
+    const shortcuts = pskl.service.keyboard.Shortcuts;
     pskl.app.shortcutService.registerShortcut(
       shortcuts.SELECTION.DELETE,
       this.onDeleteShortcut_.bind(this));
@@ -48,7 +48,7 @@
    * @private
    */
   ns.SelectionManager.prototype.onToolSelected_ = function (evt, tool) {
-    var isSelectionTool =
+    const isSelectionTool =
       tool instanceof pskl.tools.drawing.selection.BaseSelect;
     if (!isSelectionTool) {
       this.cleanSelection_();
@@ -71,9 +71,9 @@
   };
 
   ns.SelectionManager.prototype.erase = function () {
-    var pixels = this.currentSelection.pixels;
-    var currentFrame = this.piskelController.getCurrentFrame();
-    for (var i = 0, l = pixels.length; i < l; i++) {
+    const pixels = this.currentSelection.pixels;
+    const currentFrame = this.piskelController.getCurrentFrame();
+    for (let i = 0, l = pixels.length; i < l; i++) {
       currentFrame.setPixel(
         pixels[i].col,
         pixels[i].row,
@@ -107,11 +107,11 @@
   };
 
   ns.SelectionManager.prototype.paste = function (event, domEvent) {
-    var items = domEvent ? domEvent.clipboardData.items : [];
+    const items = domEvent ? domEvent.clipboardData.items : [];
 
     try {
-      for (var i = 0; i < items.length; i++) {
-        var item = items[i];
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
 
         if (/^image/i.test(item.type)) {
           this.pasteImage_(item);
@@ -137,21 +137,21 @@
   };
 
   ns.SelectionManager.prototype.pasteImage_ = function (clipboardItem) {
-    var blob = clipboardItem.getAsFile();
+    const blob = clipboardItem.getAsFile();
     pskl.utils.FileUtils.readImageFile(
       blob,
-      function (image) {
+      (image) => {
         pskl.app.fileDropperService.dropPosition_ = { x: 0, y: 0 };
         pskl.app.fileDropperService.onImageLoaded_(image, blob);
-      }.bind(this));
+      });
   };
 
   ns.SelectionManager.prototype.pasteText_ = function (clipboardItem) {
-    var blob = clipboardItem.getAsString(
-      function (selectionString) {
-        var selectionData = JSON.parse(selectionString);
-        var time = selectionData.time;
-        var pixels = selectionData.pixels;
+    const blob = clipboardItem.getAsString(
+      (selectionString) => {
+        const selectionData = JSON.parse(selectionString);
+        const time = selectionData.time;
+        let pixels = selectionData.pixels;
 
         if (this.currentSelection && this.currentSelection.time >= time) {
           // If the local selection is newer or equal to the one coming from the clipboard event
@@ -166,11 +166,11 @@
           // If the current clipboard data is some random text, pixels will not be defined.
           this.pastePixelsOnCurrentFrame_(pixels);
         }
-      }.bind(this));
+      });
   };
 
   ns.SelectionManager.prototype.pastePixelsOnCurrentFrame_ = function (pixels) {
-    var frame = this.piskelController.getCurrentFrame();
+    const frame = this.piskelController.getCurrentFrame();
 
     this.pastePixels_(frame, pixels);
 
@@ -189,8 +189,8 @@
    * the current tool instance.
    */
   ns.SelectionManager.prototype.commit = function () {
-    var tool = pskl.app.drawingController.currentToolBehavior;
-    var isSelectionTool =
+    const tool = pskl.app.drawingController.currentToolBehavior;
+    const isSelectionTool =
       tool instanceof pskl.tools.drawing.selection.BaseSelect;
     if (isSelectionTool) {
       tool.commitSelection();
@@ -201,14 +201,14 @@
     if (replayData.type === SELECTION_REPLAY.PASTE) {
       this.pastePixels_(frame, replayData.pixels);
     } else if (replayData.type === SELECTION_REPLAY.ERASE) {
-      replayData.pixels.forEach(function (pixel) {
+      replayData.pixels.forEach((pixel) => {
         frame.setPixel(pixel.col, pixel.row, Constants.TRANSPARENT_COLOR);
       });
     }
   };
 
   ns.SelectionManager.prototype.pastePixels_ = function (frame, pixels) {
-    pixels.forEach(function (pixel) {
+    pixels.forEach((pixel) => {
       if (pixel.color === Constants.TRANSPARENT_COLOR || pixel.color === null) {
         return;
       }

@@ -1,18 +1,18 @@
 (function () {
-  var ns = $.namespace('pskl.utils.serialization');
+  const ns = $.namespace('pskl.utils.serialization');
 
-  var areChunksValid = function (chunks) {
+  const areChunksValid = function (chunks) {
     return (
       chunks.length &&
-      chunks.every(function (chunk) {
+      chunks.every((chunk) => {
         return chunk.base64PNG && chunk.base64PNG !== 'data:,';
       })
     );
   };
 
-  var createLineLayout = function (size, offset) {
-    var layout = [];
-    for (var i = 0; i < size; i++) {
+  const createLineLayout = function (size, offset) {
+    const layout = [];
+    for (let i = 0; i < size; i++) {
       layout.push([i + offset]);
     }
 
@@ -21,7 +21,7 @@
 
   ns.Serializer = {
     serialize: function (piskel) {
-      var serializedLayers = piskel.getLayers().map(function (l) {
+      const serializedLayers = piskel.getLayers().map((l) => {
         return pskl.utils.serialization.Serializer.serializeLayer(l);
       });
 
@@ -40,8 +40,8 @@
     },
 
     serializeLayer: function (layer) {
-      var frames = layer.getFrames();
-      var layerToSerialize = {
+      const frames = layer.getFrames();
+      const layerToSerialize = {
         name: layer.getName(),
         opacity: layer.getOpacity(),
         frameCount: frames.length
@@ -52,7 +52,7 @@
       // Frames are divided equally amongst chunks and each chunk is converted to a spritesheet
       // PNG. If any chunk contains an invalid base64 PNG, we increase the number of chunks and
       // retry.
-      var chunks = [];
+      let chunks = [];
       while (!areChunksValid(chunks)) {
         if (chunks.length >= frames.length) {
           // Something went horribly wrong.
@@ -61,15 +61,15 @@
         }
 
         // Chunks are invalid, increase the number of chunks by one, and chunk the frames array.
-        var frameChunks = pskl.utils.Array.chunk(frames, chunks.length + 1);
+        const frameChunks = pskl.utils.Array.chunk(frames, chunks.length + 1);
 
         // Reset chunks array.
         chunks = [];
 
         // After each chunk update the offset by te number of frames that have been processed.
-        var offset = 0;
-        for (var i = 0; i < frameChunks.length; i++) {
-          var chunkFrames = frameChunks[i];
+        let offset = 0;
+        for (let i = 0; i < frameChunks.length; i++) {
+          const chunkFrames = frameChunks[i];
           chunks.push({
             // create a layout array, containing the indices of the frames extracted in this chunk
             layout: createLineLayout(chunkFrames.length, offset),
@@ -86,7 +86,7 @@
 
     serializeFramesToBase64: function (frames) {
       try {
-        var renderer = new pskl.rendering.FramesheetRenderer(frames);
+        const renderer = new pskl.rendering.FramesheetRenderer(frames);
         return renderer.renderAsCanvas().toDataURL();
       } catch (e) {
         return '';

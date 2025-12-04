@@ -1,9 +1,9 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
   ns.CanvasUtils = {
     createCanvas: function (width, height, classList) {
-      var canvas = document.createElement('canvas');
+      const canvas = document.createElement('canvas');
       canvas.setAttribute('width', width);
       canvas.setAttribute('height', height);
 
@@ -11,7 +11,7 @@
         classList = [classList];
       }
       if (Array.isArray(classList)) {
-        for (var i = 0; i < classList.length; i++) {
+        for (let i = 0; i < classList.length; i++) {
           canvas.classList.add(classList[i]);
         }
       }
@@ -20,21 +20,21 @@
     },
 
     createFromImageData: function (imageData) {
-      var canvas = pskl.utils.CanvasUtils.createCanvas(
+      const canvas = pskl.utils.CanvasUtils.createCanvas(
         imageData.width,
         imageData.height
       );
-      var context = canvas.getContext('2d');
+      const context = canvas.getContext('2d');
       context.putImageData(imageData, 0, 0);
       return canvas;
     },
 
     createFromImage: function (image) {
-      var canvas = pskl.utils.CanvasUtils.createCanvas(
+      const canvas = pskl.utils.CanvasUtils.createCanvas(
         image.width,
         image.height
       );
-      var context = canvas.getContext('2d');
+      const context = canvas.getContext('2d');
       context.drawImage(image, 0, 0);
       return canvas;
     },
@@ -61,18 +61,18 @@
       useHorizonalStrips,
       ignoreEmptyFrames
     ) {
-      var canvasArray = [];
-      var x = offsetX;
-      var y = offsetY;
-      var blankData = pskl.utils.CanvasUtils.createCanvas(
+      const canvasArray = [];
+      let x = offsetX;
+      let y = offsetY;
+      const blankData = pskl.utils.CanvasUtils.createCanvas(
         width,
         height
       ).toDataURL();
 
       while (x + width <= image.width && y + height <= image.height) {
         // Create a new canvas element
-        var canvas = pskl.utils.CanvasUtils.createCanvas(width, height);
-        var context = canvas.getContext('2d');
+        const canvas = pskl.utils.CanvasUtils.createCanvas(width, height);
+        const context = canvas.getContext('2d');
 
         // Blit the correct part of the source image into the new canvas
         context.drawImage(image, x, y, width, height, 0, 0, width, height);
@@ -117,7 +117,7 @@
     },
 
     setImageSmoothing: function (canvas, smoothing) {
-      var context = canvas.getContext('2d');
+      const context = canvas.getContext('2d');
       context.imageSmoothingEnabled = smoothing;
       context.mozImageSmoothingEnabled = smoothing;
       context.oImageSmoothingEnabled = smoothing;
@@ -132,7 +132,7 @@
     },
 
     clone: function (canvas) {
-      var clone = pskl.utils.CanvasUtils.createCanvas(
+      const clone = pskl.utils.CanvasUtils.createCanvas(
         canvas.width,
         canvas.height);
       //apply the old canvas to the new one
@@ -143,13 +143,13 @@
     },
 
     getImageDataFromCanvas: function (canvas) {
-      var sourceContext = canvas.getContext('2d');
+      const sourceContext = canvas.getContext('2d');
       return sourceContext.getImageData(0, 0, canvas.width, canvas.height).data;
     },
 
     getBase64FromCanvas: function (canvas, format) {
       format = format || 'png';
-      var data = canvas.toDataURL('image/' + format);
+      const data = canvas.toDataURL('image/' + format);
       return data.substr(data.indexOf(',') + 1);
     }
   };

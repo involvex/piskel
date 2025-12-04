@@ -1,8 +1,8 @@
-describe("Storage Service test suite", function () {
-  var storageService = null;
-  var piskel = {};
+describe("Storage Service test suite", () => {
+  let storageService = null;
+  const piskel = {};
 
-  beforeEach(function () {
+  beforeEach(() => {
     pskl.app.galleryStorageService = {
       save: function () {},
     };
@@ -23,53 +23,53 @@ describe("Storage Service test suite", function () {
     storageService.init();
   });
 
-  var checkSubServiceSuccessfulSave = function (service, methodName, done) {
+  const checkSubServiceSuccessfulSave = function (service, methodName, done) {
     spyOn(service, "save").and.returnValue(Q.resolve());
     storageService[methodName](piskel)
       .then(
-        function () {
+        () => {
           expect(service.save).toHaveBeenCalledWith(piskel, undefined);
         },
-        function (err) {
+        (err) => {
           expect(false).toBe(
             true,
             "Error callback should not have been called"
           );
         }
       )
-      .then(function () {
+      .then(() => {
         done();
       });
   };
 
-  var checkSubServiceFailedSave = function (service, methodName, done) {
+  const checkSubServiceFailedSave = function (service, methodName, done) {
     spyOn(service, "save").and.returnValue(Q.reject());
     storageService[methodName](piskel)
       .then(
-        function () {
+        () => {
           expect(false).toBe(
             true,
             "Success callback should not have been called"
           );
         }
-        , function () {
+        , () => {
           expect(service.save).toHaveBeenCalledWith(piskel, undefined);
         }
       )
-      .then(function () {
+      .then(() => {
         done();
       });
   };
 
   // GalleryStorage
-  it("calls GalleryStorage#save in saveToGallery", function (done) {
+  it("calls GalleryStorage#save in saveToGallery", (done) => {
     checkSubServiceSuccessfulSave(
       pskl.app.galleryStorageService,
       "saveToGallery",
       done,
     );
   });
-  it("calls GalleryStorage#save in saveToGallery - error case", function (done) {
+  it("calls GalleryStorage#save in saveToGallery - error case", (done) => {
     checkSubServiceFailedSave(
       pskl.app.galleryStorageService,
       "saveToGallery",
@@ -78,14 +78,14 @@ describe("Storage Service test suite", function () {
   });
 
   // DesktopStorage
-  it("calls DesktopStorage#save in saveToDesktop", function (done) {
+  it("calls DesktopStorage#save in saveToDesktop", (done) => {
     checkSubServiceSuccessfulSave(
       pskl.app.desktopStorageService,
       "saveToDesktop",
       done,
     );
   });
-  it("calls DesktopStorage#save in saveToDesktop - error case", function (done) {
+  it("calls DesktopStorage#save in saveToDesktop - error case", (done) => {
     checkSubServiceFailedSave(
       pskl.app.desktopStorageService,
       "saveToDesktop",
@@ -94,14 +94,14 @@ describe("Storage Service test suite", function () {
   });
 
   // FileDownloadStorage
-  it("calls FileDownloadStorage#save in saveToFileDownload", function (done) {
+  it("calls FileDownloadStorage#save in saveToFileDownload", (done) => {
     checkSubServiceSuccessfulSave(
       pskl.app.fileDownloadStorageService,
       "saveToFileDownload",
       done,
     );
   });
-  it("calls FileDownloadStorage#save in saveToFileDownload - error case", function (done) {
+  it("calls FileDownloadStorage#save in saveToFileDownload - error case", (done) => {
     checkSubServiceFailedSave(
       pskl.app.fileDownloadStorageService,
       "saveToFileDownload",
@@ -110,14 +110,14 @@ describe("Storage Service test suite", function () {
   });
 
   // LocalStorage
-  it("calls LocalStorage#save in saveToLocalStorage", function (done) {
+  it("calls LocalStorage#save in saveToLocalStorage", (done) => {
     checkSubServiceSuccessfulSave(
       pskl.app.localStorageService,
       "saveToLocalStorage",
       done,
     );
   });
-  it("calls LocalStorage#save in saveToLocalStorage - error case", function (done) {
+  it("calls LocalStorage#save in saveToLocalStorage - error case", (done) => {
     checkSubServiceFailedSave(
       pskl.app.localStorageService,
       "saveToLocalStorage",
@@ -125,8 +125,8 @@ describe("Storage Service test suite", function () {
     );
   });
 
-  it("updates saving status properly", function (done) {
-    var deferred = Q.defer();
+  it("updates saving status properly", (done) => {
+    const deferred = Q.defer();
     spyOn(pskl.app.galleryStorageService, "save").and.returnValue(
       deferred.promise,
     );
@@ -135,7 +135,7 @@ describe("Storage Service test suite", function () {
     expect(storageService.isSaving()).toBe(false);
 
     // save
-    var storageServicePromise = storageService.saveToGallery(piskel);
+    const storageServicePromise = storageService.saveToGallery(piskel);
 
     // storageService is now in saving mode
     expect(storageService.isSaving()).toBe(true);
@@ -148,14 +148,14 @@ describe("Storage Service test suite", function () {
     expect(pskl.app.galleryStorageService.save.calls.count()).toBe(1);
 
     deferred.resolve();
-    storageServicePromise.then(function () {
+    storageServicePromise.then(() => {
       // after saving, isSaving() should be false again
       expect(storageService.isSaving()).toBe(false);
       done();
     });
   });
 
-  it("updates saving status on BEFORE_SAVING_PISKEL and AFTER_SAVING_PISKEL events", function () {
+  it("updates saving status on BEFORE_SAVING_PISKEL and AFTER_SAVING_PISKEL events", () => {
     spyOn(pskl.app.galleryStorageService, "save").and.returnValue(Q.resolve());
 
     // check storageService is not in saving mode

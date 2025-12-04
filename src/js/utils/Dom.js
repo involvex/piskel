@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
   ns.Dom = {
     /**
@@ -36,7 +36,7 @@
     },
 
     getData: function (node, dataName) {
-      var parent = ns.Dom.getParentWithData(node, dataName);
+      const parent = ns.Dom.getParentWithData(node, dataName);
       if (parent !== null) {
         return parent.dataset[dataName];
       }
@@ -44,8 +44,8 @@
 
     removeClass: function (className, container) {
       container = container || document;
-      var elements = container.querySelectorAll('.' + className);
-      for (var i = 0; i < elements.length; i++) {
+      const elements = container.querySelectorAll('.' + className);
+      for (let i = 0; i < elements.length; i++) {
         elements[i].classList.remove(className);
       }
     }

@@ -1,25 +1,25 @@
-var rmdir = require("rmdir");
-var path = require("path");
-var fs = require("fs");
-var fse = require("fs-extra");
+const rmdir = require("rmdir");
+const path = require("path");
+const fs = require("fs");
+const fse = require("fs-extra");
 
-var PISKEL_PATH = path.resolve(__dirname, "..");
-var PISKELAPP_PATH = path.resolve(
+const PISKEL_PATH = path.resolve(__dirname, "..");
+const PISKELAPP_PATH = path.resolve(
   __dirname,
   "../../piskel-web/src/p/create/sprite"
 );
-var PISKELAPP_KIDS_PATH = path.resolve(
+const PISKELAPP_KIDS_PATH = path.resolve(
   __dirname,
   "../../piskel-web/src/kids"
 );
 
-var pjson = require("../package.json");
+const pjson = require("../package.json");
 
-var srcEditorPath = path.resolve(PISKELAPP_PATH, "index.html");
-var srcTestEditorPath = path.resolve(PISKELAPP_PATH, "index_test.html");
-var srcKidsEditorPath = path.resolve(PISKELAPP_KIDS_PATH, "index.html");
+const srcEditorPath = path.resolve(PISKELAPP_PATH, "index.html");
+const srcTestEditorPath = path.resolve(PISKELAPP_PATH, "index_test.html");
+const srcKidsEditorPath = path.resolve(PISKELAPP_KIDS_PATH, "index.html");
 
-var copyPiskelStaticsToPiskelWeb = function () {
+const copyPiskelStaticsToPiskelWeb = function () {
   try {
     // First clean up the target directory.
     fse.removeSync(path.resolve(PISKELAPP_PATH));
@@ -78,7 +78,7 @@ var copyPiskelStaticsToPiskelWeb = function () {
     fse.writeFileSync(path.resolve(PISKELAPP_PATH, "VERSION"), pjson.version);
     console.log("VERSION file created successfully!");
 
-    var readmeContent =
+    const readmeContent =
           "The content of the editor folder was copied from the piskel project.\n" +
           "Do not edit this folder directly but instead edit the piskel project\n" +
           "and release it inside piskel-web.";

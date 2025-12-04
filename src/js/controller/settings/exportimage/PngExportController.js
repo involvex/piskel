@@ -1,13 +1,13 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings.exportimage');
+  const ns = $.namespace('pskl.controller.settings.exportimage');
 
-  var dimensionInfoPattern =
+  const dimensionInfoPattern =
     '{{width}} x {{height}} px, {{frames}}<br/>{{columns}}, {{rows}}.';
 
-  var replace = pskl.utils.Template.replace;
+  const replace = pskl.utils.Template.replace;
 
   // Helper to return "X items" or "1 item" if X is 1.
-  var pluralize = function (word, count) {
+  const pluralize = function (word, count) {
     if (count === 1) {
       return '1 ' + word;
     }
@@ -30,11 +30,11 @@
     this.rowsInput = document.querySelector('#png-export-rows');
     this.columnsInput = document.querySelector('#png-export-columns');
 
-    var downloadButton = document.querySelector('.png-download-button');
-    var downloadPixiButton = document.querySelector(
+    const downloadButton = document.querySelector('.png-download-button');
+    const downloadPixiButton = document.querySelector(
       '.png-pixi-download-button');
-    var dataUriButton = document.querySelector('.datauri-open-button');
-    var selectedFrameDownloadButton = document.querySelector(
+    const dataUriButton = document.querySelector('.datauri-open-button');
+    const selectedFrameDownloadButton = document.querySelector(
       '.selected-frame-download-button');
     this.pixiInlineImageCheckbox = document.querySelector(
       '.png-pixi-inline-image-checkbox');
@@ -64,7 +64,7 @@
    * Initalize all controls related to the spritesheet layout.
    */
   ns.PngExportController.prototype.initLayoutSection_ = function () {
-    var frames = this.piskelController.getFrameCount();
+    const frames = this.piskelController.getFrameCount();
     if (frames === 1) {
       // Hide the layout section if only one frame is defined.
       this.layoutContainer.style.display = 'none';
@@ -76,13 +76,13 @@
   };
 
   ns.PngExportController.prototype.updateDimensionLabel_ = function () {
-    var zoom = this.exportController.getExportZoom();
-    var frames = this.piskelController.getFrameCount();
-    var width = this.piskelController.getWidth() * zoom;
-    var height = this.piskelController.getHeight() * zoom;
+    const zoom = this.exportController.getExportZoom();
+    const frames = this.piskelController.getFrameCount();
+    let width = this.piskelController.getWidth() * zoom;
+    let height = this.piskelController.getHeight() * zoom;
 
-    var columns = this.getColumns_();
-    var rows = this.getRows_();
+    const columns = this.getColumns_();
+    const rows = this.getRows_();
     width = columns * width;
     height = rows * height;
 
@@ -104,10 +104,10 @@
   };
 
   ns.PngExportController.prototype.getBestFit_ = function () {
-    var ratio =
+    const ratio =
       this.piskelController.getWidth() / this.piskelController.getHeight();
-    var frameCount = this.piskelController.getFrameCount();
-    var bestFit = Math.round(Math.sqrt(frameCount / ratio));
+    const frameCount = this.piskelController.getFrameCount();
+    const bestFit = Math.round(Math.sqrt(frameCount / ratio));
 
     return pskl.utils.Math.minmax(bestFit, 1, frameCount);
   };
@@ -121,7 +121,7 @@
    * two inputs by the SynchronizedInputs widget.
    */
   ns.PngExportController.prototype.onColumnsInput_ = function () {
-    var value = this.columnsInput.value;
+    let value = this.columnsInput.value;
     if (value === '') {
       // Skip the synchronization if the input is empty.
       return;
@@ -147,14 +147,14 @@
   };
 
   ns.PngExportController.prototype.createPngSpritesheet_ = function () {
-    var renderer = new pskl.rendering.PiskelRenderer(this.piskelController);
-    var outputCanvas = renderer.renderAsCanvas(
+    const renderer = new pskl.rendering.PiskelRenderer(this.piskelController);
+    let outputCanvas = renderer.renderAsCanvas(
       this.getColumns_(),
       this.getRows_());
-    var width = outputCanvas.width;
-    var height = outputCanvas.height;
+    const width = outputCanvas.width;
+    const height = outputCanvas.height;
 
-    var zoom = this.exportController.getExportZoom();
+    const zoom = this.exportController.getExportZoom();
     if (zoom != 1) {
       outputCanvas = pskl.utils.ImageResizer.resize(
         outputCanvas,
@@ -168,7 +168,7 @@
 
   ns.PngExportController.prototype.onDownloadClick_ = function (evt) {
     // Create PNG export.
-    var canvas = this.createPngSpritesheet_();
+    const canvas = this.createPngSpritesheet_();
     this.downloadCanvas_(canvas);
   };
 
@@ -176,22 +176,22 @@
   ns.PngExportController.prototype.downloadCanvas_ = function (canvas, name) {
     // Generate file name
     name = name || this.piskelController.getPiskel().getDescriptor().name;
-    var fileName = name + '.png';
+    const fileName = name + '.png';
 
     // Transform to blob and start download.
-    pskl.utils.BlobUtils.canvasToBlob(canvas, function (blob) {
+    pskl.utils.BlobUtils.canvasToBlob(canvas, (blob) => {
       pskl.utils.FileUtils.downloadAsFile(blob, fileName);
     });
   };
 
   ns.PngExportController.prototype.onPixiDownloadClick_ = function () {
-    var zip = new window.JSZip();
+    const zip = new window.JSZip();
 
     // Create PNG export.
-    var canvas = this.createPngSpritesheet_();
-    var name = this.piskelController.getPiskel().getDescriptor().name;
+    const canvas = this.createPngSpritesheet_();
+    const name = this.piskelController.getPiskel().getDescriptor().name;
 
-    var image;
+    let image;
 
     if (this.pixiInlineImageCheckbox.checked) {
       image = canvas.toDataURL('image/png');
@@ -204,15 +204,15 @@
         { base64: true });
     }
 
-    var width = canvas.width / this.getColumns_();
-    var height = canvas.height / this.getRows_();
+    const width = canvas.width / this.getColumns_();
+    const height = canvas.height / this.getRows_();
 
-    var numFrames = this.piskelController.getFrameCount();
-    var frames = {};
-    for (var i = 0; i < numFrames; i++) {
-      var column = i % this.getColumns_();
-      var row = (i - column) / this.getColumns_();
-      var frame = {
+    const numFrames = this.piskelController.getFrameCount();
+    const frames = {};
+    for (let i = 0; i < numFrames; i++) {
+      const column = i % this.getColumns_();
+      const row = (i - column) / this.getColumns_();
+      const frame = {
         frame: { x: width * column, y: height * row, w: width, h: height },
         rotated: false,
         trimmed: false,
@@ -222,7 +222,7 @@
       frames[name + i + '.png'] = frame;
     }
 
-    var json = {
+    const json = {
       frames: frames,
       meta: {
         app: 'https://github.com/piskelapp/piskel/',
@@ -234,7 +234,7 @@
     };
     zip.file(name + '.json', JSON.stringify(json));
 
-    var blob = zip.generate({
+    const blob = zip.generate({
       type: 'blob'
     });
 
@@ -242,28 +242,28 @@
   };
 
   ns.PngExportController.prototype.onDataUriClick_ = function (evt) {
-    var popup = window.open('about:blank');
-    var dataUri = this.createPngSpritesheet_().toDataURL('image/png');
+    const popup = window.open('about:blank');
+    const dataUri = this.createPngSpritesheet_().toDataURL('image/png');
     window.setTimeout(
-      function () {
-        var html = pskl.utils.Template.getAndReplace(
+      () => {
+        const html = pskl.utils.Template.getAndReplace(
           'data-uri-export-partial',
           {
             src: dataUri
           });
         popup.document.title = dataUri;
         popup.document.body.innerHTML = html;
-      }.bind(this),
+      },
       500);
   };
 
   ns.PngExportController.prototype.onDownloadSelectedFrameClick_ = function (
     evt
   ) {
-    var frameIndex = this.piskelController.getCurrentFrameIndex();
-    var name = this.piskelController.getPiskel().getDescriptor().name;
-    var canvas = this.piskelController.renderFrameAt(frameIndex, true);
-    var zoom = this.exportController.getExportZoom();
+    const frameIndex = this.piskelController.getCurrentFrameIndex();
+    const name = this.piskelController.getPiskel().getDescriptor().name;
+    let canvas = this.piskelController.renderFrameAt(frameIndex, true);
+    const zoom = this.exportController.getExportZoom();
     if (zoom != 1) {
       canvas = pskl.utils.ImageResizer.resize(
         canvas,
@@ -272,7 +272,7 @@
         false);
     }
 
-    var fileName = name + '-' + (frameIndex + 1) + '.png';
+    const fileName = name + '-' + (frameIndex + 1) + '.png';
     this.downloadCanvas_(canvas, fileName);
   };
 })();

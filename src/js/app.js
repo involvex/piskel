@@ -3,7 +3,7 @@
  * @require Events
  */
 (function () {
-  var ns = $.namespace('pskl');
+  const ns = $.namespace('pskl');
   /**
    * Main application controller
    */
@@ -20,20 +20,20 @@
       this.shortcutService = new pskl.service.keyboard.ShortcutService();
       this.shortcutService.init();
 
-      var size = pskl.UserSettings.get(pskl.UserSettings.DEFAULT_SIZE);
-      var fps = Constants.DEFAULT.FPS;
-      var descriptor = new pskl.model.piskel.Descriptor(
+      const size = pskl.UserSettings.get(pskl.UserSettings.DEFAULT_SIZE);
+      const fps = Constants.DEFAULT.FPS;
+      const descriptor = new pskl.model.piskel.Descriptor(
         'Create new image\n - Sprite Editor by Involvex',
         '');
-      var piskel = new pskl.model.Piskel(
+      const piskel = new pskl.model.Piskel(
         size.width,
         size.height,
         fps,
         descriptor
       );
 
-      var layer = new pskl.model.Layer('Layer 1');
-      var frame = new pskl.model.Frame(size.width, size.height);
+      const layer = new pskl.model.Layer('Layer 1');
+      const frame = new pskl.model.Frame(size.width, size.height);
 
       layer.addFrame(frame);
       piskel.addLayer(layer);
@@ -238,7 +238,7 @@
 
       this.initTooltips_();
 
-      $.subscribe(Events.EXTERNAL_PISKEL_READY, function () {
+      $.subscribe(Events.EXTERNAL_PISKEL_READY, () => {
         const externalPiskel = window._externalPiskel;
         if (!externalPiskel) {
           console.error('No external piskel found');
@@ -246,7 +246,7 @@
         }
         pskl.utils.serialization.Deserializer.deserialize(
           externalPiskel,
-          function (piskel) {
+          (piskel) => {
             pskl.app.piskelController.setPiskel(piskel);
           }
         );
@@ -260,8 +260,8 @@
         pskl.utils.Environment.detectNodeWebkit() &&
         pskl.utils.UserAgent.isMac
       ) {
-        var gui = require('nw.gui');
-        var mb = new gui.Menu({ type: 'menubar' });
+        const gui = require('nw.gui');
+        const mb = new gui.Menu({ type: 'menubar' });
         mb.createMacBuiltin('Piskel');
         gui.Window.get().menu = mb;
       }
@@ -301,11 +301,11 @@
     },
 
     getFirstFrameAsPng: function () {
-      var frame = pskl.utils.LayerUtils.mergeFrameAt(
+      const frame = pskl.utils.LayerUtils.mergeFrameAt(
         this.piskelController.getLayers(),
         0
       );
-      var canvas;
+      let canvas;
       if (frame instanceof pskl.model.frame.RenderedFrame) {
         canvas = pskl.utils.CanvasUtils.createFromImage(
           frame.getRenderedFrame()
@@ -317,8 +317,8 @@
     },
 
     getFramesheetAsPng: function () {
-      var renderer = new pskl.rendering.PiskelRenderer(this.piskelController);
-      var framesheetCanvas = renderer.renderAsCanvas();
+      const renderer = new pskl.rendering.PiskelRenderer(this.piskelController);
+      const framesheetCanvas = renderer.renderAsCanvas();
       return framesheetCanvas.toDataURL('image/png');
     }
   };

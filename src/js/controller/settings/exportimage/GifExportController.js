@@ -1,10 +1,10 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings.exportimage');
+  const ns = $.namespace('pskl.controller.settings.exportimage');
 
-  var URL_MAX_LENGTH = 30;
-  var MAX_GIF_COLORS = 256;
-  var MAGIC_PINK = '#FF00FF';
-  var WHITE = '#FFFFFF';
+  const URL_MAX_LENGTH = 30;
+  const MAX_GIF_COLORS = 256;
+  const MAGIC_PINK = '#FF00FF';
+  const WHITE = '#FFFFFF';
 
   ns.GifExportController = function (piskelController, exportController) {
     this.piskelController = piskelController;
@@ -30,8 +30,8 @@
       this.repeatCheckbox,
       'change',
       this.onRepeatCheckboxChange_);
-    var currentColors = pskl.app.currentColorsService.getCurrentColors();
-    var tooManyColors = currentColors.length >= MAX_GIF_COLORS;
+    const currentColors = pskl.app.currentColorsService.getCurrentColors();
+    const tooManyColors = currentColors.length >= MAX_GIF_COLORS;
     document
       .querySelector('.gif-export-warning')
       .classList.toggle('visible', tooManyColors);
@@ -42,8 +42,8 @@
   };
 
   ns.GifExportController.prototype.onDownloadButtonClick_ = function (evt) {
-    var zoom = this.getZoom_();
-    var fps = this.piskelController.getFPS();
+    const zoom = this.getZoom_();
+    const fps = this.piskelController.getFPS();
 
     this.renderAsImageDataAnimatedGIF(
       zoom,
@@ -52,9 +52,9 @@
   };
 
   ns.GifExportController.prototype.downloadImageData_ = function (imageData) {
-    var fileName =
+    const fileName =
       this.piskelController.getPiskel().getDescriptor().name + '.gif';
-    pskl.utils.BlobUtils.dataToBlob(imageData, 'image/gif', function (blob) {
+    pskl.utils.BlobUtils.dataToBlob(imageData, 'image/gif', (blob) => {
       pskl.utils.FileUtils.downloadAsFile(blob, fileName);
     });
   };
@@ -69,17 +69,17 @@
     fps,
     cb
   ) {
-    var currentColors = pskl.app.currentColorsService.getCurrentColors();
+    const currentColors = pskl.app.currentColorsService.getCurrentColors();
 
-    var layers = this.piskelController.getLayers();
-    var isTransparent = layers.some(function (l) {
+    const layers = this.piskelController.getLayers();
+    const isTransparent = layers.some((l) => {
       return l.isTransparent();
     });
-    var preserveColors =
+    const preserveColors =
       !isTransparent && currentColors.length < MAX_GIF_COLORS;
 
-    var transparentColor;
-    var transparent;
+    let transparentColor;
+    let transparent;
     // transparency only supported if preserveColors is true, see Issue #357
     if (preserveColors) {
       transparentColor = this.getTransparentColor(currentColors);
@@ -89,10 +89,10 @@
       transparent = null;
     }
 
-    var width = this.piskelController.getWidth();
-    var height = this.piskelController.getHeight();
+    const width = this.piskelController.getWidth();
+    const height = this.piskelController.getHeight();
 
-    var gif = new window.GIF({
+    const gif = new window.GIF({
       workers: 5,
       quality: 1,
       width: width * zoom,
@@ -103,17 +103,17 @@
     });
 
     // Create a background canvas that will be filled with the transparent color before each render.
-    var background = pskl.utils.CanvasUtils.createCanvas(width, height);
-    var context = background.getContext('2d');
+    const background = pskl.utils.CanvasUtils.createCanvas(width, height);
+    const context = background.getContext('2d');
     context.fillStyle = transparentColor;
 
-    for (var i = 0; i < this.piskelController.getFrameCount(); i++) {
-      var render = this.piskelController.renderFrameAt(i, true);
+    for (let i = 0; i < this.piskelController.getFrameCount(); i++) {
+      const render = this.piskelController.renderFrameAt(i, true);
       context.clearRect(0, 0, width, height);
       context.fillRect(0, 0, width, height);
       context.drawImage(render, 0, 0, width, height);
 
-      var canvas = pskl.utils.ImageResizer.scale(background, zoom);
+      const canvas = pskl.utils.ImageResizer.scale(background, zoom);
       gif.addFrame(canvas.getContext('2d'), {
         delay: 1000 / fps
       });
@@ -122,24 +122,24 @@
     $.publish(Events.SHOW_PROGRESS, [{ name: 'Building animated GIF ...' }]);
     gif.on(
       'progress',
-      function (percentage) {
+      (percentage) => {
         $.publish(Events.UPDATE_PROGRESS, [
           { progress: (percentage * 100).toFixed(1) }
         ]);
-      }.bind(this));
+      });
     gif.on(
       'finished',
-      function (blob) {
+      (blob) => {
         $.publish(Events.HIDE_PROGRESS);
         pskl.utils.FileUtils.readFile(blob, cb);
-      }.bind(this));
+      });
     gif.render();
   };
 
   ns.GifExportController.prototype.getTransparentColor = function (
     currentColors
   ) {
-    var transparentColor = pskl.utils.ColorUtils.getUnusedColor(currentColors);
+    let transparentColor = pskl.utils.ColorUtils.getUnusedColor(currentColors);
 
     if (!transparentColor) {
       console.error(
@@ -151,7 +151,7 @@
   };
 
   ns.GifExportController.prototype.onRepeatCheckboxChange_ = function () {
-    var checked = this.repeatCheckbox.checked;
+    const checked = this.repeatCheckbox.checked;
     pskl.UserSettings.set(pskl.UserSettings.EXPORT_GIF_REPEAT, checked);
   };
 

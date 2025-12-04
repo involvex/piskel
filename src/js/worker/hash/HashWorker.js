@@ -1,12 +1,12 @@
 (function () {
-  var ns = $.namespace('pskl.worker.hash');
+  const ns = $.namespace('pskl.worker.hash');
 
   ns.HashWorker = function () {
-    var hashCode = function (str) {
-      var hash = 0;
+    const hashCode = function (str) {
+      let hash = 0;
       if (str.length !== 0) {
-        for (var i = 0, l = str.length; i < l; i++) {
-          var chr = str.charCodeAt(i);
+        for (let i = 0, l = str.length; i < l; i++) {
+          const chr = str.charCodeAt(i);
           hash = (hash << 5) - hash + chr;
           hash |= 0; // Convert to 32bit integer
         }
@@ -16,9 +16,9 @@
 
     this.onmessage = function (event) {
       try {
-        var data = event.data;
-        var str = data.str;
-        var hash = hashCode(str);
+        const data = event.data;
+        const str = data.str;
+        const hash = hashCode(str);
         this.postMessage({
           type: 'SUCCESS',
           hash: hash

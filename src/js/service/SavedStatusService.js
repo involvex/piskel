@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service');
+  const ns = $.namespace('pskl.service');
 
   ns.SavedStatusService = function (piskelController, historyService) {
     this.piskelController = piskelController;

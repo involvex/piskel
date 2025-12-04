@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings.exportimage');
+  const ns = $.namespace('pskl.controller.settings.exportimage');
 
-  var BLACK = '#000000';
+  const BLACK = '#000000';
 
   ns.MiscExportController = function (piskelController) {
     this.piskelController = piskelController;
@@ -11,19 +11,19 @@
     ns.MiscExportController,
     pskl.controller.settings.AbstractSettingController);
   ns.MiscExportController.prototype.init = function () {
-    var cDownloadButton = document.querySelector('.c-download-button');
+    const cDownloadButton = document.querySelector('.c-download-button');
     this.addEventListener(cDownloadButton, 'click', this.onDownloadCFileClick_);
   };
 
   ns.MiscExportController.prototype.onDownloadCFileClick_ = function (evt) {
-    var fileName = this.getPiskelName_() + '.c';
-    var cName = this.getPiskelName_().replace(' ', '_');
-    var width = this.piskelController.getWidth();
-    var height = this.piskelController.getHeight();
-    var frameCount = this.piskelController.getFrameCount();
+    const fileName = this.getPiskelName_() + '.c';
+    const cName = this.getPiskelName_().replace(' ', '_');
+    const width = this.piskelController.getWidth();
+    const height = this.piskelController.getHeight();
+    const frameCount = this.piskelController.getFrameCount();
 
     // Useful defines for C routines
-    var frameStr = '#include <stdint.h>\n\n';
+    let frameStr = '#include <stdint.h>\n\n';
     frameStr +=
       '#define ' +
       cName.toUpperCase() +
@@ -40,14 +40,14 @@
     frameStr += 'static const uint32_t ' + cName.toLowerCase();
     frameStr += '_data[' + frameCount + '][' + width * height + '] = {\n';
 
-    for (var i = 0; i < frameCount; i++) {
-      var render = this.piskelController.renderFrameAt(i, true);
-      var context = render.getContext('2d');
-      var imgd = context.getImageData(0, 0, width, height);
-      var pix = imgd.data;
+    for (let i = 0; i < frameCount; i++) {
+      const render = this.piskelController.renderFrameAt(i, true);
+      const context = render.getContext('2d');
+      const imgd = context.getImageData(0, 0, width, height);
+      const pix = imgd.data;
 
       frameStr += '{\n';
-      for (var j = 0; j < pix.length; j += 4) {
+      for (let j = 0; j < pix.length; j += 4) {
         frameStr += this.rgbToCHex(pix[j], pix[j + 1], pix[j + 2], pix[j + 3]);
         if (j != pix.length - 4) {
           frameStr += ', ';
@@ -66,9 +66,9 @@
     frameStr += '};\n';
     pskl.utils.BlobUtils.stringToBlob(
       frameStr,
-      function (blob) {
+      (blob) => {
         pskl.utils.FileUtils.downloadAsFile(blob, fileName);
-      }.bind(this),
+      },
       'application/text');
   };
 
@@ -77,7 +77,7 @@
   };
 
   ns.MiscExportController.prototype.rgbToCHex = function (r, g, b, a) {
-    var hexStr = '0x';
+    let hexStr = '0x';
     hexStr += ('00' + a.toString(16)).substr(-2);
     hexStr += ('00' + b.toString(16)).substr(-2);
     hexStr += ('00' + g.toString(16)).substr(-2);

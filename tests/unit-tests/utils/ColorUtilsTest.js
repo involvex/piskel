@@ -1,10 +1,10 @@
-describe("Color utils", function () {
-  beforeEach(function () {});
-  afterEach(function () {});
+describe("Color utils", () => {
+  beforeEach(() => {});
+  afterEach(() => {});
 
-  it("returns a color when provided with array of colors", function () {
+  it("returns a color when provided with array of colors", () => {
     // when/then
-    var unusedColor = pskl.utils.ColorUtils.getUnusedColor([
+    let unusedColor = pskl.utils.ColorUtils.getUnusedColor([
       "#ffff00",
       "#feff00",
       "#fdff00",
@@ -22,9 +22,9 @@ describe("Color utils", function () {
     expect(unusedColor).toBe("#FFFF00");
   });
 
-  it("returns a color for an empty array", function () {
+  it("returns a color for an empty array", () => {
     // when/then
-    var unusedColor = pskl.utils.ColorUtils.getUnusedColor([]);
+    let unusedColor = pskl.utils.ColorUtils.getUnusedColor([]);
     // verify
     expect(unusedColor).toBe("#FFFF00");
 

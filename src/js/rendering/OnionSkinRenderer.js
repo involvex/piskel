@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.rendering');
+  const ns = $.namespace('pskl.rendering');
 
   ns.OnionSkinRenderer = function (renderer, piskelController) {
     pskl.rendering.CompositeRenderer.call(this);
@@ -17,7 +17,7 @@
     piskelController
   ) {
     // Do not use CachedFrameRenderers here, caching is performed in the render method
-    var renderer = new pskl.rendering.frame.FrameRenderer(
+    const renderer = new pskl.rendering.frame.FrameRenderer(
       container,
       renderingOptions,
       ['onion-skin-canvas']);
@@ -28,32 +28,32 @@
     pskl.rendering.OnionSkinRenderer,
     pskl.rendering.CompositeRenderer);
   ns.OnionSkinRenderer.prototype.render = function () {
-    var frames = this.getOnionFrames_();
-    var hash = this.computeHash_(frames);
+    const frames = this.getOnionFrames_();
+    const hash = this.computeHash_(frames);
     if (this.hash != hash) {
       this.hash = hash;
       this.clear();
       if (frames.length > 0) {
-        var mergedFrame = pskl.utils.FrameUtils.merge(frames);
+        const mergedFrame = pskl.utils.FrameUtils.merge(frames);
         this.renderer.render(mergedFrame);
       }
     }
   };
 
   ns.OnionSkinRenderer.prototype.getOnionFrames_ = function () {
-    var frames = [];
+    const frames = [];
 
-    var currentFrameIndex = this.piskelController.getCurrentFrameIndex();
-    var layer = this.piskelController.getCurrentLayer();
+    const currentFrameIndex = this.piskelController.getCurrentFrameIndex();
+    const layer = this.piskelController.getCurrentLayer();
 
-    var previousIndex = currentFrameIndex - 1;
-    var previousFrame = layer.getFrameAt(previousIndex);
+    const previousIndex = currentFrameIndex - 1;
+    const previousFrame = layer.getFrameAt(previousIndex);
     if (previousFrame) {
       frames.push(previousFrame);
     }
 
-    var nextIndex = currentFrameIndex + 1;
-    var nextFrame = layer.getFrameAt(nextIndex);
+    const nextIndex = currentFrameIndex + 1;
+    const nextFrame = layer.getFrameAt(nextIndex);
     if (nextFrame) {
       frames.push(nextFrame);
     }
@@ -62,9 +62,9 @@
   };
 
   ns.OnionSkinRenderer.prototype.computeHash_ = function (frames) {
-    var offset = this.getOffset();
-    var size = this.getDisplaySize();
-    var layers = this.piskelController.getLayers();
+    const offset = this.getOffset();
+    const size = this.getDisplaySize();
+    const layers = this.piskelController.getLayers();
     return [
       this.getZoom(),
       this.getGridWidth(),
@@ -73,7 +73,7 @@
       size.width,
       size.height,
       frames
-        .map(function (f) {
+        .map((f) => {
           return f.getHash();
         })
         .join('-'),
@@ -88,7 +88,7 @@
    * @param {Number} height
    */
   ns.OnionSkinRenderer.prototype.setDisplaySize = function (width, height) {
-    var size = this.getDisplaySize();
+    const size = this.getDisplaySize();
     if (size.width !== width || size.height !== height) {
       this.superclass.setDisplaySize.call(this, width, height);
     }

@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings');
+  const ns = $.namespace('pskl.controller.settings');
 
-  var PARTIALS = {
+  const PARTIALS = {
     DESKTOP: 'save-desktop-partial',
     LOCALSTORAGE: 'save-localstorage-partial',
     FILEDOWNLOAD: 'save-file-download-partial'
@@ -65,11 +65,11 @@
 
   ns.SaveController.prototype.insertSavePartials_ = function () {
     this.getPartials_().forEach(
-      function (partial) {
+      (partial) => {
         this.saveForm.insertAdjacentHTML(
           'beforeend',
           pskl.utils.Template.get(partial));
-      }.bind(this));
+      });
   };
 
   ns.SaveController.prototype.getPartials_ = function () {
@@ -81,7 +81,7 @@
   };
 
   ns.SaveController.prototype.updateDescriptorInputs_ = function (evt) {
-    var descriptor = this.piskelController.getPiskel().getDescriptor();
+    const descriptor = this.piskelController.getPiskel().getDescriptor();
     this.descriptionInput.value = descriptor.description;
     this.nameInput.value = descriptor.name;
     if (descriptor.isPublic) {
@@ -89,7 +89,7 @@
     }
 
     if (!pskl.app.isLoggedIn()) {
-      var isPublicCheckboxContainer = document.querySelector(
+      const isPublicCheckboxContainer = document.querySelector(
         '.save-public-section');
       isPublicCheckboxContainer.style.display = 'none';
     }
@@ -119,15 +119,15 @@
   };
 
   ns.SaveController.prototype.saveTo_ = function (methodName, saveAsNew) {
-    var piskel = this.piskelController.getPiskel();
+    const piskel = this.piskelController.getPiskel();
     piskel.setDescriptor(this.getDescriptor_());
     pskl.app.storageService[methodName](piskel, !!saveAsNew).then(
       this.onSaveSuccess_);
   };
 
   ns.SaveController.prototype.getDescriptor_ = function () {
-    var name = this.nameInput.value;
-    var description = this.descriptionInput.value;
+    const name = this.nameInput.value;
+    const description = this.descriptionInput.value;
     return new pskl.model.piskel.Descriptor(
       name,
       description,

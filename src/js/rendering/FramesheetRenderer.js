@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.rendering');
+  const ns = $.namespace('pskl.rendering');
 
   /**
    * Render an array of frames
@@ -15,14 +15,14 @@
 
   ns.FramesheetRenderer.prototype.renderAsCanvas = function (columns) {
     columns = columns || this.frames.length;
-    var rows = Math.ceil(this.frames.length / columns);
+    const rows = Math.ceil(this.frames.length / columns);
 
-    var canvas = this.createCanvas_(columns, rows);
+    const canvas = this.createCanvas_(columns, rows);
 
-    for (var i = 0; i < this.frames.length; i++) {
-      var frame = this.frames[i];
-      var posX = (i % columns) * frame.getWidth();
-      var posY = Math.floor(i / columns) * frame.getHeight();
+    for (let i = 0; i < this.frames.length; i++) {
+      const frame = this.frames[i];
+      const posX = (i % columns) * frame.getWidth();
+      const posY = Math.floor(i / columns) * frame.getHeight();
       this.drawFrameInCanvas_(frame, canvas, posX, posY);
     }
     return canvas;
@@ -34,20 +34,20 @@
     offsetWidth,
     offsetHeight
   ) {
-    var context = canvas.getContext('2d');
-    var imageData = context.createImageData(
+    const context = canvas.getContext('2d');
+    const imageData = context.createImageData(
       frame.getWidth(),
       frame.getHeight());
-    var pixels = frame.getPixels();
-    var data = new Uint8ClampedArray(pixels.buffer);
+    const pixels = frame.getPixels();
+    const data = new Uint8ClampedArray(pixels.buffer);
     imageData.data.set(data);
     context.putImageData(imageData, offsetWidth, offsetHeight);
   };
 
   ns.FramesheetRenderer.prototype.createCanvas_ = function (columns, rows) {
-    var sampleFrame = this.frames[0];
-    var width = columns * sampleFrame.getWidth();
-    var height = rows * sampleFrame.getHeight();
+    const sampleFrame = this.frames[0];
+    const width = columns * sampleFrame.getWidth();
+    const height = rows * sampleFrame.getHeight();
     return pskl.utils.CanvasUtils.createCanvas(width, height);
   };
 })();

@@ -1,11 +1,11 @@
 (function () {
-  var ns = $.namespace('pskl.controller.drawing');
+  const ns = $.namespace('pskl.controller.drawing');
 
   /**
    * Multiplier applied between the mouse movement and viewport movement
    * @type {Number}
    */
-  var MULTIPLIER = 2;
+  const MULTIPLIER = 2;
 
   /**
    * Dedicated handler to drag the drawing canvas using the mouse
@@ -25,7 +25,7 @@
    * @param {Number} y : y coordinate of the mouse event that initiated the drag
    */
   ns.DragHandler.prototype.startDrag = function (x, y) {
-    var coords = this.drawingController.getSpriteCoordinates(x, y);
+    const coords = this.drawingController.getSpriteCoordinates(x, y);
     this.updateOrigin_(coords.x, coords.y);
   };
 
@@ -35,15 +35,15 @@
    * @param {Number} y : y coordinate of the mouse event that triggered the update
    */
   ns.DragHandler.prototype.updateDrag = function (x, y) {
-    var currentOffset = this.drawingController.getOffset();
-    var offset = this.calculateOffset_(x, y);
+    const currentOffset = this.drawingController.getOffset();
+    const offset = this.calculateOffset_(x, y);
     if (currentOffset.y !== offset.y || currentOffset.x !== offset.x) {
       this.isDragging_ = true;
       this.drawingController.setOffset(offset.x, offset.y);
 
       // retrieve the updated coordinates after moving the sprite
       // and store them as the new drag origin
-      var coords = this.drawingController.getSpriteCoordinates(x, y);
+      const coords = this.drawingController.getSpriteCoordinates(x, y);
       this.updateOrigin_(coords.x, coords.y);
     }
   };
@@ -65,10 +65,10 @@
   };
 
   ns.DragHandler.prototype.calculateOffset_ = function (x, y) {
-    var coords = this.drawingController.getSpriteCoordinates(x, y);
-    var currentOffset = this.drawingController.getOffset();
+    const coords = this.drawingController.getSpriteCoordinates(x, y);
+    const currentOffset = this.drawingController.getOffset();
 
-    var offset = {
+    const offset = {
       x: currentOffset.x - MULTIPLIER * (coords.x - this.origin.x),
       y: currentOffset.y - MULTIPLIER * (coords.y - this.origin.y)
     };

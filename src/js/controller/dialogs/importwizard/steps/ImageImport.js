@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs.importwizard.steps');
+  const ns = $.namespace('pskl.controller.dialogs.importwizard.steps');
 
   ns.ImageImport = function (piskelController, importController, container) {
     this.superclass.constructor.apply(this, arguments);
@@ -38,15 +38,23 @@
     this.frameSizeY = this.container.querySelector('[name=frame-size-y]');
     this.frameOffsetX = this.container.querySelector('[name=frame-offset-x]');
     this.frameOffsetY = this.container.querySelector('[name=frame-offset-y]');
+    this.preserveTransparencyCheckbox = this.container.querySelector(
+      '[name=preserve-transparency-checkbox]'
+    );
+    this.smoothEdgesCheckbox = this.container.querySelector(
+      '[name=smooth-edges-checkbox]'
+    );
 
     this.addEventListener(
       this.singleImportType,
       'change',
-      this.onImportTypeChange_);
+      this.onImportTypeChange_
+    );
     this.addEventListener(
       this.sheetImportType,
       'change',
-      this.onImportTypeChange_);
+      this.onImportTypeChange_
+    );
     this.addEventListener(this.resizeWidth, 'keyup', this.onResizeInputKeyUp_);
     this.addEventListener(this.resizeHeight, 'keyup', this.onResizeInputKeyUp_);
     this.addEventListener(this.frameSizeX, 'keyup', this.onFrameInputKeyUp_);
@@ -54,9 +62,13 @@
     this.addEventListener(this.frameOffsetX, 'keyup', this.onFrameInputKeyUp_);
     this.addEventListener(this.frameOffsetY, 'keyup', this.onFrameInputKeyUp_);
 
+    // Check if this is a Playdate imagetable filename
+    this.checkPlaydateImagetable_();
+
     pskl.utils.FileUtils.readImageFile(
       this.file_,
-      this.onImageLoaded_.bind(this));
+      this.onImageLoaded_.bind(this)
+    );
     if (this.piskelController.isEmpty()) {
       this.nextButton.textContent = 'import';
     }
@@ -66,13 +78,13 @@
     this.container.classList.add('import-image-loading');
     this.createPiskelFromImage()
       .then(
-        function (piskel) {
+        (piskel) => {
           this.mergeData.mergePiskel = piskel;
           this.container.classList.remove('import-image-loading');
           this.superclass.onNextClick.call(this);
-        }.bind(this)
+        }
       )
-      .catch(function (e) {
+      .catch((e) => {
         console.error(e);
       });
   };
@@ -82,11 +94,11 @@
   };
 
   ns.ImageImport.prototype.createPiskelFromImage = function () {
-    var name = this.extractFileNameFromPath_(this.file_.name);
+    let name = this.extractFileNameFromPath_(this.file_.name);
     // Remove extension from filename.
     name = name.replace(/\.[a-zA-Z]+$/, '');
 
-    var deferred = Q.defer();
+    const deferred = Q.defer();
     pskl.app.importService.newPiskelFromImage(
       this.importedImage_,
       {
@@ -102,9 +114,12 @@
         frameOffsetX: this.sanitizeInputValue_(this.frameOffsetX, 0),
         frameOffsetY: this.sanitizeInputValue_(this.frameOffsetY, 0),
         smoothing: !!this.smoothResize.checked,
-        name: name
+        preserveOpacity: !!this.preserveTransparencyCheckbox.checked,
+        preserveSmoothEdges: !!this.smoothEdgesCheckbox.checked,
+        name: name,
       },
-      deferred.resolve);
+      deferred.resolve
+    );
     return deferred.promise;
   };
 
@@ -114,16 +129,16 @@
       this.hideFrameGrid_();
     } else {
       // Using spritesheet import, so draw the frame grid in the preview
-      var x = this.sanitizeInputValue_(this.frameOffsetX, 0);
-      var y = this.sanitizeInputValue_(this.frameOffsetY, 0);
-      var w = this.sanitizeInputValue_(this.frameSizeX, 1);
-      var h = this.sanitizeInputValue_(this.frameSizeY, 1);
+      const x = this.sanitizeInputValue_(this.frameOffsetX, 0);
+      const y = this.sanitizeInputValue_(this.frameOffsetY, 0);
+      const w = this.sanitizeInputValue_(this.frameSizeX, 1);
+      const h = this.sanitizeInputValue_(this.frameSizeY, 1);
       this.drawFrameGrid_(x, y, w, h);
     }
   };
 
   ns.ImageImport.prototype.onResizeInputKeyUp_ = function (evt) {
-    var from = evt.target.getAttribute('name');
+    const from = evt.target.getAttribute('name');
     if (this.importedImage_) {
       this.synchronizeResizeFields_(evt.target.value, from);
     }
@@ -140,8 +155,8 @@
     if (isNaN(value)) {
       value = 0;
     }
-    var height = this.importedImage_.height;
-    var width = this.importedImage_.width;
+    const height = this.importedImage_.height;
+    const width = this.importedImage_.width;
 
     // Select single image import type since the user changed a value here
     this.singleImportType.checked = true;
@@ -160,10 +175,10 @@
     }
 
     // Parse the frame input values
-    var frameSizeX = this.sanitizeInputValue_(this.frameSizeX, 1);
-    var frameSizeY = this.sanitizeInputValue_(this.frameSizeY, 1);
-    var frameOffsetX = this.sanitizeInputValue_(this.frameOffsetX, 0);
-    var frameOffsetY = this.sanitizeInputValue_(this.frameOffsetY, 0);
+    const frameSizeX = this.sanitizeInputValue_(this.frameSizeX, 1);
+    const frameSizeY = this.sanitizeInputValue_(this.frameSizeY, 1);
+    const frameOffsetX = this.sanitizeInputValue_(this.frameOffsetX, 0);
+    const frameOffsetY = this.sanitizeInputValue_(this.frameOffsetY, 0);
 
     // Select spritesheet import type since the user changed a value here
     this.sheetImportType.checked = true;
@@ -173,7 +188,7 @@
   };
 
   ns.ImageImport.prototype.sanitizeInputValue_ = function (input, minValue) {
-    var value = parseInt(input.value, 10);
+    let value = parseInt(input.value, 10);
     if (value <= minValue || isNaN(value)) {
       input.value = minValue;
       value = minValue;
@@ -194,16 +209,19 @@
   ns.ImageImport.prototype.onImageLoaded_ = function (image) {
     this.importedImage_ = image;
 
-    var w = this.importedImage_.width;
-    var h = this.importedImage_.height;
+    const w = this.importedImage_.width;
+    const h = this.importedImage_.height;
 
     // FIXME : We remove the onload callback here because JsGif will insert
     // the image again and we want to avoid retriggering the image onload
     this.importedImage_.onload = function () {};
 
-    var fileName = this.extractFileNameFromPath_(this.file_.name);
+    const fileName = this.extractFileNameFromPath_(this.file_.name);
     this.fileNameContainer.textContent = fileName;
     this.fileNameContainer.setAttribute('title', fileName);
+
+    // Apply Playdate frame size if detected
+    this.applyPlaydateFrameSize_(w, h);
 
     this.resizeWidth.value = w;
     this.resizeHeight.value = h;
@@ -217,14 +235,46 @@
     this.importPreview.appendChild(this.createImagePreview_());
   };
 
+  ns.ImageImport.prototype.checkPlaydateImagetable_ = function () {
+    if (!this.file_ || !this.file_.name) {
+      return;
+    }
+
+    const filename = this.file_.name;
+    const playdateInfo =
+      pskl.utils.PlaydateUtils.parseImagetableFilename(filename);
+
+    if (playdateInfo) {
+      this.playdateFrameSize_ = playdateInfo.frameSize;
+      this.playdateFrameCount_ = playdateInfo.frameCount;
+      console.log('Playdate imagetable detected:', playdateInfo);
+    }
+  };
+
+  ns.ImageImport.prototype.applyPlaydateFrameSize_ = function (
+    defaultWidth,
+    defaultHeight
+  ) {
+    if (this.playdateFrameSize_) {
+      // Use Playdate frame size if available
+      this.frameSizeX.value = this.playdateFrameSize_.width;
+      this.frameSizeY.value = this.playdateFrameSize_.height;
+
+      // Auto-select spritesheet import type for Playdate imagetables
+      this.sheetImportType.checked = true;
+
+      console.log('Applied Playdate frame size:', this.playdateFrameSize_);
+    }
+  };
+
   ns.ImageImport.prototype.createImagePreview_ = function () {
-    var image = document.createElement('IMG');
+    const image = document.createElement('IMG');
     image.src = this.importedImage_.src;
     return image;
   };
 
   ns.ImageImport.prototype.extractFileNameFromPath_ = function (path) {
-    var parts = [];
+    let parts = [];
     if (path.indexOf('/') !== -1) {
       parts = path.split('/');
     } else if (path.indexOf('\\') !== -1) {
@@ -246,39 +296,40 @@
     }
 
     // Grab the sizes of the source and preview images
-    var width = this.importedImage_.width;
-    var height = this.importedImage_.height;
+    const width = this.importedImage_.width;
+    const height = this.importedImage_.height;
 
-    var image = this.importPreview.querySelector('img');
-    var previewWidth = image.offsetWidth;
-    var previewHeight = image.offsetHeight;
+    const image = this.importPreview.querySelector('img');
+    const previewWidth = image.offsetWidth;
+    const previewHeight = image.offsetHeight;
 
-    var canvas = this.importPreview.querySelector('canvas');
+    let canvas = this.importPreview.querySelector('canvas');
     if (!canvas) {
       // Create a new canvas for the grid
       canvas = pskl.utils.CanvasUtils.createCanvas(
         previewWidth + 1,
-        previewHeight + 1);
+        previewHeight + 1
+      );
       this.importPreview.appendChild(canvas);
     }
 
-    var context = canvas.getContext('2d');
+    const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.beginPath();
 
     // Calculate the number of whole frames
-    var countX = Math.floor((width - frameX) / frameW);
-    var countY = Math.floor((height - frameY) / frameH);
+    const countX = Math.floor((width - frameX) / frameW);
+    const countY = Math.floor((height - frameY) / frameH);
 
     if (countX > 0 && countY > 0) {
-      var scaleX = previewWidth / width;
-      var scaleY = previewHeight / height;
-      var maxWidth = countX * frameW + frameX;
-      var maxHeight = countY * frameH + frameY;
+      const scaleX = previewWidth / width;
+      const scaleY = previewHeight / height;
+      const maxWidth = countX * frameW + frameX;
+      const maxHeight = countY * frameH + frameY;
 
       // Draw the vertical lines
       for (
-        var x = frameX + 0.5;
+        let x = frameX + 0.5;
         x < maxWidth + 1 && x < width + 1;
         x += frameW
       ) {
@@ -288,7 +339,7 @@
 
       // Draw the horizontal lines
       for (
-        var y = frameY + 0.5;
+        let y = frameY + 0.5;
         y < maxHeight + 1 && y < height + 1;
         y += frameH
       ) {
@@ -308,7 +359,7 @@
   };
 
   ns.ImageImport.prototype.hideFrameGrid_ = function () {
-    var canvas = this.importPreview.querySelector('canvas');
+    const canvas = this.importPreview.querySelector('canvas');
     if (canvas) {
       canvas.style.display = 'none';
     }

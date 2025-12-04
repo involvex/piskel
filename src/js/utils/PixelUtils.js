@@ -1,13 +1,13 @@
 (function () {
-  var ns = $.namespace('pskl');
+  const ns = $.namespace('pskl');
 
   ns.PixelUtils = {
     getRectanglePixels: function (x0, y0, x1, y1) {
-      var rectangle = this.getOrderedRectangleCoordinates(x0, y0, x1, y1);
-      var pixels = [];
+      const rectangle = this.getOrderedRectangleCoordinates(x0, y0, x1, y1);
+      const pixels = [];
 
-      for (var x = rectangle.x0; x <= rectangle.x1; x++) {
-        for (var y = rectangle.y0; y <= rectangle.y1; y++) {
+      for (let x = rectangle.x0; x <= rectangle.x1; x++) {
+        for (let y = rectangle.y0; y <= rectangle.y1; y++) {
           pixels.push({ col: x, row: y });
         }
       }
@@ -41,22 +41,22 @@
      * @return an array of the pixel coordinates paint with the replacement color
      */
     getSimilarConnectedPixelsFromFrame: function (frame, col, row) {
-      var targetColor = frame.getPixel(col, row);
+      const targetColor = frame.getPixel(col, row);
       if (targetColor === null) {
         return [];
       }
 
-      var startPixel = {
+      const startPixel = {
         col: col,
         row: row
       };
 
-      var visited = {};
+      const visited = {};
       return pskl.PixelUtils.visitConnectedPixels(
         startPixel,
         frame,
-        function (pixel) {
-          var key = pixel.col + '-' + pixel.row;
+        (pixel) => {
+          const key = pixel.col + '-' + pixel.row;
           if (visited[key]) {
             return false;
           }
@@ -76,10 +76,10 @@
      * @return {Array}  array of arrays of 2 Numbers (eg. [[0,0], [0,1], [1,0], [1,1]])
      */
     resizePixel: function (col, row, size) {
-      var pixels = [];
+      const pixels = [];
 
-      for (var j = 0; j < size; j++) {
-        for (var i = 0; i < size; i++) {
+      for (let j = 0; j < size; j++) {
+        for (let i = 0; i < size; i++) {
           pixels.push([
             col - Math.floor(size / 2) + i,
             row - Math.floor(size / 2) + j
@@ -97,7 +97,7 @@
      * @return {Array}  array of arrays of 2 Numbers (eg. [[0,0], [0,1], [1,0], [1,1]])
      */
     resizePixels: function (pixels, size) {
-      return pixels.reduce(function (p, pixel) {
+      return pixels.reduce((p, pixel) => {
         return p.concat(
           pskl.PixelUtils.resizePixel(pixel.col, pixel.row, size)
         );
@@ -142,7 +142,7 @@
         replacementColor = pskl.utils.colorToInt(replacementColor);
       }
 
-      var targetColor;
+      let targetColor;
       try {
         targetColor = frame.getPixel(col, row);
       } catch (e) {
@@ -153,14 +153,14 @@
         return;
       }
 
-      var startPixel = {
+      const startPixel = {
         col: col,
         row: row
       };
-      var paintedPixels = pskl.PixelUtils.visitConnectedPixels(
+      const paintedPixels = pskl.PixelUtils.visitConnectedPixels(
         startPixel,
         frame,
-        function (pixel) {
+        (pixel) => {
           if (frame.getPixel(pixel.col, pixel.row) == targetColor) {
             frame.setPixel(pixel.col, pixel.row, replacementColor);
             return true;
@@ -184,31 +184,31 @@
      * @return {Array} the array of visited pixels {col, row}
      */
     visitConnectedPixels: function (pixel, frame, pixelVisitor) {
-      var col = pixel.col;
-      var row = pixel.row;
+      const col = pixel.col;
+      const row = pixel.row;
 
-      var queue = [];
-      var visitedPixels = [];
-      var dy = [-1, 0, 1, 0];
-      var dx = [0, 1, 0, -1];
+      const queue = [];
+      const visitedPixels = [];
+      const dy = [-1, 0, 1, 0];
+      const dx = [0, 1, 0, -1];
 
       queue.push(pixel);
       visitedPixels.push(pixel);
       pixelVisitor(pixel);
 
-      var loopCount = 0;
-      var cellCount = frame.getWidth() * frame.getHeight();
+      let loopCount = 0;
+      const cellCount = frame.getWidth() * frame.getHeight();
       while (queue.length > 0) {
         loopCount++;
 
-        var currentItem = queue.pop();
+        const currentItem = queue.pop();
 
-        for (var i = 0; i < 4; i++) {
-          var nextCol = currentItem.col + dx[i];
-          var nextRow = currentItem.row + dy[i];
+        for (let i = 0; i < 4; i++) {
+          const nextCol = currentItem.col + dx[i];
+          const nextRow = currentItem.row + dy[i];
           try {
-            var connectedPixel = { col: nextCol, row: nextRow };
-            var isValid = pixelVisitor(connectedPixel);
+            const connectedPixel = { col: nextCol, row: nextRow };
+            const isValid = pixelVisitor(connectedPixel);
             if (isValid) {
               queue.push(connectedPixel);
               visitedPixels.push(connectedPixel);
@@ -256,18 +256,18 @@
      * http://stackoverflow.com/questions/4672279/bresenham-algorithm-in-javascript
      */
     getLinePixels: function (x0, x1, y0, y1) {
-      var pixels = [];
+      const pixels = [];
 
       x1 = pskl.utils.normalize(x1, 0);
       y1 = pskl.utils.normalize(y1, 0);
 
-      var dx = Math.abs(x1 - x0);
-      var dy = Math.abs(y1 - y0);
+      const dx = Math.abs(x1 - x0);
+      const dy = Math.abs(y1 - y0);
 
-      var sx = x0 < x1 ? 1 : -1;
-      var sy = y0 < y1 ? 1 : -1;
+      const sx = x0 < x1 ? 1 : -1;
+      const sy = y0 < y1 ? 1 : -1;
 
-      var err = dx - dy;
+      let err = dx - dy;
       while (true) {
         // Do what you need to for this
         pixels.push({ col: x0, row: y0 });
@@ -276,7 +276,7 @@
           break;
         }
 
-        var e2 = 2 * err;
+        const e2 = 2 * err;
         if (e2 > -dy) {
           err -= dy;
           x0 += sx;
@@ -295,30 +295,30 @@
      * origin and target coordinates.
      */
     getUniformLinePixels: function (x0, x1, y0, y1) {
-      var pixels = [];
+      const pixels = [];
 
       x1 = pskl.utils.normalize(x1, 0);
       y1 = pskl.utils.normalize(y1, 0);
 
-      var dx = Math.abs(x1 - x0) + 1;
-      var dy = Math.abs(y1 - y0) + 1;
+      const dx = Math.abs(x1 - x0) + 1;
+      const dy = Math.abs(y1 - y0) + 1;
 
-      var sx = x0 < x1 ? 1 : -1;
-      var sy = y0 < y1 ? 1 : -1;
+      const sx = x0 < x1 ? 1 : -1;
+      const sy = y0 < y1 ? 1 : -1;
 
-      var ratio = Math.max(dx, dy) / Math.min(dx, dy);
+      const ratio = Math.max(dx, dy) / Math.min(dx, dy);
       // in pixel art, lines should use uniform number of pixels for each step
-      var pixelStep = Math.round(ratio) || 0;
+      let pixelStep = Math.round(ratio) || 0;
 
       if (pixelStep > Math.min(dx, dy)) {
         pixelStep = Infinity;
       }
 
-      var maxDistance = pskl.utils.Math.distance(x0, x1, y0, y1);
+      const maxDistance = pskl.utils.Math.distance(x0, x1, y0, y1);
 
-      var x = x0;
-      var y = y0;
-      var i = 0;
+      let x = x0;
+      let y = y0;
+      let i = 0;
       while (true) {
         i++;
 
@@ -327,7 +327,7 @@
           break;
         }
 
-        var isAtStep = i % pixelStep === 0;
+        const isAtStep = i % pixelStep === 0;
         if (dx >= dy || isAtStep) {
           x += sx;
         }

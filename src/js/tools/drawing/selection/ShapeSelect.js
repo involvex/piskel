@@ -4,7 +4,7 @@
  * @require pskl.utils
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing.selection');
+  const ns = $.namespace('pskl.tools.drawing.selection');
 
   ns.ShapeSelect = function () {
     ns.BaseSelect.call(this);
@@ -33,7 +33,7 @@
     } else {
       this.hasSelection = true;
       // From the pixel clicked, get shape using an algorithm similar to the paintbucket one:
-      var pixels = pskl.PixelUtils.getSimilarConnectedPixelsFromFrame(
+      const pixels = pskl.PixelUtils.getSimilarConnectedPixelsFromFrame(
         frame,
         col,
         row);

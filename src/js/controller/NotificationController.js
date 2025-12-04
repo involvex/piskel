@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller');
+  const ns = $.namespace('pskl.controller');
 
   ns.NotificationController = function () {};
 
@@ -20,7 +20,7 @@
   ) {
     this.removeMessage_();
 
-    var message = document.createElement('div');
+    const message = document.createElement('div');
     message.id = 'user-message';
     message.className = 'user-message';
     message.innerHTML = messageInfo.content;
@@ -41,7 +41,7 @@
    * @private
    */
   ns.NotificationController.prototype.removeMessage_ = function (evt) {
-    var message = document.querySelector('#user-message');
+    const message = document.querySelector('#user-message');
     if (message) {
       message.parentNode.removeChild(message);
     }

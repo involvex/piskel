@@ -5,8 +5,8 @@
  * @require pskl.utils
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing');
-  var DEFAULT_STEP = 3;
+  const ns = $.namespace('pskl.tools.drawing');
+  const DEFAULT_STEP = 3;
 
   ns.Lighten = function () {
     this.superclass.constructor.call(this);
@@ -36,18 +36,18 @@
     this.previousCol = col;
     this.previousRow = row;
 
-    var penSize = pskl.app.penSizeService.getPenSize();
-    var points = pskl.PixelUtils.resizePixel(col, row, penSize);
+    const penSize = pskl.app.penSizeService.getPenSize();
+    const points = pskl.PixelUtils.resizePixel(col, row, penSize);
     points.forEach(
-      function (point) {
-        var modifiedColor = this.getModifiedColor_(
+      (point) => {
+        const modifiedColor = this.getModifiedColor_(
           point[0],
           point[1],
           frame,
           overlay,
           event);
         this.draw(modifiedColor, point[0], point[1], frame, overlay);
-      }.bind(this));
+      });
   };
 
   ns.Lighten.prototype.getModifiedColor_ = function (
@@ -58,28 +58,28 @@
     event
   ) {
     // get colors in overlay and in frame
-    var overlayColor = overlay.getPixel(col, row);
-    var frameColor = frame.getPixel(col, row);
+    const overlayColor = overlay.getPixel(col, row);
+    const frameColor = frame.getPixel(col, row);
 
-    var isPixelModified =
+    const isPixelModified =
       overlayColor !== pskl.utils.colorToInt(Constants.TRANSPARENT_COLOR);
-    var pixelColor = isPixelModified ? overlayColor : frameColor;
+    const pixelColor = isPixelModified ? overlayColor : frameColor;
 
-    var isTransparent =
+    const isTransparent =
       pixelColor === pskl.utils.colorToInt(Constants.TRANSPARENT_COLOR);
     if (isTransparent) {
       return Constants.TRANSPARENT_COLOR;
     }
 
-    var oncePerPixel = event.shiftKey;
+    const oncePerPixel = event.shiftKey;
     if (oncePerPixel && isPixelModified) {
       return pixelColor;
     }
 
-    var step = oncePerPixel ? DEFAULT_STEP * 2 : DEFAULT_STEP;
-    var isDarken = pskl.utils.UserAgent.isMac ? event.metaKey : event.ctrlKey;
+    const step = oncePerPixel ? DEFAULT_STEP * 2 : DEFAULT_STEP;
+    const isDarken = pskl.utils.UserAgent.isMac ? event.metaKey : event.ctrlKey;
 
-    var color;
+    let color;
     if (isDarken) {
       color = window.tinycolor.darken(pskl.utils.intToColor(pixelColor), step);
     } else {

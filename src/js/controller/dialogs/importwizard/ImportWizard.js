@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs.importwizard');
+  const ns = $.namespace('pskl.controller.dialogs.importwizard');
 
-  var stepDefinitions = {
+  const stepDefinitions = {
     IMAGE_IMPORT: {
       controller: ns.steps.ImageImport,
       template: 'import-image-import'
@@ -46,7 +46,7 @@
     this.steps = this.createSteps_();
 
     // Start wizard widget.
-    var wizardContainer = document.querySelector('.import-wizard-container');
+    const wizardContainer = document.querySelector('.import-wizard-container');
     this.wizard = new pskl.widgets.Wizard(this.steps, wizardContainer);
     this.wizard.init();
 
@@ -57,15 +57,15 @@
       pskl.utils.PiskelFileUtils.loadFromFile(
         this.mergeData.rawFiles[0],
         // onSuccess
-        function (piskel) {
+        (piskel) => {
           this.mergeData.mergePiskel = piskel;
           this.wizard.goTo('SELECT_MODE');
-        }.bind(this),
+        },
         // onError
-        function (reason) {
+        (reason) => {
           this.closeDialog();
           $.publish(Events.PISKEL_FILE_IMPORT_FAILED, [reason]);
-        }.bind(this));
+        });
     } else {
       console.error(
         'Unsupported import. Only single piskel or single image are supported at the moment.');
@@ -79,7 +79,7 @@
   };
 
   ns.ImportWizard.prototype.next = function () {
-    var step = this.wizard.getCurrentStep();
+    const step = this.wizard.getCurrentStep();
 
     if (step.name === 'IMAGE_IMPORT') {
       if (this.piskelController.isEmpty()) {
@@ -106,30 +106,30 @@
 
   ns.ImportWizard.prototype.destroy = function (file) {
     Object.keys(this.steps).forEach(
-      function (stepName) {
-        var step = this.steps[stepName];
+      (stepName) => {
+        const step = this.steps[stepName];
         step.instance.destroy();
         step.instance = null;
         step.el = null;
-      }.bind(this));
+      });
     this.superclass.destroy.call(this);
   };
 
   ns.ImportWizard.prototype.createSteps_ = function () {
     // The IMAGE_IMPORT step is used only if there is a single image file
     // being imported.
-    var hasSingleImage = this.hasSingleImage_();
+    const hasSingleImage = this.hasSingleImage_();
 
-    var steps = {};
+    const steps = {};
     Object.keys(stepDefinitions).forEach(
-      function (stepName) {
+      (stepName) => {
         if (stepName === 'IMAGE_IMPORT' && !hasSingleImage) {
           return;
         }
 
-        var definition = stepDefinitions[stepName];
-        var el = pskl.utils.Template.getAsHTML(definition.template);
-        var instance = new definition.controller(
+        const definition = stepDefinitions[stepName];
+        const el = pskl.utils.Template.getAsHTML(definition.template);
+        const instance = new definition.controller(
           this.piskelController,
           this,
           el);
@@ -139,7 +139,7 @@
           el: el,
           instance: instance
         };
-      }.bind(this));
+      });
     if (hasSingleImage) {
       steps.IMAGE_IMPORT.el.classList.add('import-first-step');
     } else {
@@ -150,8 +150,8 @@
   };
 
   ns.ImportWizard.prototype.finalizeImport_ = function () {
-    var piskel = this.mergeData.mergePiskel;
-    var mode = this.mergeData.importMode;
+    const piskel = this.mergeData.mergePiskel;
+    const mode = this.mergeData.importMode;
 
     if (mode === ns.steps.SelectMode.MODES.REPLACE) {
       // Replace the current piskel and close the dialog.
@@ -160,7 +160,7 @@
         this.closeDialog();
       }
     } else if (mode === ns.steps.SelectMode.MODES.MERGE) {
-      var merge = pskl.utils.MergeUtils.merge(
+      const merge = pskl.utils.MergeUtils.merge(
         this.piskelController.getPiskel(),
         piskel,
         {
@@ -172,8 +172,8 @@
       this.piskelController.setPiskel(merge);
 
       // Set the first imported layer as selected.
-      var importedLayers = piskel.getLayers().length;
-      var currentLayers = this.piskelController.getLayers().length;
+      const importedLayers = piskel.getLayers().length;
+      const currentLayers = this.piskelController.getLayers().length;
       this.piskelController.setCurrentLayerIndex(
         currentLayers - importedLayers);
       this.closeDialog();
@@ -181,7 +181,7 @@
   };
 
   ns.ImportWizard.prototype.hasSameSize_ = function () {
-    var piskel = this.mergeData.mergePiskel;
+    const piskel = this.mergeData.mergePiskel;
     if (!piskel) {
       return false;
     }
@@ -197,7 +197,7 @@
       return false;
     }
 
-    var file = this.mergeData.rawFiles[0];
+    const file = this.mergeData.rawFiles[0];
     return file.type.indexOf('image') === 0;
   };
 
@@ -206,7 +206,7 @@
       return false;
     }
 
-    var file = this.mergeData.rawFiles[0];
+    const file = this.mergeData.rawFiles[0];
     return /\.piskel$/.test(file.name);
   };
 })();

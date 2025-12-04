@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.widgets');
+  const ns = $.namespace('pskl.widgets');
 
-  var WIDGET_MARKUP =
+  const WIDGET_MARKUP =
     '<div class="frame-viewer"></div>' +
     '<div class="frame-nav">' +
     '<button class="button frame-nav-first">&lt;&lt;</button>' +
@@ -87,7 +87,7 @@
   };
 
   ns.FramePicker.prototype.onInputChange_ = function () {
-    var index = parseInt(this.input.value, 10);
+    let index = parseInt(this.input.value, 10);
     if (isNaN(index)) {
       this.input.value = 1;
       return;
@@ -120,12 +120,12 @@
     this.currentFrameIndex = frameIndex;
     this.input.value = frameIndex;
 
-    var image = this.getFrameAsImage_(frameIndex);
+    const image = this.getFrameAsImage_(frameIndex);
     image.classList.add('canvas-background');
     this.frameViewer.innerHTML = '';
     this.frameViewer.appendChild(image);
 
-    var frameCount = this.getFrameCount_();
+    const frameCount = this.getFrameCount_();
     this.setEnabled_(this.firstButton, frameIndex !== this.firstFrameIndex);
     this.setEnabled_(this.previousButton, frameIndex !== this.firstFrameIndex);
     this.setEnabled_(this.nextButton, frameIndex !== frameCount);
@@ -142,19 +142,19 @@
       return new Image();
     }
 
-    var frame = pskl.utils.LayerUtils.mergeFrameAt(
+    const frame = pskl.utils.LayerUtils.mergeFrameAt(
       this.piskel.getLayers(),
       frameIndex - 1
     );
-    var zoom = this.getZoomLevel_();
+    const zoom = this.getZoomLevel_();
     return pskl.utils.FrameUtils.toImage(frame, zoom);
   };
 
   ns.FramePicker.prototype.getZoomLevel_ = function () {
-    var viewerWidth = this.frameViewer.offsetWidth;
-    var viewerHeight = this.frameViewer.offsetHeight;
-    var wZoom = viewerWidth / this.piskel.width;
-    var hZoom = viewerHeight / this.piskel.height;
+    const viewerWidth = this.frameViewer.offsetWidth;
+    const viewerHeight = this.frameViewer.offsetHeight;
+    const wZoom = viewerWidth / this.piskel.width;
+    const hZoom = viewerHeight / this.piskel.height;
     return Math.min(hZoom, wZoom);
   };
 

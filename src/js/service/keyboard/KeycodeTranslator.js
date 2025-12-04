@@ -1,5 +1,5 @@
 (function () {
-  var specialKeys = {
+  const specialKeys = {
     8: 'back',
     13: 'enter',
     27: 'esc',
@@ -26,7 +26,7 @@
     221: ']'
   };
 
-  var ns = $.namespace('pskl.service.keyboard');
+  const ns = $.namespace('pskl.service.keyboard');
 
   ns.KeycodeTranslator = {
     toChar: function (keycode) {

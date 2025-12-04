@@ -1,18 +1,18 @@
 // PhantomJS system
-var system = require("system");
+const system = require("system");
 
 // Exporter
-var exporter = require("./export-png");
+const exporter = require("./export-png");
 
 // Get passed args
-var args = system.args;
+const args = system.args;
 
 // Parse input piskel file and options
-var piskelFile = JSON.parse(args[1]);
-var options = JSON.parse(args[2]);
+const piskelFile = JSON.parse(args[1]);
+const options = JSON.parse(args[2]);
 
 // Create page w/ canvas
-var page = require("webpage").create();
+const page = require("webpage").create();
 
 page.content = "<html><body></body></html>";
 
@@ -26,14 +26,14 @@ page.onConsoleMessage = function (msg) {
 
 // Run page logic
 page.evaluate(
-  function (piskelFile, options, onPageEvaluate) {
+  (piskelFile, options, onPageEvaluate) => {
     // Zero out default body margin
     document.body.style.margin = 0;
 
     // Deserialize piskel file and run exporter's page evaluate task
     pskl.utils.serialization.Deserializer.deserialize(
       piskelFile,
-      function (piskel) {
+      (piskel) => {
         onPageEvaluate(window, options, piskel);
       }
     );

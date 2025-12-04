@@ -1,16 +1,16 @@
-describe("ShortcutService test suite", function () {
-  var A_KEY = "A";
-  var B_KEY = "B";
-  var A_KEYCODE = 65;
-  var B_KEYCODE = 66;
+describe("ShortcutService test suite", () => {
+  const A_KEY = "A";
+  const B_KEY = "B";
+  const A_KEYCODE = 65;
+  const B_KEYCODE = 66;
 
-  var service;
+  let service;
 
-  beforeEach(function () {
+  beforeEach(() => {
     service = new pskl.service.keyboard.ShortcutService();
   });
 
-  var createEvent = function (keycode) {
+  const createEvent = function (keycode) {
     return {
       which: keycode,
       altKey: false,
@@ -44,59 +44,59 @@ describe("ShortcutService test suite", function () {
     };
   };
 
-  var setTargetName = function (evt, targetName) {
+  const setTargetName = function (evt, targetName) {
     evt.target = {
       nodeName: targetName,
     };
   };
 
-  it("accepts only shortcut instances", function () {
+  it("accepts only shortcut instances", () => {
     console.log("[ShortcutService] accepts only shortcut instances");
 
     console.log("[ShortcutService] ... fails for missing shortcut");
-    expect(function () {
+    expect(() => {
       service.registerShortcut();
     }).toThrow(
       "Invalid shortcut argument, please use instances of pskl.service.keyboard.Shortcut"
     );
 
     console.log("[ShortcutService] ... fails for shortcut as empty object");
-    expect(function () {
+    expect(() => {
       service.registerShortcut({});
     }).toThrow(
       "Invalid shortcut argument, please use instances of pskl.service.keyboard.Shortcut"
     );
 
     console.log("[ShortcutService] ... fails for shortcut as a string");
-    expect(function () {
+    expect(() => {
       service.registerShortcut("alt+F4");
     }).toThrow(
       "Invalid shortcut argument, please use instances of pskl.service.keyboard.Shortcut"
     );
 
-    var shortcut = new pskl.service.keyboard.Shortcut("shortcut-id", "", A_KEY);
+    const shortcut = new pskl.service.keyboard.Shortcut("shortcut-id", "", A_KEY);
 
     console.log("[ShortcutService] ... fails for missing callback");
-    expect(function () {
+    expect(() => {
       service.registerShortcut(shortcut);
     }).toThrow("Invalid callback argument, please provide a function");
 
     console.log("[ShortcutService] ... fails for invalid callback");
-    expect(function () {
+    expect(() => {
       service.registerShortcut(shortcut, { callback: function () {} });
     }).toThrow("Invalid callback argument, please provide a function");
 
     console.log("[ShortcutService] ... is ok for valid arguments");
-    service.registerShortcut(shortcut, function () {});
+    service.registerShortcut(shortcut, () => {});
   });
 
-  it("triggers shortcut", function () {
+  it("triggers shortcut", () => {
     console.log("[ShortcutService] triggers shortcut");
-    var callbackCalled = false;
+    let callbackCalled = false;
 
     console.log("[ShortcutService] ... register shortcut for A");
-    var shortcutA = new pskl.service.keyboard.Shortcut("shortcut-a", "", A_KEY);
-    service.registerShortcut(shortcutA, function () {
+    const shortcutA = new pskl.service.keyboard.Shortcut("shortcut-a", "", A_KEY);
+    service.registerShortcut(shortcutA, () => {
       callbackCalled = true;
     });
 
@@ -105,17 +105,17 @@ describe("ShortcutService test suite", function () {
     expect(callbackCalled).toBe(true);
   });
 
-  it("triggers shortcuts independently", function () {
+  it("triggers shortcuts independently", () => {
     console.log("[ShortcutService] registers shortcuts");
 
-    var shortcutA = new pskl.service.keyboard.Shortcut("shortcut-a", "", A_KEY);
-    var shortcutB = new pskl.service.keyboard.Shortcut("shortcut-b", "", B_KEY);
-    var shortcutA_B = new pskl.service.keyboard.Shortcut("shortcut-a&b", "", [
+    const shortcutA = new pskl.service.keyboard.Shortcut("shortcut-a", "", A_KEY);
+    const shortcutB = new pskl.service.keyboard.Shortcut("shortcut-b", "", B_KEY);
+    const shortcutA_B = new pskl.service.keyboard.Shortcut("shortcut-a&b", "", [
       A_KEY,
       B_KEY,
     ]);
 
-    var counters = {
+    const counters = {
       a: 0,
       b: 0,
       a_b: 0,
@@ -124,13 +124,13 @@ describe("ShortcutService test suite", function () {
     console.log(
       "[ShortcutService] ... register separate shortcuts for A and B",
     );
-    service.registerShortcut(shortcutA, function () {
+    service.registerShortcut(shortcutA, () => {
       counters.a++;
     });
-    service.registerShortcut(shortcutB, function () {
+    service.registerShortcut(shortcutB, () => {
       counters.b++;
     });
-    service.registerShortcut(shortcutA_B, function () {
+    service.registerShortcut(shortcutA_B, () => {
       counters.a_b++;
     });
 
@@ -151,13 +151,13 @@ describe("ShortcutService test suite", function () {
     expect(counters.a_b).toBe(2);
   });
 
-  it("unregisters shortcut", function () {
+  it("unregisters shortcut", () => {
     console.log("[ShortcutService] unregisters shortcut");
-    var callbackCalled = false;
+    let callbackCalled = false;
 
     console.log("[ShortcutService] ... register shortcut for A");
-    var shortcutA = new pskl.service.keyboard.Shortcut("shortcut-a", "", A_KEY);
-    service.registerShortcut(shortcutA, function () {
+    const shortcutA = new pskl.service.keyboard.Shortcut("shortcut-a", "", A_KEY);
+    service.registerShortcut(shortcutA, () => {
       callbackCalled = true;
     });
 
@@ -169,15 +169,15 @@ describe("ShortcutService test suite", function () {
     expect(callbackCalled).toBe(false);
   });
 
-  it("unregisters shortcut without removing other shortcuts", function () {
+  it("unregisters shortcut without removing other shortcuts", () => {
     console.log("[ShortcutService] unregisters shortcut");
-    var callbackCalled = false;
+    let callbackCalled = false;
 
     console.log("[ShortcutService] ... register shortcut for A & B");
-    var shortcutA = new pskl.service.keyboard.Shortcut("shortcut-a", "", A_KEY);
-    var shortcutB = new pskl.service.keyboard.Shortcut("shortcut-b", "", B_KEY);
-    service.registerShortcut(shortcutA, function () {});
-    service.registerShortcut(shortcutB, function () {
+    const shortcutA = new pskl.service.keyboard.Shortcut("shortcut-a", "", A_KEY);
+    const shortcutB = new pskl.service.keyboard.Shortcut("shortcut-b", "", B_KEY);
+    service.registerShortcut(shortcutA, () => {});
+    service.registerShortcut(shortcutB, () => {
       callbackCalled = true;
     });
 
@@ -191,20 +191,20 @@ describe("ShortcutService test suite", function () {
     expect(callbackCalled).toBe(true);
   });
 
-  it("supports unregistering unknown shortcuts", function () {
+  it("supports unregistering unknown shortcuts", () => {
     console.log("[ShortcutService] unregisters shortcut");
-    var callbackCalled = false;
+    let callbackCalled = false;
 
     console.log("[ShortcutService] ... register shortcut for A");
-    var shortcutA = new pskl.service.keyboard.Shortcut("shortcut-a", "", A_KEY);
-    service.registerShortcut(shortcutA, function () {
+    const shortcutA = new pskl.service.keyboard.Shortcut("shortcut-a", "", A_KEY);
+    service.registerShortcut(shortcutA, () => {
       callbackCalled = true;
     });
 
     console.log(
       "[ShortcutService] ... unregister shortcut B, which was not registered in the first place",
     );
-    var shortcutB = new pskl.service.keyboard.Shortcut("shortcut-b", "", B_KEY);
+    const shortcutB = new pskl.service.keyboard.Shortcut("shortcut-b", "", B_KEY);
     service.unregisterShortcut(shortcutB);
 
     console.log(
@@ -215,13 +215,13 @@ describe("ShortcutService test suite", function () {
     expect(callbackCalled).toBe(true);
   });
 
-  it("does not trigger shortcuts from INPUT or TEXTAREA", function () {
+  it("does not trigger shortcuts from INPUT or TEXTAREA", () => {
     console.log("[ShortcutService] triggers shortcut");
-    var callbackCalled = false;
+    let callbackCalled = false;
 
     console.log("[ShortcutService] ... register shortcut for A");
-    var shortcutA = new pskl.service.keyboard.Shortcut("shortcut-a", "", A_KEY);
-    service.registerShortcut(shortcutA, function () {
+    const shortcutA = new pskl.service.keyboard.Shortcut("shortcut-a", "", A_KEY);
+    service.registerShortcut(shortcutA, () => {
       callbackCalled = true;
     });
 
@@ -244,14 +244,14 @@ describe("ShortcutService test suite", function () {
     expect(callbackCalled).toBe(true);
   });
 
-  it("supports meta modifiers", function () {
+  it("supports meta modifiers", () => {
     console.log("[ShortcutService] triggers shortcut");
-    var callbackCalled = false;
+    const callbackCalled = false;
 
     console.log(
       "[ShortcutService] ... create various A shortcuts with modifiers",
     );
-    var shortcuts = [
+    const shortcuts = [
       new pskl.service.keyboard.Shortcut("a", "", A_KEY),
       new pskl.service.keyboard.Shortcut("a_ctrl", "", "ctrl+" + A_KEY),
       new pskl.service.keyboard.Shortcut(
@@ -267,7 +267,7 @@ describe("ShortcutService test suite", function () {
       new pskl.service.keyboard.Shortcut("a_alt", "", "alt+" + A_KEY),
     ];
 
-    var counters = {
+    const counters = {
       a: 0,
       a_ctrl: 0,
       a_ctrl_shift: 0,
@@ -275,13 +275,13 @@ describe("ShortcutService test suite", function () {
       a_alt: 0,
     };
 
-    shortcuts.forEach(function (shortcut) {
-      service.registerShortcut(shortcut, function () {
+    shortcuts.forEach((shortcut) => {
+      service.registerShortcut(shortcut, () => {
         counters[shortcut.getId()]++;
       });
     });
 
-    var verifyCounters = function (a, a_c, a_cs, a_csa, a_a) {
+    const verifyCounters = function (a, a_c, a_cs, a_csa, a_a) {
       expect(counters.a).toBe(a);
       expect(counters.a_ctrl).toBe(a_c);
       expect(counters.a_ctrl_shift).toBe(a_cs);

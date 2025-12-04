@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs.importwizard.steps');
+  const ns = $.namespace('pskl.controller.dialogs.importwizard.steps');
 
   ns.AbstractImportStep = function (
     piskelController,
@@ -41,13 +41,13 @@
   };
 
   ns.AbstractImportStep.prototype.onShow = function () {
-    var mergePiskel = this.mergeData.mergePiskel;
+    const mergePiskel = this.mergeData.mergePiskel;
     if (!mergePiskel) {
       return;
     }
 
     if (!this.framePickerWidget) {
-      var framePickerContainer =
+      const framePickerContainer =
         this.container.querySelector('.import-preview');
       this.framePickerWidget = new pskl.widgets.FramePicker(
         mergePiskel,
@@ -60,7 +60,7 @@
       this.framePickerWidget.setFrameIndex(1);
     }
 
-    var metaHtml = pskl.utils.Template.getAndReplace('import-meta-content', {
+    const metaHtml = pskl.utils.Template.getAndReplace('import-meta-content', {
       name: mergePiskel.getDescriptor().name,
       dimensions: pskl.utils.StringUtils.formatSize(
         mergePiskel.getWidth(),

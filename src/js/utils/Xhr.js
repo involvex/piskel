@@ -1,17 +1,17 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
   ns.Xhr = {
     get: function (url, success, error) {
-      var xhr = ns.Xhr.xhr_(url, 'GET', success, error);
+      const xhr = ns.Xhr.xhr_(url, 'GET', success, error);
       xhr.send();
     },
 
     post: function (url, data, success, error) {
-      var xhr = ns.Xhr.xhr_(url, 'POST', success, error);
-      var formData = new FormData();
+      const xhr = ns.Xhr.xhr_(url, 'POST', success, error);
+      const formData = new FormData();
 
       if (typeof data == 'object') {
-        for (var key in data) {
+        for (const key in data) {
           if (data.hasOwnProperty(key)) {
             formData.append(key, data[key]);
           }
@@ -25,7 +25,7 @@
       success = success || function () {};
       error = error || function () {};
 
-      var xhr = new XMLHttpRequest();
+      const xhr = new XMLHttpRequest();
       xhr.open(method, url, true);
 
       xhr.onload = function (e) {

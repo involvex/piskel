@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.rendering');
+  const ns = $.namespace('pskl.rendering');
 
   ns.AbstractRenderer = function () {};
 

@@ -1,8 +1,8 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs.backups.steps');
+  const ns = $.namespace('pskl.controller.dialogs.backups.steps');
 
   // Should match the preview dimensions defined in dialogs-browse-backups.css
-  var PREVIEW_SIZE = 60;
+  const PREVIEW_SIZE = 60;
 
   ns.SessionDetails = function (
     piskelController,
@@ -29,26 +29,26 @@
   };
 
   ns.SessionDetails.prototype.onShow = function () {
-    var sessionId = this.backupsController.backupsData.selectedSession;
+    const sessionId = this.backupsController.backupsData.selectedSession;
     pskl.app.backupService
       .getSnapshotsBySessionId(sessionId)
       .then(
-        function (snapshots) {
-          var html = this.getMarkupForSnapshots_(snapshots);
+        (snapshots) => {
+          const html = this.getMarkupForSnapshots_(snapshots);
           this.container.querySelector('.snapshot-list').innerHTML = html;
 
           // Load the image of the first frame for each sprite and update the list.
           snapshots.forEach(
-            function (snapshot) {
+            (snapshot) => {
               this.updateSnapshotPreview_(snapshot);
-            }.bind(this));
-        }.bind(this)
+            });
+        }
       )
       .catch(
-        function () {
-          var html = pskl.utils.Template.get('snapshot-list-error');
+        () => {
+          const html = pskl.utils.Template.get('snapshot-list-error');
           this.container.querySelector('.snapshot-list').innerHTML = html;
-        }.bind(this));
+        });
   };
 
   ns.SessionDetails.prototype.getMarkupForSnapshots_ = function (snapshots) {
@@ -59,9 +59,9 @@
       return pskl.utils.Template.get('snapshot-list-empty');
     }
 
-    var sessionItemTemplate = pskl.utils.Template.get('snapshot-list-item');
-    return snapshots.reduce(function (previous, snapshot) {
-      var view = {
+    const sessionItemTemplate = pskl.utils.Template.get('snapshot-list-item');
+    return snapshots.reduce((previous, snapshot) => {
+      const view = {
         id: snapshot.id,
         name: snapshot.name,
         description: snapshot.description ? '- ' + snapshot.description : '',
@@ -83,25 +83,25 @@
   ns.SessionDetails.prototype.updateSnapshotPreview_ = function (snapshot) {
     pskl.utils.serialization.Deserializer.deserialize(
       JSON.parse(snapshot.serialized),
-      function (piskel) {
-        var selector =
+      (piskel) => {
+        const selector =
           '.snapshot-item[data-snapshot-id="' +
           snapshot.id +
           '"] .snapshot-preview';
-        var previewContainer = this.container.querySelector(selector);
+        const previewContainer = this.container.querySelector(selector);
         if (!previewContainer) {
           return;
         }
-        var image = this.getFirstFrameAsImage_(piskel);
+        const image = this.getFirstFrameAsImage_(piskel);
         previewContainer.appendChild(image);
-      }.bind(this));
+      });
   };
 
   ns.SessionDetails.prototype.getFirstFrameAsImage_ = function (piskel) {
-    var frame = pskl.utils.LayerUtils.mergeFrameAt(piskel.getLayers(), 0);
-    var wZoom = PREVIEW_SIZE / piskel.width;
-    var hZoom = PREVIEW_SIZE / piskel.height;
-    var zoom = Math.min(hZoom, wZoom);
+    const frame = pskl.utils.LayerUtils.mergeFrameAt(piskel.getLayers(), 0);
+    const wZoom = PREVIEW_SIZE / piskel.width;
+    const hZoom = PREVIEW_SIZE / piskel.height;
+    const zoom = Math.min(hZoom, wZoom);
     return pskl.utils.FrameUtils.toImage(frame, zoom);
   };
 
@@ -110,10 +110,10 @@
   };
 
   ns.SessionDetails.prototype.onContainerClick_ = function (evt) {
-    var action = evt.target.dataset.action;
+    const action = evt.target.dataset.action;
     if (action == 'load' && window.confirm(Constants.CONFIRM_OVERWRITE)) {
-      var snapshotId = evt.target.dataset.snapshotId * 1;
-      pskl.app.backupService.loadSnapshotById(snapshotId).then(function () {
+      const snapshotId = evt.target.dataset.snapshotId * 1;
+      pskl.app.backupService.loadSnapshotById(snapshotId).then(() => {
         $.publish(Events.DIALOG_HIDE);
       });
     }

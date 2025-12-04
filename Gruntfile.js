@@ -1,36 +1,36 @@
 module.exports = function (grunt) {
   // Update this variable if you don't want or can't serve on localhost
-  var hostname = "localhost";
+  const hostname = "localhost";
 
-  var PORT = {
+  const PORT = {
     PROD: 9001,
     DEV: 9901,
     TEST: 9991,
   };
 
   // create a version based on the build timestamp
-  var dateFormat = require("dateformat");
-  var version = "-" + dateFormat(new Date(), "yyyy-mm-dd-hh-MM");
-  var releaseVersion = require("./package.json").version;
+  const dateFormat = require("dateformat");
+  const version = "-" + dateFormat(new Date(), "yyyy-mm-dd-hh-MM");
+  const releaseVersion = require("./package.json").version;
 
   /**
    * Helper to prefix all strings in provided array with the provided path
    */
-  var prefixPaths = function (paths, prefix) {
-    return paths.map(function (path) {
+  const prefixPaths = function (paths, prefix) {
+    return paths.map((path) => {
       return prefix + path;
     });
   };
 
   // get the list of scripts paths to include
-  var scriptPaths = require("./src/piskel-script-list.js").scripts;
-  var piskelScripts = prefixPaths(scriptPaths, "src/");
+  const scriptPaths = require("./src/piskel-script-list.js").scripts;
+  const piskelScripts = prefixPaths(scriptPaths, "src/");
 
   // get the list of styles paths to include
-  var stylePaths = require("./src/piskel-style-list.js").styles;
-  var piskelStyles = prefixPaths(stylePaths, "src/");
+  const stylePaths = require("./src/piskel-style-list.js").styles;
+  const piskelStyles = prefixPaths(stylePaths, "src/");
 
-  var getConnectConfig = function (base, port, host, open) {
+  const getConnectConfig = function (base, port, host, open) {
     return {
       options: {
         port: port,
@@ -141,18 +141,21 @@ module.exports = function (grunt) {
       },
     },
 
-    uglify: {
-      options: {
-        mangle: true,
-      },
-      js: {
-        files: {
-          "dest/tmp/js/piskel-packaged-min.js": [
-            "dest/prod/js/piskel-packaged" + version + ".js",
-          ],
-        },
-      },
-    },
+    // uglify: {
+    //   options: {
+    //     mangle: false, // Disable mangling to prevent breaking constructors
+    //     compress: {
+    //       keep_fnames: true, // Keep function names
+    //     },
+    //   },
+    //   js: {
+    //     files: {
+    //       "dest/tmp/js/piskel-packaged-min.js": [
+    //         "dest/prod/js/piskel-packaged" + version + ".js",
+    //       ],
+    //     },
+    //   },
+    // },
 
     includereplace: {
       all: {
@@ -183,7 +186,7 @@ module.exports = function (grunt) {
               description: "Remove everything after body-main-end comment",
             },
             {
-              match: /([\r\n])  /g,
+              match: /([\r\n]) {2}/g,
               replacement: "$1",
               description: "Decrease indentation by one",
             },
@@ -213,7 +216,7 @@ module.exports = function (grunt) {
               description: "Remove everything after body-main-end comment",
             },
             {
-              match: /([\r\n])  /g,
+              match: /([\r\n]) {2}/g,
               replacement: "$1",
               description: "Decrease indentation by one",
             },
@@ -244,7 +247,7 @@ module.exports = function (grunt) {
               description: "Remove everything after body-main-end comment",
             },
             {
-              match: /([\r\n])  /g,
+              match: /([\r\n]) {2}/g,
               replacement: "$1",
               description: "Decrease indentation by one",
             },
@@ -280,10 +283,10 @@ module.exports = function (grunt) {
     copy: {
       prod: {
         files: [
-          // dest/js/piskel-packaged-min.js should have been created by the uglify task
+          // Use non-minified version directly
           {
-            src: ["dest/tmp/js/piskel-packaged-min.js"],
-            dest: "dest/prod/js/piskel-packaged-min" + version + ".js",
+            src: ["dest/prod/js/piskel-packaged" + version + ".js"],
+            dest: "dest/prod/js/piskel-packaged" + version + ".js",
           },
           { src: ["dest/tmp/index.html"], dest: "dest/prod/index.html" },
           { src: ["src/logo.png"], dest: "dest/prod/logo.png" },
@@ -349,39 +352,91 @@ module.exports = function (grunt) {
      */
 
     nwjs: {
+      modern: {
+        options: {
+          downloadUrl: "https://dl.nwjs.io/",
+          version: "0.80.0",
+          build_dir: "./dist/",
+          arg_type: "x64",
+          platforms: [
+            { os: "win", arch: "x64" },
+            { os: "win", arch: "arm64" },
+            { os: "osx", arch: "x64" },
+            { os: "osx", arch: "arm64" },
+            { os: "linux", arch: "x64" },
+            { os: "linux", arch: "arm64" },
+          ],
+          flavor: "normal",
+          cacheDir: "./cache",
+          shaSum: true,
+          macIcns: "misc/desktop/logo.icns",
+          winIco: "misc/desktop/logo.ico",
+          macPlist: {
+            CFBundleDisplayName: "Piskel",
+            CFBundleIdentifier: "com.piskel.app",
+            CFBundleVersion: "1.0.0",
+            CFBundleShortVersionString: "1.0.0",
+            NSHighResolutionCapable: true,
+          },
+          winVersionString: {
+            CompanyName: "Piskel",
+            FileDescription: "Piskel - Pixel Art Editor",
+            OriginalFilename: "Piskel.exe",
+            ProductName: "Piskel",
+            InternalName: "Piskel",
+          },
+        },
+        src: ["./dest/prod/**/*", "./package.json"],
+      },
       windows: {
         options: {
           downloadUrl: "https://dl.nwjs.io/",
-          version: "0.48.0",
-          build_dir: "./dest/desktop/",
+          version: "0.80.0",
+          build_dir: "./dist/windows/",
           win: true,
           arg_type: "x64",
-          linux32: true,
-          linux64: true,
           flavor: "normal",
           cacheDir: "./cache",
-          shaSum: false,
+          shaSum: true,
+          winIco: "misc/desktop/logo.ico",
         },
-        src: ["./dest/prod/**/*", "./package.json", "!./dest/desktop/"],
+        src: ["./dest/prod/**/*", "./package.json"],
       },
       macos: {
         options: {
           downloadUrl: "https://dl.nwjs.io/",
+          version: "0.80.0",
+          build_dir: "./dist/macos/",
           osx64: true,
-          version: "0.48.0",
-          build_dir: "./dest/desktop/",
+          osxArm64: true,
           flavor: "normal",
           cacheDir: "./cache",
-          shaSum: false,
+          shaSum: true,
+          macIcns: "misc/desktop/logo.icns",
         },
-        src: ["./dest/prod/**/*", "./package.json", "!./dest/desktop/"],
+        src: ["./dest/prod/**/*", "./package.json"],
       },
-      macos_old: {
+      linux: {
         options: {
           downloadUrl: "https://dl.nwjs.io/",
-          osx64: true,
+          version: "0.80.0",
+          build_dir: "./dist/linux/",
+          linux64: true,
+          linuxArm64: true,
+          flavor: "normal",
+          cacheDir: "./cache",
+          shaSum: true,
+        },
+        src: ["./dest/prod/**/*", "./package.json"],
+      },
+      legacy: {
+        options: {
+          downloadUrl: "https://dl.nwjs.io/",
           version: "0.48.0",
-          build_dir: "./dest/desktop/old",
+          build_dir: "./dest/desktop/legacy",
+          win: true,
+          linux32: true,
+          linux64: true,
           flavor: "normal",
           cacheDir: "./cache",
           shaSum: false,
@@ -392,10 +447,10 @@ module.exports = function (grunt) {
   });
 
   // TEST TASKS
-  grunt.registerTask('test', 'Run tests', function() {
-    var done = this.async();
-    var exec = require('child_process').exec;
-    exec('npm test', function(error, stdout, stderr) {
+  grunt.registerTask("test", "Run tests", function () {
+    const done = this.async();
+    const exec = require("child_process").exec;
+    exec("npm test", (error, stdout, stderr) => {
       console.log(stdout);
       console.error(stderr);
       done(!error);
@@ -409,7 +464,7 @@ module.exports = function (grunt) {
 
   // BUILD TASKS
   grunt.registerTask("build-index.html", ["includereplace"]);
-  grunt.registerTask("merge-statics", ["concat:js", "concat:css", "uglify"]);
+  grunt.registerTask("merge-statics", ["concat:js", "concat:css"]);
   grunt.registerTask("build-partials", [
     "replace:mainPartial",
     "replace:piskelWebPartial",
@@ -438,6 +493,40 @@ module.exports = function (grunt) {
     "replace:desktop",
   ]);
 
+  // Modern NW.js build tasks
+  grunt.registerTask("build-nwjs-modern", [
+    "clean:desktop",
+    "default",
+    "nwjs:modern",
+  ]);
+  grunt.registerTask("build-nwjs-windows", [
+    "clean:desktop",
+    "default",
+    "nwjs:windows",
+  ]);
+  grunt.registerTask("build-nwjs-macos", [
+    "clean:desktop",
+    "default",
+    "nwjs:macos",
+  ]);
+  grunt.registerTask("build-nwjs-linux", [
+    "clean:desktop",
+    "default",
+    "nwjs:linux",
+  ]);
+  grunt.registerTask("build-nwjs-legacy", [
+    "clean:desktop",
+    "default",
+    "nwjs:legacy",
+  ]);
+
+  // Combined build tasks
+  grunt.registerTask("build-all-platforms", [
+    "clean:desktop",
+    "default",
+    "nwjs:modern",
+  ]);
+
   // Separate NW.js build tasks (currently disabled due to download issues)
   // grunt.registerTask("build-nwjs-windows", ["clean:desktop", "default", "nwjs:windows"]);
   // grunt.registerTask("build-nwjs-macos", ["clean:desktop", "default", "nwjs:macos"]);
@@ -462,7 +551,7 @@ module.exports = function (grunt) {
 
   // Default task
   grunt.registerTask("default", ["build"]);
-  
+
   // Separate lint task for manual execution
   grunt.registerTask("lint-only", ["eslint", "leadingIndent:css"]);
 };

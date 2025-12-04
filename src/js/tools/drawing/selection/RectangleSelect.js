@@ -4,7 +4,7 @@
  * @require pskl.utils
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing.selection');
+  const ns = $.namespace('pskl.tools.drawing.selection');
 
   ns.RectangleSelect = function () {
     ns.AbstractDragSelect.call(this);

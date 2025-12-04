@@ -1,22 +1,22 @@
-describe("PixelUtils visitor methods tests", function () {
-  var black = "#000000";
-  var red = "#ff0000";
-  var transparent = Constants.TRANSPARENT_COLOR;
-  var B = black,
+describe("PixelUtils visitor methods tests", () => {
+  const black = "#000000";
+  const red = "#ff0000";
+  const transparent = Constants.TRANSPARENT_COLOR;
+  const B = black,
     R = red,
     T = transparent;
 
-  beforeEach(function () {});
-  afterEach(function () {});
+  beforeEach(() => {});
+  afterEach(() => {});
 
-  var containsPixel = function (pixels, col, row) {
-    return pixels.some(function (p) {
+  const containsPixel = function (pixels, col, row) {
+    return pixels.some((p) => {
       return p.col === col && p.row === row;
     });
   };
 
-  it("getSimilarConnectedPixelsFromFrame works", function () {
-    var frame = pskl.model.Frame.fromPixelGrid(
+  it("getSimilarConnectedPixelsFromFrame works", () => {
+    const frame = pskl.model.Frame.fromPixelGrid(
       test.testutils.toFrameGrid([
         [T, T, B],
         [B, T, B],
@@ -24,7 +24,7 @@ describe("PixelUtils visitor methods tests", function () {
       ])
     );
 
-    var pixels = pskl.PixelUtils.getSimilarConnectedPixelsFromFrame(
+    let pixels = pskl.PixelUtils.getSimilarConnectedPixelsFromFrame(
       frame,
       0,
       0

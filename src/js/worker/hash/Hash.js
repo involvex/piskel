@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.worker.hash');
+  const ns = $.namespace('pskl.worker.hash');
 
   ns.Hash = function (str, onSuccess, onStep, onError) {
     this.str = str;

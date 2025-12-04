@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.devtools');
+  const ns = $.namespace('pskl.devtools');
 
   ns.DrawingTestPlayer = function (testRecord, step) {
     this.initialState = testRecord.initialState;
@@ -21,20 +21,20 @@
     // Override the main drawing loop to record the time spent rendering.
     this.loopBackup = pskl.app.drawingLoop.loop;
     pskl.app.drawingLoop.loop = function () {
-      var before = window.performance.now();
+      const before = window.performance.now();
       this.loopBackup.call(pskl.app.drawingLoop);
       this.performance += window.performance.now() - before;
     }.bind(this);
 
     this.regenerateReferencePng(
-      function () {
+      () => {
         this.playEvent_(0);
-      }.bind(this));
+      });
   };
 
   ns.DrawingTestPlayer.prototype.setupInitialState_ = function () {
-    var size = this.initialState.size;
-    var piskel = this.createPiskel_(size.width, size.height);
+    const size = this.initialState.size;
+    const piskel = this.createPiskel_(size.width, size.height);
     pskl.app.piskelController.setPiskel(piskel);
 
     $.publish(Events.SELECT_PRIMARY_COLOR, [this.initialState.primaryColor]);
@@ -44,15 +44,15 @@
     $.publish(Events.SELECT_TOOL, [this.initialState.selectedTool]);
 
     // Old tests do not have penSize stored in initialState, fallback to 1.
-    var penSize = this.initialState.penSize || 1;
+    const penSize = this.initialState.penSize || 1;
     pskl.app.penSizeService.setPenSize(this.initialState.penSize);
   };
 
   ns.DrawingTestPlayer.prototype.createPiskel_ = function (width, height) {
-    var descriptor = new pskl.model.piskel.Descriptor('TestPiskel', '');
-    var piskel = new pskl.model.Piskel(width, height, 12, descriptor);
-    var layer = new pskl.model.Layer('Layer 1');
-    var frame = new pskl.model.Frame(width, height);
+    const descriptor = new pskl.model.piskel.Descriptor('TestPiskel', '');
+    const piskel = new pskl.model.Piskel(width, height, 12, descriptor);
+    const layer = new pskl.model.Layer('Layer 1');
+    const frame = new pskl.model.Frame(width, height);
 
     layer.addFrame(frame);
     piskel.addLayer(layer);
@@ -61,7 +61,7 @@
   };
 
   ns.DrawingTestPlayer.prototype.regenerateReferencePng = function (callback) {
-    var image = new Image();
+    const image = new Image();
     image.onload = function () {
       this.referenceCanvas = pskl.utils.CanvasUtils.createFromImage(image);
       callback();
@@ -78,7 +78,7 @@
       'position:fixed;top:0;left:0;right:0;left:0;bottom:0;z-index:15000';
     this.shim.addEventListener(
       'mousemove',
-      function (e) {
+      (e) => {
         e.stopPropagation();
         e.preventDefault();
       },
@@ -93,8 +93,8 @@
 
   ns.DrawingTestPlayer.prototype.playEvent_ = function (index) {
     this.timer = window.setTimeout(
-      function () {
-        var recordEvent = this.events[index];
+      () => {
+        const recordEvent = this.events[index];
 
         // All events have already been replayed, finish the test.
         if (!recordEvent) {
@@ -105,7 +105,7 @@
           return;
         }
 
-        var before = window.performance.now();
+        const before = window.performance.now();
         if (recordEvent.type === 'mouse-event') {
           this.playMouseEvent_(recordEvent);
         } else if (recordEvent.type === 'keyboard-event') {
@@ -128,13 +128,13 @@
         this.performance += window.performance.now() - before;
 
         this.playEvent_(index + 1);
-      }.bind(this),
+      },
       this.step);
   };
 
   ns.DrawingTestPlayer.prototype.playMouseEvent_ = function (recordEvent) {
-    var event = recordEvent.event;
-    var screenCoordinates = pskl.app.drawingController.getScreenCoordinates(
+    const event = recordEvent.event;
+    const screenCoordinates = pskl.app.drawingController.getScreenCoordinates(
       recordEvent.coords.x,
       recordEvent.coords.y);
     event.clientX = screenCoordinates.x;
@@ -153,7 +153,7 @@
   };
 
   ns.DrawingTestPlayer.prototype.playKeyboardEvent_ = function (recordEvent) {
-    var event = recordEvent.event;
+    const event = recordEvent.event;
     if (pskl.utils.UserAgent.isMac) {
       event.metaKey = event.ctrlKey;
     }
@@ -210,21 +210,21 @@
     pskl.app.drawingLoop.loop = this.loopBackup;
 
     // Retrieve the imageData corresponding to the spritesheet created by the test.
-    var renderer = new pskl.rendering.PiskelRenderer(pskl.app.piskelController);
-    var canvas = renderer.renderAsCanvas();
-    var testData = canvas
+    const renderer = new pskl.rendering.PiskelRenderer(pskl.app.piskelController);
+    const canvas = renderer.renderAsCanvas();
+    const testData = canvas
       .getContext('2d')
       .getImageData(0, 0, canvas.width, canvas.height);
 
     // Retrieve the reference imageData corresponding to the reference data-url png stored for this test.
-    var refCanvas = this.referenceCanvas;
+    const refCanvas = this.referenceCanvas;
     this.referenceData = refCanvas
       .getContext('2d')
       .getImageData(0, 0, refCanvas.width, refCanvas.height);
 
     // Compare the two imageData arrays.
-    var success = true;
-    for (var i = 0; i < this.referenceData.data.length; i++) {
+    let success = true;
+    for (let i = 0; i < this.referenceData.data.length; i++) {
       if (this.referenceData.data[i] != testData.data[i]) {
         success = false;
       }
@@ -232,12 +232,12 @@
 
     $.publish(Events.TEST_RECORD_END, [success]);
     this.callbacks.forEach(
-      function (callback) {
+      (callback) => {
         callback({
           success: success,
           performance: this.performance
         });
-      }.bind(this));
+      });
   };
 
   ns.DrawingTestPlayer.prototype.addEndTestCallback = function (callback) {

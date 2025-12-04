@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.tools.drawing');
+  const ns = $.namespace('pskl.tools.drawing');
 
   ns.VerticalMirrorPen = function () {
     this.superclass.constructor.call(this);
@@ -26,13 +26,13 @@
     overlay,
     event
   ) {
-    var color = this.getToolColor();
+    const color = this.getToolColor();
     this.drawUsingPenSize(color, col, row, frame, overlay);
 
-    var mirroredCol = this.getSymmetricCol_(col, frame);
-    var mirroredRow = this.getSymmetricRow_(row, frame);
+    const mirroredCol = this.getSymmetricCol_(col, frame);
+    const mirroredRow = this.getSymmetricRow_(row, frame);
 
-    var hasCtrlKey = pskl.utils.UserAgent.isMac ? event.metaKey : event.ctrlKey;
+    const hasCtrlKey = pskl.utils.UserAgent.isMac ? event.metaKey : event.ctrlKey;
     if (!hasCtrlKey) {
       this.drawUsingPenSize(color, mirroredCol, row, frame, overlay);
     }

@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs.importwizard.steps');
+  const ns = $.namespace('pskl.controller.dialogs.importwizard.steps');
 
   ns.SelectMode = function (piskelController, importController, container) {
     this.superclass.constructor.apply(this, arguments);
@@ -15,10 +15,10 @@
   ns.SelectMode.prototype.init = function () {
     this.superclass.init.call(this);
 
-    var replaceButton = this.container.querySelector(
+    const replaceButton = this.container.querySelector(
       '.import-mode-replace-button'
     );
-    var mergeButton = this.container.querySelector('.import-mode-merge-button');
+    const mergeButton = this.container.querySelector('.import-mode-merge-button');
 
     this.addEventListener(replaceButton, 'click', this.onReplaceButtonClick_);
     this.addEventListener(mergeButton, 'click', this.onMergeButtonClick_);

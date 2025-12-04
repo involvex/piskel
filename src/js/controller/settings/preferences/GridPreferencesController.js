@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings.preferences');
+  const ns = $.namespace('pskl.controller.settings.preferences');
 
-  var colorsMap = {
+  const colorsMap = {
     transparent: Constants.TRANSPARENT_COLOR,
     white: '#FFF1E8',
     'light-gray': '#C2C3C7',
@@ -35,8 +35,8 @@
     pskl.controller.settings.AbstractSettingController);
   ns.GridPreferencesController.prototype.init = function () {
     // Grid enabled
-    var isEnabled = pskl.UserSettings.get(pskl.UserSettings.GRID_ENABLED);
-    var enableGridCheckbox = document.querySelector('.enable-grid-checkbox');
+    const isEnabled = pskl.UserSettings.get(pskl.UserSettings.GRID_ENABLED);
+    const enableGridCheckbox = document.querySelector('.enable-grid-checkbox');
     if (isEnabled) {
       enableGridCheckbox.setAttribute('checked', 'true');
     }
@@ -45,24 +45,24 @@
       'change',
       this.onEnableGridChange_);
     // Grid size
-    var gridWidth = pskl.UserSettings.get(pskl.UserSettings.GRID_WIDTH);
+    const gridWidth = pskl.UserSettings.get(pskl.UserSettings.GRID_WIDTH);
     this.sizePicker.init(document.querySelector('.grid-size-container'));
     this.sizePicker.setSize(gridWidth);
 
     //Grid Spacing
-    var gridSpacing = pskl.UserSettings.get(pskl.UserSettings.GRID_SPACING);
+    const gridSpacing = pskl.UserSettings.get(pskl.UserSettings.GRID_SPACING);
     this.spacingPicker.init(document.querySelector('.grid-spacing-container'));
     this.spacingPicker.setSize(gridSpacing);
 
     // Grid color
-    var colorListItemTemplate = pskl.utils.Template.get(
+    const colorListItemTemplate = pskl.utils.Template.get(
       'color-list-item-template');
-    var gridColor = pskl.UserSettings.get(pskl.UserSettings.GRID_COLOR);
-    var gridColorSelect = document.querySelector('#grid-color');
+    const gridColor = pskl.UserSettings.get(pskl.UserSettings.GRID_COLOR);
+    const gridColorSelect = document.querySelector('#grid-color');
 
-    var markup = '';
-    Object.keys(colorsMap).forEach(function (key, index) {
-      var background = colorsMap[key];
+    let markup = '';
+    Object.keys(colorsMap).forEach((key, index) => {
+      let background = colorsMap[key];
       if (key === 'transparent') {
         background =
           'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZ' +
@@ -109,7 +109,7 @@
   };
 
   ns.GridPreferencesController.prototype.onGridColorClicked_ = function (evt) {
-    var color = evt.target.dataset.color;
+    const color = evt.target.dataset.color;
     if (color) {
       pskl.UserSettings.set(pskl.UserSettings.GRID_COLOR, color);
       this.gridColorList

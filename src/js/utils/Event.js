@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
+  const ns = $.namespace('pskl.utils');
 
   ns.Event = {};
 
@@ -8,7 +8,7 @@
       el = document.querySelector(el);
     }
 
-    var listener = {
+    const listener = {
       el: el,
       type: type,
       callback: callback,
@@ -22,9 +22,9 @@
 
   ns.Event.removeEventListener = function (el, type, callback, scope) {
     if (scope && scope.__pskl_listeners) {
-      var listeners = scope.__pskl_listeners;
-      for (var i = 0; i < listeners.length; i++) {
-        var listener = listeners[i];
+      const listeners = scope.__pskl_listeners;
+      for (let i = 0; i < listeners.length; i++) {
+        const listener = listeners[i];
         if (
           listener.callback === callback &&
           listener.el === el &&
@@ -40,9 +40,9 @@
 
   ns.Event.removeAllEventListeners = function (scope) {
     if (scope && scope.__pskl_listeners) {
-      var listeners = scope.__pskl_listeners;
-      for (var i = 0; i < listeners.length; i++) {
-        var listener = listeners[i];
+      const listeners = scope.__pskl_listeners;
+      for (let i = 0; i < listeners.length; i++) {
+        const listener = listeners[i];
         listener.el.removeEventListener(listener.type, listener.handler);
       }
       scope.__pskl_listeners = [];

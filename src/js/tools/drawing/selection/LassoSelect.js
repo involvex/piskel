@@ -4,7 +4,7 @@
  * @require pskl.utils
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing.selection');
+  const ns = $.namespace('pskl.tools.drawing.selection');
 
   ns.LassoSelect = function () {
     ns.AbstractDragSelect.call(this);
@@ -33,7 +33,7 @@
   ns.LassoSelect.prototype.onDragSelect_ = function (col, row, frame, overlay) {
     this.addPixel_(col, row, frame);
     // use ShapeSelection during selection, contains only the pixels hovered by the user
-    var selection = new pskl.selection.ShapeSelection(this.getLassoPixels_());
+    const selection = new pskl.selection.ShapeSelection(this.getLassoPixels_());
     this.setSelection_(selection, overlay);
   };
 
@@ -46,7 +46,7 @@
   ) {
     this.addPixel_(col, row, frame);
     // use LassoSelection to finalize selection, includes pixels inside the lasso shape
-    var selection = new pskl.selection.LassoSelection(
+    const selection = new pskl.selection.LassoSelection(
       this.getLassoPixels_(),
       frame);
     this.setSelection_(selection, overlay);
@@ -62,7 +62,7 @@
    * @private
    */
   ns.LassoSelect.prototype.getLassoPixels_ = function () {
-    var line = pskl.PixelUtils.getLinePixels(
+    const line = pskl.PixelUtils.getLinePixels(
       this.previousCol,
       this.startCol,
       this.previousRow,
@@ -80,7 +80,7 @@
     row = pskl.utils.Math.minmax(row, 0, frame.getHeight() - 1);
 
     // line interpolation needed in case mousemove was too fast
-    var interpolatedPixels = pskl.PixelUtils.getLinePixels(
+    const interpolatedPixels = pskl.PixelUtils.getLinePixels(
       col,
       this.previousCol,
       row,

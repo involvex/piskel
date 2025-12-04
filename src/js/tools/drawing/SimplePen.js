@@ -4,7 +4,7 @@
  * @require pskl.utils
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing');
+  const ns = $.namespace('pskl.tools.drawing');
 
   ns.SimplePen = function () {
     this.toolId = 'tool-pen';
@@ -36,7 +36,7 @@
     this.previousCol = col;
     this.previousRow = row;
 
-    var color = this.getToolColor();
+    const color = this.getToolColor();
 
     this.drawUsingPenSize(color, col, row, frame, overlay);
   };
@@ -48,12 +48,12 @@
     frame,
     overlay
   ) {
-    var penSize = pskl.app.penSizeService.getPenSize();
-    var points = pskl.PixelUtils.resizePixel(col, row, penSize);
+    const penSize = pskl.app.penSizeService.getPenSize();
+    const points = pskl.PixelUtils.resizePixel(col, row, penSize);
     points.forEach(
-      function (point) {
+      (point) => {
         this.draw(color, point[0], point[1], frame, overlay);
-      }.bind(this));
+      });
   };
 
   ns.SimplePen.prototype.draw = function (color, col, row, frame, overlay) {
@@ -85,13 +85,13 @@
       // The pen movement is too fast for the mousemove frequency, there is a gap between the
       // current point and the previously drawn one.
       // We fill the gap by calculating missing dots (simple linear interpolation) and draw them.
-      var interpolatedPixels = pskl.PixelUtils.getLinePixels(
+      const interpolatedPixels = pskl.PixelUtils.getLinePixels(
         col,
         this.previousCol,
         row,
         this.previousRow);
-      for (var i = 0, l = interpolatedPixels.length; i < l; i++) {
-        var coords = interpolatedPixels[i];
+      for (let i = 0, l = interpolatedPixels.length; i < l; i++) {
+        const coords = interpolatedPixels[i];
         this.applyToolAt(coords.col, coords.row, frame, overlay, event);
       }
     } else {
@@ -127,7 +127,7 @@
   };
 
   ns.SimplePen.prototype.setPixelsToFrame_ = function (frame, pixels, color) {
-    pixels.forEach(function (pixel) {
+    pixels.forEach((pixel) => {
       frame.setPixel(pixel.col, pixel.row, pixel.color);
     });
   };

@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.service.storage');
+  const ns = $.namespace('pskl.service.storage');
 
   ns.StorageService = function (piskelController) {
     this.piskelController = piskelController;
@@ -10,22 +10,31 @@
   };
 
   ns.StorageService.prototype.init = function () {
-    var shortcuts = pskl.service.keyboard.Shortcuts;
+    const shortcuts = pskl.service.keyboard.Shortcuts;
     pskl.app.shortcutService.registerShortcut(
       shortcuts.STORAGE.OPEN,
-      this.onOpenKey_.bind(this));
+      this.onOpenKey_.bind(this)
+    );
     pskl.app.shortcutService.registerShortcut(
       shortcuts.STORAGE.SAVE,
-      this.onSaveKey_.bind(this));
+      this.onSaveKey_.bind(this)
+    );
     pskl.app.shortcutService.registerShortcut(
       shortcuts.STORAGE.SAVE_AS,
-      this.onSaveAsKey_.bind(this));
+      this.onSaveAsKey_.bind(this)
+    );
+    pskl.app.shortcutService.registerShortcut(
+      shortcuts.STORAGE.SAVE_PNG,
+      this.onSavePngKey_.bind(this)
+    );
     $.subscribe(
       Events.BEFORE_SAVING_PISKEL,
-      this.setSavingFlag_.bind(this, true));
+      this.setSavingFlag_.bind(this, true)
+    );
     $.subscribe(
       Events.AFTER_SAVING_PISKEL,
-      this.setSavingFlag_.bind(this, false));
+      this.setSavingFlag_.bind(this, false)
+    );
   };
 
   ns.StorageService.prototype.isSaving = function () {
@@ -53,7 +62,8 @@
     return this.delegateSave_(
       pskl.app.desktopStorageService,
       piskel,
-      saveAsNew);
+      saveAsNew
+    );
   };
 
   ns.StorageService.prototype.delegateSave_ = function (
@@ -79,7 +89,7 @@
   };
 
   ns.StorageService.prototype.onSaveKey_ = function (charkey) {
-    var piskel = this.piskelController.getPiskel();
+    const piskel = this.piskelController.getPiskel();
     if (pskl.app.isLoggedIn()) {
       this.saveToGallery(this.piskelController.getPiskel());
     } else if (pskl.utils.Environment.detectNodeWebkit()) {
@@ -90,10 +100,11 @@
       // wrap in timeout in order to start saving only after event.preventDefault
       // has been done
       window.setTimeout(
-        function () {
+        () => {
           this.saveToIndexedDb(this.piskelController.getPiskel());
-        }.bind(this),
-        0);
+        },
+        0
+      );
     }
   };
 
@@ -104,27 +115,35 @@
     // no other implementation for now
   };
 
+  ns.StorageService.prototype.onSavePngKey_ = function () {
+    // Trigger PNG export via the export controller
+    const exportController = pskl.app.exportController;
+    if (exportController) {
+      exportController.exportPng();
+    }
+  };
+
   ns.StorageService.prototype.onSaveSuccess_ = function () {
     $.publish(Events.SHOW_NOTIFICATION, [
       {
         content: 'Successfully saved !',
-        hideDelay: 3000
-      }
+        hideDelay: 3000,
+      },
     ]);
     $.publish(Events.PISKEL_SAVED);
     this.afterSaving_();
   };
 
   ns.StorageService.prototype.onSaveError_ = function (errorMessage) {
-    var errorText = 'Saving failed';
+    let errorText = 'Saving failed';
     if (errorMessage) {
       errorText += ' : ' + errorMessage;
     }
     $.publish(Events.SHOW_NOTIFICATION, [
       {
         content: errorText,
-        hideDelay: 10000
-      }
+        hideDelay: 10000,
+      },
     ]);
     this.afterSaving_();
     return Q.reject(errorMessage);

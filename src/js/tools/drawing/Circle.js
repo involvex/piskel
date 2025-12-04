@@ -4,7 +4,7 @@
  * @require pskl.utils
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing');
+  const ns = $.namespace('pskl.tools.drawing');
 
   ns.Circle = function () {
     ns.ShapeTool.call(this);
@@ -26,25 +26,25 @@
       col,
       row,
       penSize
-    ).forEach(function (point) {
+    ).forEach((point) => {
       targetFrame.setPixel(point[0], point[1], color);
     });
   };
 
   ns.Circle.prototype.getCirclePixels_ = function (x0, y0, x1, y1, penSize) {
-    var coords = pskl.PixelUtils.getOrderedRectangleCoordinates(x0, y0, x1, y1);
-    var pixels = [];
-    var xC = Math.round((coords.x0 + coords.x1) / 2);
-    var yC = Math.round((coords.y0 + coords.y1) / 2);
-    var evenX = (coords.x0 + coords.x1) % 2;
-    var evenY = (coords.y0 + coords.y1) % 2;
-    var rX = coords.x1 - xC;
-    var rY = coords.y1 - yC;
+    const coords = pskl.PixelUtils.getOrderedRectangleCoordinates(x0, y0, x1, y1);
+    const pixels = [];
+    const xC = Math.round((coords.x0 + coords.x1) / 2);
+    const yC = Math.round((coords.y0 + coords.y1) / 2);
+    const evenX = (coords.x0 + coords.x1) % 2;
+    const evenY = (coords.y0 + coords.y1) % 2;
+    const rX = coords.x1 - xC;
+    const rY = coords.y1 - yC;
 
-    var x;
-    var y;
-    var angle;
-    var r;
+    let x;
+    let y;
+    let angle;
+    let r;
 
     if (penSize == 1) {
       for (x = coords.x0; x <= xC; x++) {
@@ -66,8 +66,8 @@
       return pixels;
     }
 
-    var iX = rX - penSize;
-    var iY = rY - penSize;
+    let iX = rX - penSize;
+    let iY = rY - penSize;
     if (iX < 0) {
       iX = 0;
     }

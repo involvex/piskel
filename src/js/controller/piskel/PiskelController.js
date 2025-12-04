@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.piskel');
+  const ns = $.namespace('pskl.controller.piskel');
 
   ns.PiskelController = function (piskel) {
     if (piskel) {
@@ -69,7 +69,7 @@
   // FIXME ?? No added value compared to getLayerAt ??
   // Except normalizing to null if undefined ?? ==> To merge
   ns.PiskelController.prototype.getLayerByIndex = function (index) {
-    var layers = this.getLayers();
+    const layers = this.getLayers();
     if (layers[index]) {
       return layers[index];
     } else {
@@ -78,7 +78,7 @@
   };
 
   ns.PiskelController.prototype.getCurrentFrame = function () {
-    var layer = this.getCurrentLayer();
+    const layer = this.getCurrentLayer();
     return layer.getFrameAt(this.currentFrameIndex);
   };
 
@@ -95,7 +95,7 @@
   };
 
   ns.PiskelController.prototype.isTransparent = function () {
-    return this.getLayers().some(function (l) {
+    return this.getLayers().some((l) => {
       return l.isTransparent();
     });
   };
@@ -124,15 +124,15 @@
 
   ns.PiskelController.prototype.addFrameAt = function (index) {
     this.getLayers().forEach(
-      function (l) {
+      (l) => {
         l.addFrameAt(this.createEmptyFrame_(), index);
-      }.bind(this));
+      });
     this.onFrameAddedAt_(index);
   };
 
   ns.PiskelController.prototype.onFrameAddedAt_ = function (index) {
     this.piskel.hiddenFrames = this.piskel.hiddenFrames.map(
-      function (hiddenIndex) {
+      (hiddenIndex) => {
         if (hiddenIndex >= index) {
           return hiddenIndex + 1;
         }
@@ -142,19 +142,19 @@
   };
 
   ns.PiskelController.prototype.createEmptyFrame_ = function () {
-    var w = this.piskel.getWidth();
-    var h = this.piskel.getHeight();
+    const w = this.piskel.getWidth();
+    const h = this.piskel.getHeight();
     return new pskl.model.Frame(w, h);
   };
 
   ns.PiskelController.prototype.removeFrameAt = function (index) {
-    this.getLayers().forEach(function (l) {
+    this.getLayers().forEach((l) => {
       l.removeFrameAt(index);
     });
 
     // Update the array of hidden frames since some hidden indexes might have shifted.
     this.piskel.hiddenFrames = this.piskel.hiddenFrames.map(
-      function (hiddenIndex) {
+      (hiddenIndex) => {
         if (hiddenIndex > index) {
           return hiddenIndex - 1;
         }
@@ -171,7 +171,7 @@
   };
 
   ns.PiskelController.prototype.duplicateFrameAt = function (index) {
-    this.getLayers().forEach(function (l) {
+    this.getLayers().forEach((l) => {
       l.duplicateFrameAt(index);
     });
     this.onFrameAddedAt_(index + 1);
@@ -182,11 +182,11 @@
    * A visible frame will be included in the animated preview.
    */
   ns.PiskelController.prototype.toggleFrameVisibilityAt = function (index) {
-    var hiddenFrames = this.piskel.hiddenFrames;
+    let hiddenFrames = this.piskel.hiddenFrames;
     if (hiddenFrames.indexOf(index) === -1) {
       hiddenFrames.push(index);
     } else {
-      hiddenFrames = hiddenFrames.filter(function (i) {
+      hiddenFrames = hiddenFrames.filter((i) => {
         return i !== index;
       });
     }
@@ -196,18 +196,18 @@
   };
 
   ns.PiskelController.prototype.moveFrame = function (fromIndex, toIndex) {
-    this.getLayers().forEach(function (l) {
+    this.getLayers().forEach((l) => {
       l.moveFrame(fromIndex, toIndex);
     });
 
     // Update the array of hidden frames since some hidden indexes might have shifted.
-    this.piskel.hiddenFrames = this.piskel.hiddenFrames.map(function (index) {
+    this.piskel.hiddenFrames = this.piskel.hiddenFrames.map((index) => {
       if (index === fromIndex) {
         return toIndex;
       }
 
       // All the frames between fromIndex and toIndex changed their index.
-      var isImpacted =
+      const isImpacted =
         index >= Math.min(fromIndex, toIndex) &&
         index <= Math.max(fromIndex, toIndex);
       if (isImpacted) {
@@ -230,13 +230,13 @@
   ns.PiskelController.prototype.getVisibleFrameIndexes = function () {
     return this.getCurrentLayer()
       .getFrames()
-      .map(function (frame, index) {
+      .map((frame, index) => {
         return index;
       })
       .filter(
-        function (index) {
+        (index) => {
           return this.piskel.hiddenFrames.indexOf(index) === -1;
-        }.bind(this));
+        });
   };
 
   ns.PiskelController.prototype.getFrameCount = function () {
@@ -252,14 +252,14 @@
   };
 
   ns.PiskelController.prototype.selectNextFrame = function () {
-    var nextIndex = this.currentFrameIndex + 1;
+    const nextIndex = this.currentFrameIndex + 1;
     if (nextIndex < this.getFrameCount()) {
       this.setCurrentFrameIndex(nextIndex);
     }
   };
 
   ns.PiskelController.prototype.selectPreviousFrame = function () {
-    var nextIndex = this.currentFrameIndex - 1;
+    const nextIndex = this.currentFrameIndex - 1;
     if (nextIndex >= 0) {
       this.setCurrentFrameIndex(nextIndex);
     }
@@ -274,31 +274,31 @@
   };
 
   ns.PiskelController.prototype.selectLayer = function (layer) {
-    var index = this.getLayers().indexOf(layer);
+    const index = this.getLayers().indexOf(layer);
     if (index != -1) {
       this.setCurrentLayerIndex(index);
     }
   };
 
   ns.PiskelController.prototype.renameLayerAt = function (index, name) {
-    var layer = this.getLayerByIndex(index);
+    const layer = this.getLayerByIndex(index);
     if (layer) {
       layer.setName(name);
     }
   };
 
   ns.PiskelController.prototype.setLayerOpacityAt = function (index, opacity) {
-    var layer = this.getLayerByIndex(index);
+    const layer = this.getLayerByIndex(index);
     if (layer) {
       layer.setOpacity(opacity);
     }
   };
 
   ns.PiskelController.prototype.mergeDownLayerAt = function (index) {
-    var layer = this.getLayerByIndex(index);
-    var downLayer = this.getLayerByIndex(index - 1);
+    const layer = this.getLayerByIndex(index);
+    const downLayer = this.getLayerByIndex(index - 1);
     if (layer && downLayer) {
-      var mergedLayer = pskl.utils.LayerUtils.mergeLayers(layer, downLayer);
+      const mergedLayer = pskl.utils.LayerUtils.mergeLayers(layer, downLayer);
       this.removeLayerAt(index);
       this.piskel.addLayerAt(mergedLayer, index);
       this.removeLayerAt(index - 1);
@@ -307,7 +307,7 @@
   };
 
   ns.PiskelController.prototype.generateLayerName_ = function () {
-    var name = 'Layer ' + this.layerIdCounter;
+    let name = 'Layer ' + this.layerIdCounter;
     while (this.hasLayerForName_(name)) {
       this.layerIdCounter++;
       name = 'Layer ' + this.layerIdCounter;
@@ -316,9 +316,9 @@
   };
 
   ns.PiskelController.prototype.duplicateCurrentLayer = function () {
-    var layer = this.getCurrentLayer();
-    var clone = pskl.utils.LayerUtils.clone(layer);
-    var currentLayerIndex = this.getCurrentLayerIndex();
+    const layer = this.getCurrentLayer();
+    const clone = pskl.utils.LayerUtils.clone(layer);
+    const currentLayerIndex = this.getCurrentLayerIndex();
     this.piskel.addLayerAt(clone, currentLayerIndex + 1);
     this.setCurrentLayerIndex(currentLayerIndex + 1);
   };
@@ -328,11 +328,11 @@
       name = this.generateLayerName_();
     }
     if (!this.hasLayerForName_(name)) {
-      var layer = new pskl.model.Layer(name);
-      for (var i = 0; i < this.getFrameCount(); i++) {
+      const layer = new pskl.model.Layer(name);
+      for (let i = 0; i < this.getFrameCount(); i++) {
         layer.addFrame(this.createEmptyFrame_());
       }
-      var currentLayerIndex = this.getCurrentLayerIndex();
+      const currentLayerIndex = this.getCurrentLayerIndex();
       this.piskel.addLayerAt(layer, currentLayerIndex + 1);
       this.setCurrentLayerIndex(currentLayerIndex + 1);
     } else {
@@ -345,19 +345,19 @@
   };
 
   ns.PiskelController.prototype.moveLayerUp = function (toTop) {
-    var layer = this.getCurrentLayer();
+    const layer = this.getCurrentLayer();
     this.piskel.moveLayerUp(layer, toTop);
     this.selectLayer(layer);
   };
 
   ns.PiskelController.prototype.moveLayerDown = function (toBottom) {
-    var layer = this.getCurrentLayer();
+    const layer = this.getCurrentLayer();
     this.piskel.moveLayerDown(layer, toBottom);
     this.selectLayer(layer);
   };
 
   ns.PiskelController.prototype.removeCurrentLayer = function () {
-    var currentLayerIndex = this.getCurrentLayerIndex();
+    const currentLayerIndex = this.getCurrentLayerIndex();
     this.removeLayerAt(currentLayerIndex);
   };
 
@@ -366,7 +366,7 @@
       return;
     }
 
-    var layer = this.getLayerAt(index);
+    const layer = this.getLayerAt(index);
     this.piskel.removeLayer(layer);
 
     // Update the selected layer if needed.

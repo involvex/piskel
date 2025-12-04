@@ -1,6 +1,6 @@
 (function () {
-  var ns = $.namespace('pskl.widgets');
-  var TRANSITION_DURATION = 200;
+  const ns = $.namespace('pskl.widgets');
+  const TRANSITION_DURATION = 200;
 
   /**
    * Simple layout widget to display one step element (DOM Element) at a time.
@@ -30,11 +30,11 @@
   ns.Wizard.prototype.init = function () {
     // Prepare all steps and add them in the wrapper.
     Object.keys(this.steps).forEach(
-      function (stepName) {
-        var step = this.steps[stepName];
+      (stepName) => {
+        const step = this.steps[stepName];
         step.el.classList.add('wizard-step');
         this.wrapper.appendChild(step.el);
-      }.bind(this)
+      }
     );
     this.container.appendChild(this.wrapper);
   };
@@ -52,13 +52,13 @@
    * Animation will be skipped if no current step is displayed.
    */
   ns.Wizard.prototype.goTo = function (stepName) {
-    var step = this.steps[stepName];
+    const step = this.steps[stepName];
     if (!step) {
       console.error('Wizard could not go to unknown step: ' + stepName);
       return;
     }
 
-    var previousStep = this.currentStep;
+    const previousStep = this.currentStep;
     this.currentStep = step;
     this.currentStep.instance.onShow();
 
@@ -69,12 +69,12 @@
       this.currentStep.el.classList.add('current-step-in');
 
       window.setTimeout(
-        function () {
+        () => {
           // Cleanup transition classes after animation.
           this.currentStep.el.classList.remove('current-step-in');
           previousStep.el.classList.remove('current-step');
           this.currentStep.el.classList.add('current-step');
-        }.bind(this),
+        },
         TRANSITION_DURATION
       );
     } else {
@@ -86,13 +86,13 @@
    * Go back to the previous step displayed, if available.
    */
   ns.Wizard.prototype.back = function () {
-    var previousStep = this.previousSteps.pop();
+    const previousStep = this.previousSteps.pop();
     if (!previousStep) {
       console.error('Wizard has no previous step to go to.');
       return;
     }
 
-    var backedStep = this.currentStep;
+    const backedStep = this.currentStep;
     if (!backedStep) {
       console.error('Wizard is in an invalid state');
     }
@@ -105,10 +105,10 @@
     this.currentStep.el.classList.add('current-step');
 
     window.setTimeout(
-      function () {
+      () => {
         // Cleanup transition classes after animation.
         backedStep.el.classList.remove('current-step-out');
-      }.bind(this),
+      },
       TRANSITION_DURATION
     );
   };

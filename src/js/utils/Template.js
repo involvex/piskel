@@ -1,11 +1,11 @@
 (function () {
-  var ns = $.namespace('pskl.utils');
-  var templates = {};
+  const ns = $.namespace('pskl.utils');
+  const templates = {};
 
   ns.Template = {
     get: function (templateId) {
       if (!templates[templateId]) {
-        var template = document.getElementById(templateId);
+        const template = document.getElementById(templateId);
         if (template) {
           templates[templateId] = template.innerHTML;
         } else {
@@ -16,7 +16,7 @@
     },
 
     getAsHTML: function (templateId) {
-      var template = ns.Template.get(templateId);
+      const template = ns.Template.get(templateId);
       if (!template) {
         return;
       }
@@ -25,9 +25,9 @@
     },
 
     createFromHTML: function (html) {
-      var dummyEl = ns.Template._getDummyEl();
+      const dummyEl = ns.Template._getDummyEl();
       dummyEl.innerHTML = html;
-      var element = dummyEl.children[0];
+      const element = dummyEl.children[0];
 
       if (!pskl.utils.UserAgent.isIE11) {
         dummyEl.innerHTML = '';
@@ -37,9 +37,9 @@
     },
 
     replace: function (template, dict) {
-      for (var key in dict) {
+      for (const key in dict) {
         if (dict.hasOwnProperty(key)) {
-          var value = dict[key];
+          let value = dict[key];
 
           // special boolean keys keys key:default
           // if the value is a boolean, use default as value
@@ -66,8 +66,8 @@
     },
 
     getAndReplace: function (templateId, dict) {
-      var result = '';
-      var tpl = pskl.utils.Template.get(templateId);
+      let result = '';
+      const tpl = pskl.utils.Template.get(templateId);
       if (tpl) {
         result = pskl.utils.Template.replace(tpl, dict);
       }
@@ -78,11 +78,11 @@
      * Sanitize the provided string to make it safer for using in templates.
      */
     sanitize: function (string) {
-      var dummyEl = ns.Template._getDummyEl();
+      const dummyEl = ns.Template._getDummyEl();
 
       // Apply the unsafe string as text content and
       dummyEl.textContent = string;
-      var sanitizedString = dummyEl.innerHTML;
+      const sanitizedString = dummyEl.innerHTML;
 
       if (!pskl.utils.UserAgent.isIE11) {
         dummyEl.innerHTML = '';

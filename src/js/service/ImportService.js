@@ -1,6 +1,6 @@
 /* @file Image and Animation import service supporting the import dialog. */
 (function () {
-  var ns = $.namespace('pskl.service');
+  const ns = $.namespace('pskl.service');
   /**
    * Image an animation import service supporting the import dialog.
    * @param {!PiskelController} piskelController
@@ -13,7 +13,8 @@
   ns.ImportService.prototype.init = function () {
     $.subscribe(
       Events.PISKEL_FILE_IMPORT_FAILED,
-      this.onPiskelFileImportFailed_);
+      this.onPiskelFileImportFailed_
+    );
   };
 
   /**
@@ -27,8 +28,8 @@
     $.publish(Events.SHOW_NOTIFICATION, [
       {
         content: 'Piskel file import failed (' + reason + ')',
-        hideDelay: 10000
-      }
+        hideDelay: 10000,
+      },
     ]);
   };
 
@@ -54,25 +55,31 @@
     onComplete
   ) {
     onComplete = onComplete || Constants.EMPTY_FUNCTION;
-    var importType = options.importType;
-    var name = options.name;
-    var smoothing = options.smoothing;
-    var frameSizeX = options.frameSizeX;
-    var frameSizeY = options.frameSizeY;
-    var frameOffsetX = options.frameOffsetX;
-    var frameOffsetY = options.frameOffsetY;
+    const importType = options.importType;
+    const name = options.name;
+    const smoothing = options.smoothing;
+    const frameSizeX = options.frameSizeX;
+    const frameSizeY = options.frameSizeY;
+    const frameOffsetX = options.frameOffsetX;
+    const frameOffsetY = options.frameOffsetY;
+    const preserveOpacity =
+      options.preserveOpacity !== undefined ? options.preserveOpacity : true;
+    const preserveSmoothEdges =
+      options.preserveSmoothEdges !== undefined ?
+        options.preserveSmoothEdges :
+        true;
 
-    var gifLoader = new window.SuperGif({
-      gif: image
+    const gifLoader = new window.SuperGif({
+      gif: image,
     });
 
     gifLoader.load({
       success: function () {
-        var images = gifLoader.getFrames().map(function (frame) {
+        const images = gifLoader.getFrames().map((frame) => {
           return pskl.utils.CanvasUtils.createFromImageData(frame.data);
         });
 
-        var piskel;
+        let piskel;
         if (importType === 'single' || images.length > 1) {
           // Single image import or animated gif
           piskel = this.createPiskelFromImages_(
@@ -80,26 +87,33 @@
             name,
             frameSizeX,
             frameSizeY,
-            smoothing);
+            smoothing,
+            true, // preserveOpacity
+            true // preserveSmoothEdges
+          );
         } else {
           // Spritesheet
-          var frameImages = this.createImagesFromSheet_(
+          const frameImages = this.createImagesFromSheet_(
             images[0],
             frameSizeX,
             frameSizeY,
             frameOffsetX,
-            frameOffsetY);
+            frameOffsetY
+          );
           piskel = this.createPiskelFromImages_(
             frameImages,
             name,
             frameSizeX,
             frameSizeY,
-            smoothing);
+            smoothing,
+            true, // preserveOpacity
+            true // preserveSmoothEdges
+          );
         }
         onComplete(piskel);
       }.bind(this),
       error: function () {
-        var piskel;
+        let piskel;
         if (importType === 'single') {
           // Single image
           piskel = this.createPiskelFromImages_(
@@ -107,24 +121,31 @@
             name,
             frameSizeX,
             frameSizeY,
-            smoothing);
+            smoothing,
+            true, // preserveOpacity
+            true // preserveSmoothEdges
+          );
         } else {
           // Spritesheet
-          var frameImages = this.createImagesFromSheet_(
+          const frameImages = this.createImagesFromSheet_(
             image,
             frameSizeX,
             frameSizeY,
             frameOffsetX,
-            frameOffsetY);
+            frameOffsetY
+          );
           piskel = this.createPiskelFromImages_(
             frameImages,
             name,
             frameSizeX,
             frameSizeY,
-            smoothing);
+            smoothing,
+            true, // preserveOpacity
+            true // preserveSmoothEdges
+          );
         }
         onComplete(piskel);
-      }.bind(this)
+      }.bind(this),
     });
   };
 
@@ -151,7 +172,8 @@
       frameSizeX,
       frameSizeY,
       /*useHorizonalStrips=*/ true,
-      /*ignoreEmptyFrames=*/ true);
+      /*ignoreEmptyFrames=*/ true
+    );
   };
 
   /**
@@ -166,20 +188,26 @@
     name,
     frameSizeX,
     frameSizeY,
-    smoothing
+    smoothing,
+    preserveOpacity,
+    preserveSmoothEdges
   ) {
     name = name || 'Imported piskel';
-    var frames = this.createFramesFromImages_(
+    const frames = this.createFramesFromImages_(
       images,
       frameSizeX,
       frameSizeY,
-      smoothing);
-    var layer = pskl.model.Layer.fromFrames('Layer 1', frames);
-    var descriptor = new pskl.model.piskel.Descriptor(name, '');
+      smoothing,
+      true, // preserveOpacity
+      true // preserveSmoothEdges
+    );
+    const layer = pskl.model.Layer.fromFrames('Layer 1', frames);
+    const descriptor = new pskl.model.piskel.Descriptor(name, '');
     return pskl.model.Piskel.fromLayers(
       [layer],
       Constants.DEFAULT.FPS,
-      descriptor);
+      descriptor
+    );
   };
 
   /**
@@ -194,15 +222,22 @@
     images,
     frameSizeX,
     frameSizeY,
-    smoothing
+    smoothing,
+    preserveOpacity,
+    preserveSmoothEdges
   ) {
-    return images.map(function (image) {
-      var resizedImage = pskl.utils.ImageResizer.resize(
+    return images.map((image) => {
+      const resizedImage = pskl.utils.ImageResizer.resize(
         image,
         frameSizeX,
         frameSizeY,
-        smoothing);
-      return pskl.utils.FrameUtils.createFromImage(resizedImage);
+        smoothing
+      );
+      return pskl.utils.FrameUtils.createFromImage(
+        resizedImage,
+        preserveOpacity,
+        preserveSmoothEdges
+      );
     });
   };
 })();

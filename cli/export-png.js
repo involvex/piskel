@@ -1,10 +1,10 @@
-var fs = require("fs");
+const fs = require("fs");
 
 function onPageEvaluate(window, options, piskel) {
   console.log("\nPiskel name: " + piskel.descriptor.name);
 
   // Setup piskelController
-  var piskelController = new pskl.controller.piskel.PiskelController(piskel);
+  const piskelController = new pskl.controller.piskel.PiskelController(piskel);
 
   pskl.app.piskelController = piskelController;
 
@@ -16,7 +16,7 @@ function onPageEvaluate(window, options, piskel) {
     pskl.app.selectionManager = {};
 
     // Setup crop tool
-    var crop = new pskl.tools.transform.Crop();
+    const crop = new pskl.tools.transform.Crop();
 
     // Perform crop
     crop.applyTransformation();
@@ -27,9 +27,9 @@ function onPageEvaluate(window, options, piskel) {
 
   // Mock exportController to provide zoom value based on cli args
   // and to avoid errors and/or unnecessary bootstrapping
-  var exportController = {
+  const exportController = {
     getExportZoom: function () {
-      var zoom = options.zoom;
+      let zoom = options.zoom;
 
       if (options.scaledWidth) {
         zoom = options.scaledWidth / piskel.getWidth();
@@ -42,7 +42,7 @@ function onPageEvaluate(window, options, piskel) {
   };
 
   // Setup pngExportController
-  var pngExportController =
+  const pngExportController =
     new pskl.controller.settings.exportimage.PngExportController(
       piskelController,
       exportController
@@ -72,13 +72,13 @@ function onPageEvaluate(window, options, piskel) {
   };
 
   // Render to output canvas
-  var canvas;
+  let canvas;
 
   if (options.frame > -1) {
     // Render a single frame
     canvas = piskelController.renderFrameAt(options.frame, true);
 
-    var zoom = exportController.getExportZoom();
+    const zoom = exportController.getExportZoom();
 
     if (zoom != 1) {
       // Scale rendered frame
@@ -98,13 +98,13 @@ function onPageEvaluate(window, options, piskel) {
   window.document.body.appendChild(canvas);
 
   // Prepare return data
-  var returnData = {
+  const returnData = {
     width: canvas.width,
     height: canvas.height,
   };
 
   // Wait a tick for things to wrap up
-  setTimeout(function () {
+  setTimeout(() => {
     // Exit and pass data to parent process
     window.callPhantom(returnData);
   }, 0);
@@ -118,7 +118,7 @@ function onPageExit(page, options, data) {
 
   console.log("\n" + "Generated file(s):");
 
-  var dest = options.dest.replace(".png", "") + ".png";
+  const dest = options.dest.replace(".png", "") + ".png";
 
   // Render page to the output image
   page.render(dest);
@@ -126,9 +126,9 @@ function onPageExit(page, options, data) {
   console.log(" " + dest);
 
   if (options.dataUri) {
-    var dataUriPath = options.dest + ".datauri";
+    const dataUriPath = options.dest + ".datauri";
 
-    var dataUri = "data:image/png;base64," + page.renderBase64("PNG");
+    const dataUri = "data:image/png;base64," + page.renderBase64("PNG");
 
     // Write data-uri to file
     fs.write(dataUriPath, dataUri, "w");

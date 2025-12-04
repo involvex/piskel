@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.selection');
+  const ns = $.namespace('pskl.selection');
 
   ns.BaseSelection = function () {
     this.reset();
@@ -13,7 +13,7 @@
   };
 
   ns.BaseSelection.prototype.parse = function (str) {
-    var selectionData = JSON.parse(str);
+    const selectionData = JSON.parse(str);
     this.pixels = selectionData.pixels;
     this.time = selectionData.time;
   };
@@ -25,10 +25,10 @@
   };
 
   ns.BaseSelection.prototype.move = function (colDiff, rowDiff) {
-    var movedPixels = [];
+    const movedPixels = [];
 
-    for (var i = 0, l = this.pixels.length; i < l; i++) {
-      var movedPixel = this.pixels[i];
+    for (let i = 0, l = this.pixels.length; i < l; i++) {
+      const movedPixel = this.pixels[i];
       movedPixel.col += colDiff;
       movedPixel.row += rowDiff;
       movedPixels.push(movedPixel);
@@ -38,8 +38,8 @@
   };
 
   ns.BaseSelection.prototype.fillSelectionFromFrame = function (targetFrame) {
-    this.pixels.forEach(function (pixel) {
-      var color = targetFrame.getPixel(pixel.col, pixel.row);
+    this.pixels.forEach((pixel) => {
+      const color = targetFrame.getPixel(pixel.col, pixel.row);
       pixel.color = color || Constants.TRANSPARENT_COLOR;
     });
 

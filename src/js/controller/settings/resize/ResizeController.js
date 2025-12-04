@@ -1,12 +1,12 @@
 (function () {
-  var ns = $.namespace('pskl.controller.settings.resize');
+  const ns = $.namespace('pskl.controller.settings.resize');
 
   ns.ResizeController = function (piskelController) {
     this.piskelController = piskelController;
 
     this.container = document.querySelector('.resize-canvas');
 
-    var anchorWidgetContainer = this.container.querySelector(
+    const anchorWidgetContainer = this.container.querySelector(
       '.resize-anchor-container');
     this.anchorWidget = new pskl.widgets.AnchorWidget(anchorWidgetContainer);
     this.defaultSizeController = new ns.DefaultSizeController(piskelController);
@@ -30,8 +30,8 @@
       initHeight: this.piskelController.getHeight()
     });
 
-    var settings = pskl.UserSettings.get('RESIZE_SETTINGS');
-    var origin = pskl.widgets.AnchorWidget.ORIGIN[settings.origin] || 'TOPLEFT';
+    const settings = pskl.UserSettings.get('RESIZE_SETTINGS');
+    const origin = pskl.widgets.AnchorWidget.ORIGIN[settings.origin] || 'TOPLEFT';
     this.anchorWidget.setOrigin(origin);
 
     if (settings.resizeContent) {
@@ -69,8 +69,8 @@
   ns.ResizeController.prototype.onResizeFormSubmit_ = function (evt) {
     evt.preventDefault();
 
-    var currentPiskel = this.piskelController.getPiskel();
-    var piskel = pskl.utils.ResizeUtils.resizePiskel(currentPiskel, {
+    const currentPiskel = this.piskelController.getPiskel();
+    const piskel = pskl.utils.ResizeUtils.resizePiskel(currentPiskel, {
       width: parseInt(this.widthInput.value, 10),
       height: parseInt(this.heightInput.value, 10),
       origin: this.anchorWidget.getOrigin(),
@@ -85,7 +85,7 @@
   };
 
   ns.ResizeController.prototype.onResizeContentChange_ = function (evt) {
-    var target = evt.target;
+    const target = evt.target;
     if (target.checked) {
       this.anchorWidget.disable();
     } else {
@@ -94,7 +94,7 @@
   };
 
   ns.ResizeController.prototype.onMaintainRatioChange_ = function (evt) {
-    var target = evt.target;
+    const target = evt.target;
     if (target.checked) {
       this.sizeInputWidget.enableSync();
     } else {

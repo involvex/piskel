@@ -1,12 +1,12 @@
 (function () {
-  var ns = $.namespace('pskl.database');
+  const ns = $.namespace('pskl.database');
 
-  var DB_NAME = 'PiskelDatabase';
-  var DB_VERSION = 1;
+  const DB_NAME = 'PiskelDatabase';
+  const DB_VERSION = 1;
 
   // Simple wrapper to promisify a request.
-  var _requestPromise = function (req) {
-    var deferred = Q.defer();
+  const _requestPromise = function (req) {
+    const deferred = Q.defer();
     req.onsuccess = deferred.resolve.bind(deferred);
     req.onerror = deferred.reject.bind(deferred);
     return deferred.promise;
@@ -23,14 +23,14 @@
   ns.PiskelDatabase.DB_NAME = DB_NAME;
 
   ns.PiskelDatabase.prototype.init = function () {
-    var request = window.indexedDB.open(DB_NAME, DB_VERSION);
+    const request = window.indexedDB.open(DB_NAME, DB_VERSION);
     request.onupgradeneeded = this.onUpgradeNeeded_.bind(this);
 
     return _requestPromise(request).then(
-      function (event) {
+      (event) => {
         this.db = event.target.result;
         return this.db;
-      }.bind(this));
+      });
   };
 
   ns.PiskelDatabase.prototype.onUpgradeNeeded_ = function (event) {
@@ -38,7 +38,7 @@
     this.db = event.target.result;
 
     // Create an object store "piskels" with the autoIncrement flag set as true.
-    var objectStore = this.db.createObjectStore('piskels', { keyPath: 'name' });
+    const objectStore = this.db.createObjectStore('piskels', { keyPath: 'name' });
     objectStore.transaction.oncomplete = function (event) {
       pskl.database.migrate.MigrateLocalStorageToIndexedDb.migrate(this);
     }.bind(this);
@@ -53,8 +53,8 @@
    * Returns a promise that resolves the request event.
    */
   ns.PiskelDatabase.prototype.get = function (name) {
-    var objectStore = this.openObjectStore_();
-    return _requestPromise(objectStore.get(name)).then(function (event) {
+    const objectStore = this.openObjectStore_();
+    return _requestPromise(objectStore.get(name)).then((event) => {
       return event.target.result;
     });
   };
@@ -70,13 +70,13 @@
    * needs to be retrieved with a separate get.
    */
   ns.PiskelDatabase.prototype.list = function () {
-    var deferred = Q.defer();
+    const deferred = Q.defer();
 
-    var piskels = [];
-    var objectStore = this.openObjectStore_();
-    var cursor = objectStore.openCursor();
+    const piskels = [];
+    const objectStore = this.openObjectStore_();
+    const cursor = objectStore.openCursor();
     cursor.onsuccess = function (event) {
-      var cursor = event.target.result;
+      const cursor = event.target.result;
       if (cursor) {
         piskels.push({
           name: cursor.value.name,
@@ -107,14 +107,14 @@
     date,
     serialized
   ) {
-    var data = {};
+    const data = {};
 
     data.name = name;
     data.serialized = serialized;
     data.date = date;
     data.description = description;
 
-    var objectStore = this.openObjectStore_();
+    const objectStore = this.openObjectStore_();
     return _requestPromise(objectStore.put(data));
   };
 
@@ -128,14 +128,14 @@
     date,
     serialized
   ) {
-    var data = {};
+    const data = {};
 
     data.name = name;
     data.serialized = serialized;
     data.date = date;
     data.description = description;
 
-    var objectStore = this.openObjectStore_();
+    const objectStore = this.openObjectStore_();
     return _requestPromise(objectStore.add(data));
   };
 
@@ -144,7 +144,7 @@
    * Returns a promise that resolves the request event.
    */
   ns.PiskelDatabase.prototype.delete = function (name) {
-    var objectStore = this.openObjectStore_();
+    const objectStore = this.openObjectStore_();
     return _requestPromise(objectStore.delete(name));
   };
 })();

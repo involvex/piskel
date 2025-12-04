@@ -1,11 +1,11 @@
-describe("Palette", function () {
-  beforeEach(function () {});
-  afterEach(function () {});
+describe("Palette", () => {
+  beforeEach(() => {});
+  afterEach(() => {});
 
-  it("moves colors correctly", function () {
+  it("moves colors correctly", () => {
     // when
-    var colors = ["#000000", "#111111", "#222222"];
-    var palette = new pskl.model.Palette("id", "name", colors);
+    const colors = ["#000000", "#111111", "#222222"];
+    const palette = new pskl.model.Palette("id", "name", colors);
 
     // then
     palette.move(2, 0);

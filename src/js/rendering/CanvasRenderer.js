@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.rendering');
+  const ns = $.namespace('pskl.rendering');
   ns.CanvasRenderer = function (frame, zoom) {
     this.frame = frame;
     this.zoom = zoom;
@@ -21,7 +21,7 @@
   };
 
   ns.CanvasRenderer.prototype.render = function () {
-    var canvas = this.createCanvas_();
+    const canvas = this.createCanvas_();
 
     // Draw in canvas
     pskl.utils.FrameUtils.drawToCanvas(
@@ -29,8 +29,8 @@
       canvas,
       this.transparentColor_,
       this.opacity_);
-    var scaledCanvas = this.createCanvas_(this.zoom);
-    var scaledContext = scaledCanvas.getContext('2d');
+    const scaledCanvas = this.createCanvas_(this.zoom);
+    const scaledContext = scaledCanvas.getContext('2d');
     pskl.utils.CanvasUtils.disableImageSmoothing(scaledCanvas);
     scaledContext.scale(this.zoom, this.zoom);
     scaledContext.drawImage(canvas, 0, 0);
@@ -40,8 +40,8 @@
 
   ns.CanvasRenderer.prototype.createCanvas_ = function (zoom) {
     zoom = zoom || 1;
-    var width = this.frame.getWidth() * zoom;
-    var height = this.frame.getHeight() * zoom;
+    const width = this.frame.getWidth() * zoom;
+    const height = this.frame.getHeight() * zoom;
     return pskl.utils.CanvasUtils.createCanvas(width, height);
   };
 })();

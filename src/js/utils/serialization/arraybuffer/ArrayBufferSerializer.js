@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.utils.serialization.arraybuffer');
+  const ns = $.namespace('pskl.utils.serialization.arraybuffer');
 
   /**
    * The array buffer serialization-deserialization should only be used when when backing
@@ -43,14 +43,14 @@
 
   ns.ArrayBufferSerializer = {
     calculateRequiredBytes: function (piskel, framesData) {
-      var width = piskel.getWidth();
-      var height = piskel.getHeight();
-      var descriptorNameLength = piskel.getDescriptor().name.length;
-      var descriptorDescriptionLength =
+      const width = piskel.getWidth();
+      const height = piskel.getHeight();
+      const descriptorNameLength = piskel.getDescriptor().name.length;
+      const descriptorDescriptionLength =
         piskel.getDescriptor().description.length;
-      var layersLength = piskel.getLayers().length;
+      const layersLength = piskel.getLayers().length;
 
-      var bytes = 0;
+      let bytes = 0;
 
       /********/
       /* META */
@@ -74,7 +74,7 @@
       bytes += descriptorDescriptionLength * 2;
 
       // Layers
-      for (var i = 0, layers = piskel.getLayers(); i < layers.length; i++) {
+      for (let i = 0, layers = piskel.getLayers(); i < layers.length; i++) {
         bytes += 5 * 2;
         bytes += layers[i].name.length * 2;
         bytes += framesData[i].length;
@@ -87,16 +87,16 @@
     },
 
     serialize: function (piskel) {
-      var i;
-      var j;
-      var layers;
-      var dataUri;
-      var dataUriLength;
+      let i;
+      let j;
+      let layers;
+      let dataUri;
+      let dataUriLength;
 
       // Render frames
-      var framesData = [];
+      const framesData = [];
       for (i = 0, layers = piskel.getLayers(); i < layers.length; i++) {
-        var renderer = new pskl.rendering.FramesheetRenderer(
+        const renderer = new pskl.rendering.FramesheetRenderer(
           layers[i].getFrames()
         );
         dataUri = renderer.renderAsCanvas().toDataURL().split(',')[1];
@@ -105,25 +105,25 @@
       }
 
       var frames = pskl.app.piskelController.getLayerAt(0).getFrames();
-      var hiddenFrames = piskel.hiddenFrames;
-      var serializedHiddenFrames = hiddenFrames.join('-');
+      const hiddenFrames = piskel.hiddenFrames;
+      const serializedHiddenFrames = hiddenFrames.join('-');
 
-      var bytes = ns.ArrayBufferSerializer.calculateRequiredBytes(
+      const bytes = ns.ArrayBufferSerializer.calculateRequiredBytes(
         piskel,
         framesData,
         serializedHiddenFrames
       );
 
-      var buffer = new ArrayBuffer(bytes);
-      var arr8 = new Uint8Array(buffer);
-      var arr16 = new Uint16Array(buffer);
+      const buffer = new ArrayBuffer(bytes);
+      const arr8 = new Uint8Array(buffer);
+      const arr16 = new Uint16Array(buffer);
 
-      var width = piskel.getWidth();
-      var height = piskel.getHeight();
-      var descriptorName = piskel.getDescriptor().name;
-      var descriptorNameLength = descriptorName.length;
-      var descriptorDescription = piskel.getDescriptor().description;
-      var descriptorDescriptionLength = descriptorDescription.length;
+      const width = piskel.getWidth();
+      const height = piskel.getHeight();
+      const descriptorName = piskel.getDescriptor().name;
+      const descriptorNameLength = descriptorName.length;
+      const descriptorDescription = piskel.getDescriptor().description;
+      const descriptorDescriptionLength = descriptorDescription.length;
 
       /********/
       /* META */
@@ -144,7 +144,7 @@
       // Frames meta
       arr16[7] = serializedHiddenFrames.length;
 
-      var currentIndex = 8;
+      let currentIndex = 8;
 
       /********/
       /* DATA */
@@ -169,13 +169,13 @@
 
       // Layers
       for (i = 0, layers = piskel.getLayers(); i < layers.length; i++) {
-        var layer = layers[i];
+        const layer = layers[i];
         var frames = layer.getFrames();
 
-        var layerName = layer.getName();
-        var layerNameLength = layerName.length;
-        var opacity = layer.getOpacity();
-        var frameCount = frames.length;
+        const layerName = layer.getName();
+        const layerNameLength = layerName.length;
+        const opacity = layer.getOpacity();
+        const frameCount = frames.length;
 
         dataUri = framesData[i].uri;
         dataUriLength = framesData[i].length;

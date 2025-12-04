@@ -1,9 +1,9 @@
 (function () {
-  var ns = $.namespace('pskl.controller.preview');
+  const ns = $.namespace('pskl.controller.preview');
 
   // Preview is a square of PREVIEW_SIZE x PREVIEW_SIZE
-  var PREVIEW_SIZE = 200;
-  var RENDER_MINIMUM_DELAY = 300;
+  const PREVIEW_SIZE = 200;
+  const RENDER_MINIMUM_DELAY = 300;
 
   ns.PreviewController = function (piskelController, container) {
     this.piskelController = piskelController;
@@ -24,7 +24,7 @@
   };
 
   ns.PreviewController.prototype.init = function () {
-    var width =
+    const width =
       Constants.ANIMATED_PREVIEW_WIDTH + Constants.RIGHT_COLUMN_PADDING_LEFT;
     document.querySelector('.right-column').style.width = width + 'px';
 
@@ -60,9 +60,9 @@
   };
 
   ns.PreviewController.prototype.updateZoom_ = function () {
-    var previewSize = pskl.UserSettings.get(pskl.UserSettings.PREVIEW_SIZE);
+    const previewSize = pskl.UserSettings.get(pskl.UserSettings.PREVIEW_SIZE);
 
-    var zoom;
+    let zoom;
     if (previewSize === 'original') {
       zoom = 1;
     } else if (previewSize === 'best') {
@@ -80,10 +80,10 @@
   };
 
   ns.PreviewController.prototype.getCoordinates = function (x, y) {
-    var containerRect = this.container.getBoundingClientRect();
+    const containerRect = this.container.getBoundingClientRect();
     x = x - containerRect.left;
     y = y - containerRect.top;
-    var zoom = this.getZoom();
+    const zoom = this.getZoom();
     return {
       x: Math.floor(x / zoom),
       y: Math.floor(y / zoom)
@@ -92,10 +92,10 @@
 
   ns.PreviewController.prototype.render = function (delta) {
     this.elapsedTime += delta;
-    var index = this.getNextIndex_(delta);
+    const index = this.getNextIndex_(delta);
     if (this.shouldRender_() || this.currentIndex != index) {
       this.currentIndex = index;
-      var frame = pskl.utils.LayerUtils.mergeFrameAt(
+      const frame = pskl.utils.LayerUtils.mergeFrameAt(
         this.piskelController.getLayers(),
         index);
       this.renderer.render(frame);
@@ -107,12 +107,12 @@
   };
 
   ns.PreviewController.prototype.getNextIndex_ = function (delta) {
-    var fps = this.piskelController.getFPS();
+    const fps = this.piskelController.getFPS();
     if (fps === 0) {
       return this.piskelController.getCurrentFrameIndex();
     } else {
-      var index = Math.floor(this.elapsedTime / (1000 / fps));
-      var frameIndexes = this.piskelController.getVisibleFrameIndexes();
+      let index = Math.floor(this.elapsedTime / (1000 / fps));
+      const frameIndexes = this.piskelController.getVisibleFrameIndexes();
       if (frameIndexes.length <= index) {
         this.elapsedTime = 0;
         index = frameIndexes.length ?
@@ -128,9 +128,9 @@
    * Calculate the preview zoom depending on the framesheet size
    */
   ns.PreviewController.prototype.calculateZoom_ = function () {
-    var frame = this.piskelController.getCurrentFrame();
-    var hZoom = PREVIEW_SIZE / frame.getHeight();
-    var wZoom = PREVIEW_SIZE / frame.getWidth();
+    const frame = this.piskelController.getCurrentFrame();
+    const hZoom = PREVIEW_SIZE / frame.getHeight();
+    const wZoom = PREVIEW_SIZE / frame.getWidth();
 
     return Math.min(hZoom, wZoom);
   };
@@ -141,31 +141,31 @@
   };
 
   ns.PreviewController.prototype.updateContainerDimensions_ = function () {
-    var isSeamless = pskl.UserSettings.get(pskl.UserSettings.SEAMLESS_MODE);
+    const isSeamless = pskl.UserSettings.get(pskl.UserSettings.SEAMLESS_MODE);
     this.renderer.setRepeated(isSeamless);
 
-    var width;
-    var height;
+    let width;
+    let height;
 
     if (isSeamless) {
       height = PREVIEW_SIZE;
       width = PREVIEW_SIZE;
     } else {
-      var zoom = this.getZoom();
-      var frame = this.piskelController.getCurrentFrame();
+      const zoom = this.getZoom();
+      const frame = this.piskelController.getCurrentFrame();
       height = frame.getHeight() * zoom;
       width = frame.getWidth() * zoom;
     }
 
-    var containerEl = this.container;
+    const containerEl = this.container;
     containerEl.style.height = height + 'px';
     containerEl.style.width = width + 'px';
 
-    var horizontalMargin = (PREVIEW_SIZE - height) / 2;
+    const horizontalMargin = (PREVIEW_SIZE - height) / 2;
     containerEl.style.marginTop = horizontalMargin + 'px';
     containerEl.style.marginBottom = horizontalMargin + 'px';
 
-    var verticalMargin = (PREVIEW_SIZE - width) / 2;
+    const verticalMargin = (PREVIEW_SIZE - width) / 2;
     containerEl.style.marginLeft = verticalMargin + 'px';
     containerEl.style.marginRight = verticalMargin + 'px';
   };

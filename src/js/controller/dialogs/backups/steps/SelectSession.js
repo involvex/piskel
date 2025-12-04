@@ -1,8 +1,8 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs.backups.steps');
+  const ns = $.namespace('pskl.controller.dialogs.backups.steps');
 
   // Should match the transition duration for.session-item defined in dialogs-browse-backups.css
-  var DELETE_TRANSITION_DURATION = 500;
+  const DELETE_TRANSITION_DURATION = 500;
   /**
    * Helper that returns a promise that will resolve after waiting for a
    * given time (in ms).
@@ -11,9 +11,9 @@
    *        The time to wait.
    * @return {Promise} promise that resolves after time.
    */
-  var wait = function (time) {
-    var deferred = Q.defer();
-    setTimeout(function () {
+  const wait = function (time) {
+    const deferred = Q.defer();
+    setTimeout(() => {
       deferred.resolve();
     }, time);
     return deferred.promise;
@@ -41,16 +41,16 @@
     pskl.app.backupService
       .list()
       .then(
-        function (sessions) {
-          var html = this.getMarkupForSessions_(sessions);
+        (sessions) => {
+          const html = this.getMarkupForSessions_(sessions);
           this.container.querySelector('.session-list').innerHTML = html;
-        }.bind(this)
+        }
       )
       .catch(
-        function () {
-          var html = pskl.utils.Template.get('session-list-error');
+        () => {
+          const html = pskl.utils.Template.get('session-list-error');
           this.container.querySelector('.session-list').innerHTML = html;
-        }.bind(this));
+        });
   };
 
   ns.SelectSession.prototype.getMarkupForSessions_ = function (sessions) {
@@ -58,13 +58,13 @@
       return pskl.utils.Template.get('session-list-empty');
     }
 
-    var sessionItemTemplate = pskl.utils.Template.get('session-list-item');
-    return sessions.reduce(function (previous, session) {
+    const sessionItemTemplate = pskl.utils.Template.get('session-list-item');
+    return sessions.reduce((previous, session) => {
       if (session.id === pskl.app.sessionId) {
         // Do not show backups for the current session.
         return previous;
       }
-      var view = {
+      const view = {
         id: session.id,
         name: session.name,
         description: session.description ? '- ' + session.description : '',
@@ -84,12 +84,12 @@
   };
 
   ns.SelectSession.prototype.onContainerClick_ = function (evt) {
-    var sessionId = evt.target.dataset.sessionId;
+    const sessionId = evt.target.dataset.sessionId;
     if (!sessionId) {
       return;
     }
 
-    var action = evt.target.dataset.action;
+    const action = evt.target.dataset.action;
     if (action == 'view') {
       this.backupsController.backupsData.selectedSession = sessionId;
       this.backupsController.next();
@@ -101,10 +101,10 @@
           // Wait for 500ms for the .hide opacity transition.
           wait(DELETE_TRANSITION_DURATION)
         ]).then(
-          function () {
+          () => {
             // Refresh the list of sessions
             this.update();
-          }.bind(this));
+          });
       }
     }
   };

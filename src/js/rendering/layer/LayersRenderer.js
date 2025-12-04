@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.rendering.layer');
+  const ns = $.namespace('pskl.rendering.layer');
 
   ns.LayersRenderer = function (container, renderingOptions, piskelController) {
     pskl.rendering.CompositeRenderer.call(this);
@@ -34,16 +34,16 @@
     pskl.rendering.layer.LayersRenderer,
     pskl.rendering.CompositeRenderer);
   ns.LayersRenderer.prototype.render = function () {
-    var offset = this.getOffset();
-    var size = this.getDisplaySize();
-    var layers = this.piskelController.getLayers();
-    var frameIndex = this.piskelController.getCurrentFrameIndex();
-    var layerIndex = this.piskelController.getCurrentLayerIndex();
+    const offset = this.getOffset();
+    const size = this.getDisplaySize();
+    const layers = this.piskelController.getLayers();
+    const frameIndex = this.piskelController.getCurrentFrameIndex();
+    const layerIndex = this.piskelController.getCurrentLayerIndex();
 
-    var belowLayers = layers.slice(0, layerIndex);
-    var aboveLayers = layers.slice(layerIndex + 1, layers.length);
+    const belowLayers = layers.slice(0, layerIndex);
+    const aboveLayers = layers.slice(layerIndex + 1, layers.length);
 
-    var serializedRendering = [
+    const serializedRendering = [
       this.getZoom(),
       this.getGridWidth(),
       offset.x,
@@ -61,14 +61,14 @@
       this.clear();
 
       if (belowLayers.length > 0) {
-        var belowFrame = pskl.utils.LayerUtils.mergeFrameAt(
+        const belowFrame = pskl.utils.LayerUtils.mergeFrameAt(
           belowLayers,
           frameIndex);
         this.belowRenderer.render(belowFrame);
       }
 
       if (aboveLayers.length > 0) {
-        var aboveFrame = pskl.utils.LayerUtils.mergeFrameAt(
+        const aboveFrame = pskl.utils.LayerUtils.mergeFrameAt(
           aboveLayers,
           frameIndex);
         this.aboveRenderer.render(aboveFrame);
@@ -83,7 +83,7 @@
    * @param {Number} height
    */
   ns.LayersRenderer.prototype.setDisplaySize = function (width, height) {
-    var size = this.getDisplaySize();
+    const size = this.getDisplaySize();
     if (size.width !== width || size.height !== height) {
       this.superclass.setDisplaySize.call(this, width, height);
     }

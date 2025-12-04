@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller');
+  const ns = $.namespace('pskl.controller');
 
   ns.LayersListController = function (piskelController) {
     this.piskelController = piskelController;
@@ -38,10 +38,10 @@
 
   ns.LayersListController.prototype.renderLayerList_ = function () {
     // Backup scroll before refresh.
-    var scrollTop = this.layersListEl.scrollTop;
+    const scrollTop = this.layersListEl.scrollTop;
 
     this.layersListEl.innerHTML = '';
-    var layers = this.piskelController.getLayers();
+    const layers = this.piskelController.getLayers();
     layers.forEach(this.addLayerItem.bind(this));
     this.updateButtonStatus_();
 
@@ -49,43 +49,43 @@
     this.layersListEl.scrollTop = scrollTop;
 
     // Ensure the currently the selected layer is visible.
-    var currentLayerEl = this.layersListEl.querySelector('.current-layer-item');
+    const currentLayerEl = this.layersListEl.querySelector('.current-layer-item');
     if (currentLayerEl) {
       currentLayerEl.scrollIntoViewIfNeeded(false);
     }
   };
 
   ns.LayersListController.prototype.createButtonTooltips_ = function () {
-    var addTooltip = pskl.utils.TooltipFormatter.format(
+    const addTooltip = pskl.utils.TooltipFormatter.format(
       'Create a layer',
       null,
       [{ key: 'shift', description: 'Clone current layer' }]);
-    var addButton = this.rootEl.querySelector('[data-action="add"]');
+    const addButton = this.rootEl.querySelector('[data-action="add"]');
     addButton.setAttribute('title', addTooltip);
 
-    var moveDownTooltip = pskl.utils.TooltipFormatter.format(
+    const moveDownTooltip = pskl.utils.TooltipFormatter.format(
       'Move layer down',
       null,
       [{ key: 'shift', description: 'Move to the bottom' }]);
-    var moveDownButton = this.rootEl.querySelector('[data-action="down"]');
+    const moveDownButton = this.rootEl.querySelector('[data-action="down"]');
     moveDownButton.setAttribute('title', moveDownTooltip);
 
-    var moveUpTooltip = pskl.utils.TooltipFormatter.format(
+    const moveUpTooltip = pskl.utils.TooltipFormatter.format(
       'Move layer up',
       null,
       [{ key: 'shift', description: 'Move to the top' }]);
-    var moveUpButton = this.rootEl.querySelector('[data-action="up"]');
+    const moveUpButton = this.rootEl.querySelector('[data-action="up"]');
     moveUpButton.setAttribute('title', moveUpTooltip);
   };
 
   ns.LayersListController.prototype.initToggleLayerPreview_ = function () {
-    var descriptors = [{ description: 'Opacity defined in PREFERENCES' }];
-    var helpText = 'Preview all layers';
+    const descriptors = [{ description: 'Opacity defined in PREFERENCES' }];
+    const helpText = 'Preview all layers';
 
     pskl.app.shortcutService.registerShortcut(
       this.layerPreviewShortcut,
       this.toggleLayerPreview_.bind(this));
-    var tooltip = pskl.utils.TooltipFormatter.format(
+    const tooltip = pskl.utils.TooltipFormatter.format(
       helpText,
       this.layerPreviewShortcut,
       descriptors);
@@ -93,12 +93,12 @@
   };
 
   ns.LayersListController.prototype.updateButtonStatus_ = function () {
-    var layers = this.piskelController.getLayers();
-    var index = this.piskelController.getCurrentLayerIndex();
+    const layers = this.piskelController.getLayers();
+    const index = this.piskelController.getCurrentLayerIndex();
 
-    var isLast = index === 0;
-    var isOnly = layers.length === 1;
-    var isFirst = index === layers.length - 1;
+    const isLast = index === 0;
+    const isOnly = layers.length === 1;
+    const isFirst = index === layers.length - 1;
 
     this.toggleButtonDisabledState_('up', isFirst);
     this.toggleButtonDisabledState_('down', isLast);
@@ -110,7 +110,7 @@
     buttonAction,
     isDisabled
   ) {
-    var button = document.querySelector(
+    const button = document.querySelector(
       '.layers-button[data-action="' + buttonAction + '"]');
     if (isDisabled) {
       button.setAttribute('disabled', 'disabled');
@@ -122,7 +122,7 @@
   };
 
   ns.LayersListController.prototype.updateToggleLayerPreview_ = function () {
-    var enabledClassname = 'layers-toggle-preview-enabled';
+    const enabledClassname = 'layers-toggle-preview-enabled';
     if (pskl.UserSettings.get(pskl.UserSettings.LAYER_PREVIEW)) {
       this.toggleLayerPreviewEl.classList.add(enabledClassname);
     } else {
@@ -141,15 +141,15 @@
   };
 
   ns.LayersListController.prototype.addLayerItem = function (layer, index) {
-    var isSelected = this.piskelController.getCurrentLayer() === layer;
-    var isRenaming = isSelected && this.isRenaming;
-    var layerItemHtml = pskl.utils.Template.replace(this.layerItemTemplate_, {
+    const isSelected = this.piskelController.getCurrentLayer() === layer;
+    const isRenaming = isSelected && this.isRenaming;
+    const layerItemHtml = pskl.utils.Template.replace(this.layerItemTemplate_, {
       layername: layer.getName(),
       layerindex: index,
       'isselected:current-layer-item': isSelected,
       opacity: layer.getOpacity()
     });
-    var layerItem = pskl.utils.Template.createFromHTML(layerItemHtml);
+    const layerItem = pskl.utils.Template.createFromHTML(layerItemHtml);
     this.layersListEl.insertBefore(layerItem, this.layersListEl.firstChild);
     if (layerItem.offsetWidth < layerItem.scrollWidth) {
       var layerNameEl = layerItem.querySelector('.layer-name');
@@ -164,12 +164,12 @@
       layerItem.addEventListener('dblclick', this.startRenamingCurrentLayer_);
     }
     if (isRenaming) {
-      var layerNameInputHtml = pskl.utils.Template.replace(
+      const layerNameInputHtml = pskl.utils.Template.replace(
         this.layerNameInputTemplate_,
         {
           layername: layer.getName()
         });
-      var layerNameInput =
+      const layerNameInput =
         pskl.utils.Template.createFromHTML(layerNameInputHtml);
       var layerNameEl = layerItem.querySelector('.layer-name');
       layerItem.replaceChild(layerNameInput, layerNameEl);
@@ -180,7 +180,7 @@
       layerNameInput.focus();
       layerNameInput.select();
     }
-    var opacity = layer.getOpacity();
+    const opacity = layer.getOpacity();
     if (opacity == 1) {
       layerItem.querySelector('.layer-item-opacity').style.color = '#ffd700';
     } else if (opacity == 0) {
@@ -191,13 +191,13 @@
   };
 
   ns.LayersListController.prototype.onClick_ = function (evt) {
-    var el = evt.target || evt.srcElement;
-    var index;
+    const el = evt.target || evt.srcElement;
+    let index;
     if (el.classList.contains('layer-name')) {
-      var currentIndex = this.piskelController.getCurrentLayerIndex();
+      const currentIndex = this.piskelController.getCurrentLayerIndex();
       index = pskl.utils.Dom.getData(el, 'layerIndex');
       if (index != currentIndex) {
-        var currentItem = el.parentElement.parentElement.querySelector(
+        const currentItem = el.parentElement.parentElement.querySelector(
           '.current-layer-item');
         currentItem.removeEventListener(
           'dblclick',
@@ -206,13 +206,13 @@
       }
     } else if (el.classList.contains('layer-item-opacity')) {
       index = pskl.utils.Dom.getData(el, 'layerIndex');
-      var layer = this.piskelController.getLayerAt(parseInt(index, 10));
-      var opacity = window.prompt(
+      const layer = this.piskelController.getLayerAt(parseInt(index, 10));
+      const opacity = window.prompt(
         'Set layer opacity (value between 0 and 1)',
         layer.getOpacity());
       this.piskelController.setLayerOpacityAt(index, opacity);
     } else {
-      var containingButton = el.closest('.button');
+      const containingButton = el.closest('.button');
       if (containingButton && containingButton.classList.contains('button')) {
         this.onButtonClick_(containingButton, evt);
       }
@@ -225,7 +225,7 @@
   };
 
   ns.LayersListController.prototype.onRenameInput_ = function (evt) {
-    var el = evt.target || evt.srcElement;
+    const el = evt.target || evt.srcElement;
     if (evt.key === 'Enter') {
       this.finishRenamingCurrentLayer_(el, el.value);
     } else if (!evt.key || evt.key === 'Escape') {
@@ -238,7 +238,7 @@
     newName
   ) {
     if (newName) {
-      var index = this.piskelController.getCurrentLayerIndex();
+      const index = this.piskelController.getCurrentLayerIndex();
       this.piskelController.renameLayerAt(index, newName);
     }
     input.removeEventListener('blur', this.onRenameInput_);
@@ -248,13 +248,13 @@
   };
 
   ns.LayersListController.prototype.mergeDownCurrentLayer_ = function () {
-    var index = this.piskelController.getCurrentLayerIndex();
+    const index = this.piskelController.getCurrentLayerIndex();
     this.piskelController.mergeDownLayerAt(index);
     this.renderLayerList_();
   };
 
   ns.LayersListController.prototype.onButtonClick_ = function (button, evt) {
-    var action = button.getAttribute('data-action');
+    const action = button.getAttribute('data-action');
     if (action == 'up') {
       this.piskelController.moveLayerUp(evt.shiftKey);
     } else if (action == 'down') {
@@ -275,10 +275,10 @@
   };
 
   ns.LayersListController.prototype.toggleLayerPreview_ = function () {
-    var currentValue = pskl.UserSettings.get(pskl.UserSettings.LAYER_PREVIEW);
-    var currentLayerOpacity = pskl.UserSettings.get(
+    const currentValue = pskl.UserSettings.get(pskl.UserSettings.LAYER_PREVIEW);
+    const currentLayerOpacity = pskl.UserSettings.get(
       pskl.UserSettings.LAYER_OPACITY);
-    var showLayerPreview = !currentValue;
+    const showLayerPreview = !currentValue;
     pskl.UserSettings.set(pskl.UserSettings.LAYER_PREVIEW, showLayerPreview);
 
     if (showLayerPreview && currentLayerOpacity === 0) {

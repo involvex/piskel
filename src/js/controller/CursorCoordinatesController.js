@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller');
+  const ns = $.namespace('pskl.controller');
 
   ns.CursorCoordinatesController = function (piskelController) {
     this.piskelController = piskelController;
@@ -24,25 +24,25 @@
   };
 
   ns.CursorCoordinatesController.prototype.redraw = function () {
-    var html = '';
+    let html = '';
     if (this.origin) {
       html += this.origin.x + ':' + this.origin.y + ' to ';
     }
 
-    var x = this.coordinates.x;
-    var y = this.coordinates.y;
-    var currentFrame = this.piskelController.getCurrentFrame();
+    const x = this.coordinates.x;
+    const y = this.coordinates.y;
+    const currentFrame = this.piskelController.getCurrentFrame();
     if (currentFrame.containsPixel(x, y)) {
       html += x + ':' + y;
       if (this.origin) {
-        var dX = Math.abs(x - this.origin.x) + 1;
-        var dY = Math.abs(y - this.origin.y) + 1;
+        const dX = Math.abs(x - this.origin.x) + 1;
+        const dY = Math.abs(y - this.origin.y) + 1;
         html += ' (' + dX + 'x' + dY + ')';
       }
     }
 
     if (pskl.app.drawingController) {
-      var zoom = pskl.app.drawingController.compositeRenderer
+      const zoom = pskl.app.drawingController.compositeRenderer
         .getZoom()
         .toFixed(2);
       html += '<div class="drawing-zoom">x' + zoom + '</div>';
@@ -54,8 +54,8 @@
 
   ns.CursorCoordinatesController.prototype.getCurrentFrameIndexHTML_ =
     function () {
-      var currentFrameIndex = this.piskelController.getCurrentFrameIndex() + 1;
-      var frameCount = this.piskelController.getFrameCount();
+      const currentFrameIndex = this.piskelController.getCurrentFrameIndex() + 1;
+      const frameCount = this.piskelController.getFrameCount();
       return (
         '<div class="frame-info">' +
         currentFrameIndex +
@@ -66,8 +66,8 @@
     };
 
   ns.CursorCoordinatesController.prototype.getFrameSizeHTML_ = function () {
-    var w = this.piskelController.getWidth();
-    var h = this.piskelController.getHeight();
+    const w = this.piskelController.getWidth();
+    const h = this.piskelController.getHeight();
     return '[' + w + 'x' + h + '] ';
   };
 

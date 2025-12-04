@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs');
+  const ns = $.namespace('pskl.controller.dialogs');
 
   ns.CreatePaletteController = function (piskelController) {
     this.paletteService = pskl.app.paletteService;
@@ -15,11 +15,11 @@
       '.create-palette-import-input');
     this.nameInput = document.querySelector('input[name="palette-name"]');
 
-    var buttonsContainer = document.querySelector('.create-palette-actions');
-    var deleteButton = document.querySelector('.create-palette-delete');
-    var downloadButton = document.querySelector(
+    const buttonsContainer = document.querySelector('.create-palette-actions');
+    const deleteButton = document.querySelector('.create-palette-delete');
+    const downloadButton = document.querySelector(
       '.create-palette-download-button');
-    var importFileButton = document.querySelector(
+    const importFileButton = document.querySelector(
       '.create-palette-import-button');
     this.addEventListener(this.nameInput, 'input', this.onNameInputChange_);
     this.addEventListener(
@@ -32,24 +32,24 @@
       importFileButton,
       'click',
       this.onImportFileButtonClick_);
-    var colorsListContainer = document.querySelector('.colors-container');
+    const colorsListContainer = document.querySelector('.colors-container');
     this.colorsListWidget = new pskl.widgets.ColorsList(colorsListContainer);
 
-    var palette;
-    var isCurrentColorsPalette =
+    let palette;
+    const isCurrentColorsPalette =
       paletteId == Constants.CURRENT_COLORS_PALETTE_ID;
     if (paletteId && !isCurrentColorsPalette) {
       importFileButton.style.display = 'none';
       this.setTitle('Edit Palette');
 
-      var paletteObject = this.paletteService.getPaletteById(paletteId);
+      const paletteObject = this.paletteService.getPaletteById(paletteId);
       palette = pskl.model.Palette.fromObject(paletteObject);
     } else {
       downloadButton.style.display = 'none';
       deleteButton.style.display = 'none';
       this.setTitle('Create Palette');
 
-      var uuid = pskl.utils.Uuid.generate();
+      const uuid = pskl.utils.Uuid.generate();
       if (isCurrentColorsPalette) {
         palette = new pskl.model.Palette(
           uuid,
@@ -64,7 +64,7 @@
   };
 
   ns.CreatePaletteController.prototype.getCurrentColors_ = function () {
-    var palette = this.paletteService.getPaletteById(
+    const palette = this.paletteService.getPaletteById(
       Constants.CURRENT_COLORS_PALETTE_ID);
     return palette.getColors();
   };
@@ -84,7 +84,7 @@
   };
 
   ns.CreatePaletteController.prototype.onButtonClick_ = function (evt) {
-    var target = evt.target;
+    const target = evt.target;
     if (target.dataset.action === 'submit') {
       this.saveAndSelectPalette_();
     } else if (target.dataset.action === 'cancel') {
@@ -116,14 +116,14 @@
   };
 
   ns.CreatePaletteController.prototype.onDownloadButtonClick_ = function () {
-    var paletteWriter = new pskl.service.palette.PaletteGplWriter(this.palette);
-    var paletteAsString = paletteWriter.write();
+    const paletteWriter = new pskl.service.palette.PaletteGplWriter(this.palette);
+    const paletteAsString = paletteWriter.write();
 
     pskl.utils.BlobUtils.stringToBlob(
       paletteAsString,
-      function (blob) {
+      (blob) => {
         pskl.utils.FileUtils.downloadAsFile(blob, this.palette.name + '.gpl');
-      }.bind(this),
+      },
       'application/json');
   };
 
@@ -132,7 +132,7 @@
   };
 
   ns.CreatePaletteController.prototype.onFileInputChange_ = function (evt) {
-    var files = this.hiddenFileInput.files;
+    const files = this.hiddenFileInput.files;
     if (files.length == 1) {
       this.paletteImportService.read(
         files[0],

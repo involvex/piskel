@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller');
+  const ns = $.namespace('pskl.controller');
 
   ns.UserWarningController = function (piskelController, currentColorsService) {
     this.piskelController = piskelController;
@@ -35,10 +35,10 @@
     event,
     report
   ) {
-    var shouldDisplayWarning = report.hasProblem();
+    const shouldDisplayWarning = report.hasProblem();
 
     // Check if a performance warning is already displayed.
-    var isWarningDisplayed =
+    const isWarningDisplayed =
       this.performanceLinkEl.classList.contains('visible');
 
     // Show/hide the performance warning link depending on the received report.

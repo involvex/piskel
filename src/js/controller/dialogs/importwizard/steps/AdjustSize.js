@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs.importwizard.steps');
+  const ns = $.namespace('pskl.controller.dialogs.importwizard.steps');
 
   ns.AdjustSize = function (piskelController, importController, container) {
     this.superclass.constructor.apply(this, arguments);
@@ -16,7 +16,7 @@
     this.superclass.init.call(this);
 
     // Create anchor widget
-    var anchorContainer = this.container.querySelector(
+    const anchorContainer = this.container.querySelector(
       '.import-resize-anchor-container'
     );
     this.anchorWidget = new pskl.widgets.AnchorWidget(
@@ -47,13 +47,13 @@
   };
 
   ns.AdjustSize.prototype.refresh_ = function () {
-    var isBigger = this.isImportedPiskelBigger_();
-    var keep = this.mergeData.resize === ns.AdjustSize.OPTIONS.KEEP;
+    const isBigger = this.isImportedPiskelBigger_();
+    const keep = this.mergeData.resize === ns.AdjustSize.OPTIONS.KEEP;
 
     // Refresh resize partial
-    var size = this.formatPiskelSize_(this.piskelController.getPiskel());
-    var newSize = this.formatPiskelSize_(this.mergeData.mergePiskel);
-    var markup;
+    const size = this.formatPiskelSize_(this.piskelController.getPiskel());
+    const newSize = this.formatPiskelSize_(this.mergeData.mergePiskel);
+    let markup;
     if (isBigger) {
       markup = pskl.utils.Template.getAndReplace(
         'import-resize-bigger-partial',
@@ -79,7 +79,7 @@
     }
 
     // Update anchor widget info
-    var anchorInfo = this.container.querySelector('.import-resize-anchor-info');
+    const anchorInfo = this.container.querySelector('.import-resize-anchor-info');
     if (isBigger && keep) {
       anchorInfo.innerHTML = [
         '<div class="import-resize-warning">',
@@ -99,7 +99,7 @@
   };
 
   ns.AdjustSize.prototype.onResizeOptionChange_ = function () {
-    var value = this.resizeInfoContainer.querySelector(':checked').value;
+    const value = this.resizeInfoContainer.querySelector(':checked').value;
     if (this.mergeData.resize != value) {
       this.mergeData.resize = value;
       this.refresh_();
@@ -107,7 +107,7 @@
   };
 
   ns.AdjustSize.prototype.isImportedPiskelBigger_ = function () {
-    var piskel = this.mergeData.mergePiskel;
+    const piskel = this.mergeData.mergePiskel;
     if (!piskel) {
       return false;
     }

@@ -1,19 +1,19 @@
-describe("SelectionManager suite", function () {
-  var black = "#000000";
-  var red = "#ff0000";
-  var transparent = Constants.TRANSPARENT_COLOR;
-  var B = black,
+describe("SelectionManager suite", () => {
+  const black = "#000000";
+  const red = "#ff0000";
+  const transparent = Constants.TRANSPARENT_COLOR;
+  const B = black,
     R = red,
     T = transparent;
 
   // shortcuts
-  var toFrameGrid = test.testutils.toFrameGrid;
-  var frameEqualsGrid = test.testutils.frameEqualsGrid;
+  const toFrameGrid = test.testutils.toFrameGrid;
+  const frameEqualsGrid = test.testutils.frameEqualsGrid;
 
   // test objects
-  var selectionManager;
-  var selection;
-  var currentFrame;
+  let selectionManager;
+  let selection;
+  let currentFrame;
 
   /**
    * @Mock
@@ -25,7 +25,7 @@ describe("SelectionManager suite", function () {
   /**
    * @Mock
    */
-  var piskelController = {
+  const piskelController = {
     getCurrentFrame: function () {
       return currentFrame;
     },
@@ -34,7 +34,7 @@ describe("SelectionManager suite", function () {
   /**
    * @Mock
    */
-  var createMockCopyEvent = function () {
+  const createMockCopyEvent = function () {
     return {
       clipboardData: {
         items: [],
@@ -44,7 +44,7 @@ describe("SelectionManager suite", function () {
     };
   };
 
-  beforeEach(function () {
+  beforeEach(() => {
     currentFrame = pskl.model.Frame.fromPixelGrid([
       [B, R, T],
       [R, B, R],
@@ -62,7 +62,7 @@ describe("SelectionManager suite", function () {
   /**
    * Check a basic copy paste scenario
    */
-  it("copy/paste OK", function () {
+  it("copy/paste OK", () => {
     console.log("[SelectionManager] copy/paste OK");
     selectMiddleLine();
 
@@ -109,7 +109,7 @@ describe("SelectionManager suite", function () {
   /**
    * Check a basic cut paste scenario
    */
-  it("cut OK", function () {
+  it("cut OK", () => {
     console.log("[SelectionManager] cut OK");
     selectMiddleLine();
 
@@ -147,7 +147,7 @@ describe("SelectionManager suite", function () {
   /**
    * Check a copy paste scenario that goes out of the frame boundaries for copying and for pasting.
    */
-  it("copy/paste OK out of bounds", function () {
+  it("copy/paste OK out of bounds", () => {
     console.log("[SelectionManager] copy/paste OK out of bounds");
     selectMiddleLine();
 
@@ -195,7 +195,7 @@ describe("SelectionManager suite", function () {
   /**
    * Check a cut paste scenario that goes out of the frame boundaries for cutting and for pasting.
    */
-  it("cut OK out of bounds", function () {
+  it("cut OK out of bounds", () => {
     console.log("[SelectionManager] cut OK");
     selectMiddleLine();
 
@@ -233,7 +233,7 @@ describe("SelectionManager suite", function () {
   });
 
   // Private helpers
-  var createPixel = function (row, col, color) {
+  const createPixel = function (row, col, color) {
     return {
       row: row,
       col: col,
@@ -256,7 +256,7 @@ describe("SelectionManager suite", function () {
   };
 
   var checkContainsPixel = function (pixels, row, col, color) {
-    var containsPixel = pixels.some(function (pixel) {
+    const containsPixel = pixels.some((pixel) => {
       return (
         pixel.row == row &&
         pixel.col == col &&

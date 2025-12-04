@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs');
+  const ns = $.namespace('pskl.controller.dialogs');
 
-  var dialogs = {
+  const dialogs = {
     cheatsheet: {
       template: 'templates/dialogs/cheatsheet.html',
       controller: ns.CheatsheetController
@@ -45,12 +45,12 @@
     $.subscribe(Events.DIALOG_SHOW, this.onDialogDisplayEvent_.bind(this));
     $.subscribe(Events.DIALOG_HIDE, this.hideDialog.bind(this));
 
-    var createPaletteShortcut =
+    const createPaletteShortcut =
       pskl.service.keyboard.Shortcuts.COLOR.CREATE_PALETTE;
     pskl.app.shortcutService.registerShortcut(
       createPaletteShortcut,
       this.onCreatePaletteShortcut_.bind(this));
-    var cheatsheetShortcut = pskl.service.keyboard.Shortcuts.MISC.CHEATSHEET;
+    const cheatsheetShortcut = pskl.service.keyboard.Shortcuts.MISC.CHEATSHEET;
     pskl.app.shortcutService.registerShortcut(
       cheatsheetShortcut,
       this.onCheatsheetShortcut_.bind(this));
@@ -104,7 +104,7 @@
       return;
     }
 
-    var config = dialogs[dialogId];
+    const config = dialogs[dialogId];
     if (!config) {
       console.error(
         'Could not find dialog configuration for dialogId : ' + dialogId);
@@ -114,7 +114,7 @@
     this.dialogContainer_.classList.add(dialogId);
 
     this.dialogContainer_.innerHTML = pskl.utils.Template.get(config.template);
-    var controller = new config.controller(this.piskelController);
+    const controller = new config.controller(this.piskelController);
     controller.init(initArgs);
 
     this.currentDialog_ = {

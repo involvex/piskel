@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.devtools');
+  const ns = $.namespace('pskl.devtools');
 
   ns.DrawingTestSuiteController = function (suitePath) {
     if (suitePath.indexOf('/') === -1) {
@@ -19,7 +19,7 @@
     this.startTime_ = Date.now();
     pskl.utils.Xhr.get(this.suitePath, this.onTestSuiteLoaded_.bind(this));
 
-    var testSuiteStatus = document.createElement('li');
+    const testSuiteStatus = document.createElement('li');
     testSuiteStatus.innerHTML = pskl.utils.Template.replace(
       '<b>Test Suite [{{path}}]</b>',
       { path: this.shortenPath_(this.suitePath) });
@@ -41,11 +41,11 @@
   ns.DrawingTestSuiteController.prototype.onTestSuiteLoaded_ = function (
     response
   ) {
-    var testPaths = JSON.parse(response.responseText).tests;
+    let testPaths = JSON.parse(response.responseText).tests;
     testPaths = testPaths.map(
-      function (path) {
+      (path) => {
         return [Constants.DRAWING_TEST_FOLDER, 'tests', path].join('/');
-      }.bind(this));
+      });
     this.testSuiteRunner = new ns.DrawingTestSuiteRunner(testPaths);
     this.testSuiteRunner.start();
   };
@@ -56,7 +56,7 @@
     success,
     performance
   ) {
-    var testCaseStatus = document.createElement('li');
+    const testCaseStatus = document.createElement('li');
 
     testCaseStatus.innerHTML = pskl.utils.Template.replace(
       '[{{path}}] finished : <b style="color:{{color}}">{{status}} ({{performance}})</b>',
@@ -74,10 +74,10 @@
     status,
     performance
   ) {
-    var elapsed = Date.now() - this.startTime_;
+    let elapsed = Date.now() - this.startTime_;
     elapsed = (elapsed / 1000).toFixed(4);
 
-    var testSuiteStatus = document.createElement('li');
+    const testSuiteStatus = document.createElement('li');
     testSuiteStatus.innerHTML = pskl.utils.Template.replace(
       '<b>Test finished : {{status}}</b> ({{elapsed}}s, performance: {{performance}})',
       {

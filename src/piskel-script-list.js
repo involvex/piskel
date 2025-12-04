@@ -1,6 +1,11 @@
 // This list is used both by the grunt build and index.html (in debug mode)
 
-(typeof exports != "undefined" ? exports : pskl_exports).scripts = [
+// Ensure pskl_exports is available globally for legacy code
+if (typeof window !== "undefined") {
+  window.pskl_exports = window.pskl_exports || {};
+}
+
+(typeof exports != "undefined" ? exports : window.pskl_exports).scripts = [
   // Core libraries
   "js/lib/jquery-1.8.0.js",
   "js/lib/jquery-ui-1.10.3.custom.js",
@@ -204,7 +209,6 @@
   "js/service/keyboard/Shortcuts.js",
   "js/service/keyboard/ShortcutService.js",
   "js/service/ImportService.js",
-  "js/service/ImageUploadService.js",
   "js/service/ClipboardService.js",
   "js/service/CurrentColorsService.js",
   "js/service/FileDropperService.js",
@@ -228,6 +232,7 @@
   "js/tools/drawing/Rectangle.js",
   "js/tools/drawing/Circle.js",
   "js/tools/drawing/Move.js",
+  "js/tools/drawing/SmartPencil.js",
   "js/tools/drawing/selection/BaseSelect.js",
   "js/tools/drawing/selection/AbstractDragSelect.js",
   "js/tools/drawing/selection/LassoSelect.js",
@@ -267,5 +272,5 @@
   "js/app.js",
 
   // Bonus features !!
-  "js/snippets.js"
+  "js/snippets.js",
 ];

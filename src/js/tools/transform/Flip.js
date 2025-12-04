@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.tools.transform');
+  const ns = $.namespace('pskl.tools.transform');
 
   ns.Flip = function () {
     this.toolId = 'tool-flip';
@@ -14,7 +14,7 @@
   pskl.utils.inherit(ns.Flip, ns.AbstractTransformTool);
 
   ns.Flip.prototype.applyToolOnFrame_ = function (frame, altKey) {
-    var axis;
+    let axis;
 
     if (altKey) {
       axis = ns.TransformUtils.HORIZONTAL;

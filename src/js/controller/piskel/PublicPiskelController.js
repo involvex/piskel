@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller.piskel');
+  const ns = $.namespace('pskl.controller.piskel');
 
   /**
    * The PublicPiskelController is a decorator on PiskelController, provides the same API
@@ -39,7 +39,7 @@
     this.saveWrap_('setLayerOpacityAt', true);
     this.saveWrap_('toggleFrameVisibilityAt', true);
 
-    var shortcuts = pskl.service.keyboard.Shortcuts;
+    const shortcuts = pskl.service.keyboard.Shortcuts;
     pskl.app.shortcutService.registerShortcut(
       shortcuts.MISC.PREVIOUS_FRAME,
       this.selectPreviousFrame.bind(this));
@@ -89,7 +89,7 @@
   ns.PublicPiskelController.prototype.saveWrap_ = function (methodName, reset) {
     this[methodName] = reset ?
       function () {
-        var stateInfo = this.getStateInfo_();
+        const stateInfo = this.getStateInfo_();
         this.piskelController[methodName].apply(
           this.piskelController,
           arguments);
@@ -100,7 +100,7 @@
         $.publish(Events.PISKEL_RESET);
       } :
       function () {
-        var stateInfo = this.getStateInfo_();
+        const stateInfo = this.getStateInfo_();
         this.piskelController[methodName].apply(
           this.piskelController,
           arguments);
@@ -112,7 +112,7 @@
   };
 
   ns.PublicPiskelController.prototype.getStateInfo_ = function () {
-    var stateInfo = {
+    const stateInfo = {
       frameIndex: this.piskelController.currentFrameIndex,
       layerIndex: this.piskelController.currentLayerIndex
     };

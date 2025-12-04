@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.rendering.frame');
+  const ns = $.namespace('pskl.rendering.frame');
 
   /**
    * FrameRenderer implementation that prevents unnecessary redraws.
@@ -34,9 +34,9 @@
   };
 
   ns.CachedFrameRenderer.prototype.render = function (frame) {
-    var offset = this.getOffset();
-    var size = this.getDisplaySize();
-    var serializedFrame = [
+    const offset = this.getOffset();
+    const size = this.getDisplaySize();
+    const serializedFrame = [
       this.getZoom(),
       this.getGridWidth(),
       this.getGridSpacing(),

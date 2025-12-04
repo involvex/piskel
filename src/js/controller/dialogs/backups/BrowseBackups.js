@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.controller.dialogs.backups');
+  const ns = $.namespace('pskl.controller.dialogs.backups');
 
-  var stepDefinitions = {
+  const stepDefinitions = {
     SELECT_SESSION: {
       controller: ns.steps.SelectSession,
       template: 'backups-select-session'
@@ -33,7 +33,7 @@
     this.steps = this.createSteps_();
 
     // Start wizard widget.
-    var wizardContainer = document.querySelector('.backups-wizard-container');
+    const wizardContainer = document.querySelector('.backups-wizard-container');
     this.wizard = new pskl.widgets.Wizard(this.steps, wizardContainer);
     this.wizard.init();
 
@@ -46,7 +46,7 @@
   };
 
   ns.BrowseBackups.prototype.next = function () {
-    var step = this.wizard.getCurrentStep();
+    const step = this.wizard.getCurrentStep();
     if (step.name === 'SELECT_SESSION') {
       this.wizard.goTo('SESSION_DETAILS');
     }
@@ -54,22 +54,22 @@
 
   ns.BrowseBackups.prototype.destroy = function (file) {
     Object.keys(this.steps).forEach(
-      function (stepName) {
-        var step = this.steps[stepName];
+      (stepName) => {
+        const step = this.steps[stepName];
         step.instance.destroy();
         step.instance = null;
         step.el = null;
-      }.bind(this));
+      });
     this.superclass.destroy.call(this);
   };
 
   ns.BrowseBackups.prototype.createSteps_ = function () {
-    var steps = {};
+    const steps = {};
     Object.keys(stepDefinitions).forEach(
-      function (stepName) {
-        var definition = stepDefinitions[stepName];
-        var el = pskl.utils.Template.getAsHTML(definition.template);
-        var instance = new definition.controller(
+      (stepName) => {
+        const definition = stepDefinitions[stepName];
+        const el = pskl.utils.Template.getAsHTML(definition.template);
+        const instance = new definition.controller(
           this.piskelController,
           this,
           el);
@@ -79,7 +79,7 @@
           el: el,
           instance: instance
         };
-      }.bind(this));
+      });
     return steps;
   };
 })();

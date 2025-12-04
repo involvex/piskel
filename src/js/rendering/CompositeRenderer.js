@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.rendering');
+  const ns = $.namespace('pskl.rendering');
 
   ns.CompositeRenderer = function () {
     this.renderers = [];
@@ -14,13 +14,13 @@
   };
 
   ns.CompositeRenderer.prototype.clear = function () {
-    this.renderers.forEach(function (renderer) {
+    this.renderers.forEach((renderer) => {
       renderer.clear();
     });
   };
 
   ns.CompositeRenderer.prototype.setZoom = function (zoom) {
-    this.renderers.forEach(function (renderer) {
+    this.renderers.forEach((renderer) => {
       renderer.setZoom(zoom);
     });
   };
@@ -30,7 +30,7 @@
   };
 
   ns.CompositeRenderer.prototype.setDisplaySize = function (w, h) {
-    this.renderers.forEach(function (renderer) {
+    this.renderers.forEach((renderer) => {
       renderer.setDisplaySize(w, h);
     });
   };
@@ -40,7 +40,7 @@
   };
 
   ns.CompositeRenderer.prototype.setOffset = function (x, y) {
-    this.renderers.forEach(function (renderer) {
+    this.renderers.forEach((renderer) => {
       renderer.setOffset(x, y);
     });
   };
@@ -50,7 +50,7 @@
   };
 
   ns.CompositeRenderer.prototype.setGridWidth = function (b) {
-    this.renderers.forEach(function (renderer) {
+    this.renderers.forEach((renderer) => {
       renderer.setGridWidth(b);
     });
   };

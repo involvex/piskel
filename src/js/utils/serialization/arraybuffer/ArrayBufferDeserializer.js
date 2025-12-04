@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.utils.serialization.arraybuffer');
+  const ns = $.namespace('pskl.utils.serialization.arraybuffer');
 
   /**
    * The array buffer serialization-deserialization should only be used when when backing
@@ -13,45 +13,45 @@
    */
   ns.ArrayBufferDeserializer = {
     deserialize: function (data, callback) {
-      var i;
-      var j;
-      var buffer = data;
-      var arr8 = new Uint8Array(buffer);
-      var arr16 = new Uint16Array(arr8.buffer);
-      var sub;
+      let i;
+      let j;
+      const buffer = data;
+      const arr8 = new Uint8Array(buffer);
+      const arr16 = new Uint16Array(arr8.buffer);
+      let sub;
 
       /********/
       /* META */
       /********/
       // Piskel meta
-      var modelVersion = arr16[0];
-      var width = arr16[1];
-      var height = arr16[2];
-      var fps = arr16[3];
+      const modelVersion = arr16[0];
+      const width = arr16[1];
+      const height = arr16[2];
+      const fps = arr16[3];
 
       // Descriptor meta
-      var descriptorNameLength = arr16[4];
-      var descriptorDescriptionLength = arr16[5];
+      const descriptorNameLength = arr16[4];
+      const descriptorDescriptionLength = arr16[5];
 
       // Layers meta
-      var layerCount = arr16[6];
+      const layerCount = arr16[6];
 
       // Layers meta
-      var serializedHiddenFramesLength = arr16[7];
+      const serializedHiddenFramesLength = arr16[7];
 
-      var currentIndex = 8;
+      let currentIndex = 8;
       /********/
       /* DATA */
       /********/
       // Descriptor name
-      var descriptorName = '';
+      let descriptorName = '';
       for (i = 0; i < descriptorNameLength; i++) {
         descriptorName += String.fromCharCode(arr16[currentIndex + i]);
       }
       currentIndex += descriptorNameLength;
 
       // Descriptor description
-      var descriptorDescription = '';
+      let descriptorDescription = '';
       for (i = 0; i < descriptorDescriptionLength; i++) {
         descriptorDescription = String.fromCharCode(
           arr16[8 + descriptorNameLength + i]
@@ -60,40 +60,40 @@
       currentIndex += descriptorDescriptionLength;
 
       // Hidden frames
-      var serializedHiddenFrames = '';
+      let serializedHiddenFrames = '';
       for (i = 0; i < serializedHiddenFramesLength; i++) {
         serializedHiddenFrames = String.fromCharCode(
           arr16[8 + descriptorNameLength + i]
         );
       }
-      var hiddenFrames = serializedHiddenFrames.split('-');
+      const hiddenFrames = serializedHiddenFrames.split('-');
       currentIndex += serializedHiddenFramesLength;
 
       // Layers
-      var layers = [];
-      var layer;
+      const layers = [];
+      let layer;
       for (i = 0; i < layerCount; i++) {
         layer = {};
-        var frames = [];
+        const frames = [];
 
         // Meta
-        var layerNameLength = arr16[currentIndex];
-        var opacity = arr16[currentIndex + 1] / 65535;
-        var frameCount = arr16[currentIndex + 2];
-        var dataUriLengthFirstHalf = arr16[currentIndex + 3];
-        var dataUriLengthSecondHalf = arr16[currentIndex + 4];
-        var dataUriLength =
+        const layerNameLength = arr16[currentIndex];
+        const opacity = arr16[currentIndex + 1] / 65535;
+        const frameCount = arr16[currentIndex + 2];
+        const dataUriLengthFirstHalf = arr16[currentIndex + 3];
+        const dataUriLengthSecondHalf = arr16[currentIndex + 4];
+        const dataUriLength =
           (dataUriLengthSecondHalf >>> 0) |
           ((dataUriLengthFirstHalf << 16) >>> 0);
 
         // Name
-        var layerName = '';
+        let layerName = '';
         for (j = 0; j < layerNameLength; j++) {
           layerName += String.fromCharCode(arr16[currentIndex + 5 + j]);
         }
 
         // Data URI
-        var dataUri = '';
+        let dataUri = '';
         for (j = 0; j < dataUriLength; j++) {
           dataUri += String.fromCharCode(
             arr8[(currentIndex + 5 + layerNameLength) * 2 + j]
@@ -110,21 +110,21 @@
         layers.push(layer);
       }
 
-      var descriptor = new pskl.model.piskel.Descriptor(
+      const descriptor = new pskl.model.piskel.Descriptor(
         descriptorName,
         descriptorDescription
       );
-      var piskel = new pskl.model.Piskel(width, height, fps, descriptor);
+      const piskel = new pskl.model.Piskel(width, height, fps, descriptor);
       piskel.hiddenFrames = hiddenFrames;
-      var loadedLayers = 0;
+      let loadedLayers = 0;
 
-      var loadLayerImage = function (layer, cb) {
-        var image = new Image();
+      const loadLayerImage = function (layer, cb) {
+        const image = new Image();
         image.onload = function () {
-          var frames = pskl.utils.FrameUtils.createFramesFromSpritesheet(
+          const frames = pskl.utils.FrameUtils.createFramesFromSpritesheet(
             this,
             layer.frameCount);
-          frames.forEach(function (frame) {
+          frames.forEach((frame) => {
             layer.model.addFrame(frame);
           });
 
@@ -138,7 +138,7 @@
 
       for (i = 0; i < layerCount; i++) {
         layer = layers[i];
-        var nlayer = new pskl.model.Layer(layer.name);
+        const nlayer = new pskl.model.Layer(layer.name);
         layer.model = nlayer;
         nlayer.setOpacity(layer.opacity);
         piskel.addLayer(nlayer);

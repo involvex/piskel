@@ -4,7 +4,7 @@
  * @require pskl.utils
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing');
+  const ns = $.namespace('pskl.tools.drawing');
 
   ns.PaintBucket = function () {
     this.toolId = 'tool-paint-bucket';
@@ -24,7 +24,7 @@
     overlay,
     event
   ) {
-    var color = this.getToolColor();
+    const color = this.getToolColor();
     pskl.PixelUtils.paintSimilarConnectedPixelsFromFrame(
       frame,
       col,

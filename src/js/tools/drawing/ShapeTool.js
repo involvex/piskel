@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.tools.drawing');
+  const ns = $.namespace('pskl.tools.drawing');
   /**
    * Abstract shape tool class, parent to all shape tools (rectangle, circle).
    * Shape tools should override only the draw method
@@ -35,7 +35,7 @@
     this.startRow = row;
 
     // Drawing the first point of the rectangle in the fake overlay canvas:
-    var penSize = pskl.app.penSizeService.getPenSize();
+    const penSize = pskl.app.penSizeService.getPenSize();
     this.draw(col, row, this.getToolColor(), overlay, penSize);
   };
 
@@ -46,17 +46,17 @@
     overlay,
     event
   ) {
-    var coords = this.getCoordinates_(col, row, event);
+    const coords = this.getCoordinates_(col, row, event);
     $.publish(Events.CURSOR_MOVED, [coords.col, coords.row]);
 
     overlay.clear();
-    var color = this.getToolColor();
+    let color = this.getToolColor();
     if (color == Constants.TRANSPARENT_COLOR) {
       color = Constants.SELECTION_TRANSPARENT_COLOR;
     }
 
     // draw in overlay
-    var penSize = pskl.app.penSizeService.getPenSize();
+    const penSize = pskl.app.penSizeService.getPenSize();
     this.draw(coords.col, coords.row, color, overlay, penSize);
   };
 
@@ -71,9 +71,9 @@
     event
   ) {
     overlay.clear();
-    var coords = this.getCoordinates_(col, row, event);
-    var color = this.getToolColor();
-    var penSize = pskl.app.penSizeService.getPenSize();
+    const coords = this.getCoordinates_(col, row, event);
+    const color = this.getToolColor();
+    const penSize = pskl.app.penSizeService.getPenSize();
     this.draw(coords.col, coords.row, color, frame, penSize);
 
     $.publish(Events.DRAG_END);
@@ -123,13 +123,13 @@
    * @return {Object} {row : Number, col : Number}
    */
   ns.ShapeTool.prototype.getScaledCoordinates_ = function (col, row) {
-    var dX = this.startCol - col;
-    var absX = Math.abs(dX);
+    const dX = this.startCol - col;
+    const absX = Math.abs(dX);
 
-    var dY = this.startRow - row;
-    var absY = Math.abs(dY);
+    const dY = this.startRow - row;
+    const absY = Math.abs(dY);
 
-    var delta = Math.min(absX, absY);
+    const delta = Math.min(absX, absY);
     row = this.startRow - (dY / absY) * delta;
     col = this.startCol - (dX / absX) * delta;
 

@@ -1,30 +1,30 @@
-describe("Onion Skin Renderer test", function () {
-  var BLACK = "#000000";
-  var WHITE = "#ffffff";
-  var TRANS = Constants.TRANSPARENT_COLOR;
+describe("Onion Skin Renderer test", () => {
+  const BLACK = "#000000";
+  const WHITE = "#ffffff";
+  const TRANS = Constants.TRANSPARENT_COLOR;
 
-  beforeEach(function () {});
-  afterEach(function () {});
+  beforeEach(() => {});
+  afterEach(() => {});
 
-  it("renders correctly :)", function () {
-    var fakeRenderer = createMockRenderer();
-    var layer = createMockLayer();
-    var piskelController = createMockPiskelController();
+  it("renders correctly :)", () => {
+    const fakeRenderer = createMockRenderer();
+    const layer = createMockLayer();
+    const piskelController = createMockPiskelController();
     piskelController.currentLayer_ = layer;
 
-    var onionSkinRenderer = new pskl.rendering.OnionSkinRenderer(
+    const onionSkinRenderer = new pskl.rendering.OnionSkinRenderer(
       fakeRenderer,
       piskelController
     );
     // create frame
-    var previousFrame = pskl.model.Frame.fromPixelGrid(
+    const previousFrame = pskl.model.Frame.fromPixelGrid(
       test.testutils.toFrameGrid([
         [BLACK, TRANS],
         [TRANS, TRANS],
       ])
     );
 
-    var nextFrame = pskl.model.Frame.fromPixelGrid(
+    const nextFrame = pskl.model.Frame.fromPixelGrid(
       test.testutils.toFrameGrid([
         [TRANS, TRANS],
         [TRANS, BLACK],

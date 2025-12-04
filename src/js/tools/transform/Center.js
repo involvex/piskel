@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.tools.transform');
+  const ns = $.namespace('pskl.tools.transform');
 
   ns.Center = function () {
     this.toolId = 'tool-center';

@@ -1,7 +1,7 @@
 (function () {
-  var ns = $.namespace('pskl.service.keyboard');
+  const ns = $.namespace('pskl.service.keyboard');
 
-  var createShortcut = function (id, description, defaultKey, displayKey) {
+  const createShortcut = function (id, description, defaultKey, displayKey) {
     return new ns.Shortcut(id, description, defaultKey, displayKey);
   };
 
@@ -26,7 +26,7 @@
       'BACK',
       'ENTER',
       'ctrl+Y',
-      'ctrl+shift+Z'
+      'ctrl+shift+Z',
     ],
 
     /**
@@ -59,7 +59,7 @@
       LASSO_SELECT: createShortcut('tool-lasso-select', 'Lasso selection', 'H'),
       LIGHTEN: createShortcut('tool-lighten', 'Lighten tool', 'U'),
       DITHERING: createShortcut('tool-dithering', 'Dithering tool', 'T'),
-      COLORPICKER: createShortcut('tool-colorpicker', 'Color picker', 'O')
+      COLORPICKER: createShortcut('tool-colorpicker', 'Color picker', 'O'),
     },
 
     SELECTION: {
@@ -68,9 +68,9 @@
       PASTE: createShortcut('selection-paste', 'Paste selection', 'ctrl+V'),
       DELETE: createShortcut('selection-delete', 'Delete selection', [
         'DEL',
-        'BACK'
+        'BACK',
       ]),
-      COMMIT: createShortcut('selection-commit', 'Commit selection', ['ENTER'])
+      COMMIT: createShortcut('selection-commit', 'Commit selection', ['ENTER']),
     },
 
     MISC: {
@@ -161,7 +161,7 @@
         'move-left',
         'Move viewport left',
         'shift+left'
-      )
+      ),
     },
 
     STORAGE: {
@@ -171,7 +171,8 @@
         'save-as',
         '(desktop) Save as new',
         'ctrl+shift+S'
-      )
+      ),
+      SAVE_PNG: createShortcut('save-png', 'Save as PNG', 'ctrl+shift+P'),
     },
 
     COLOR: {
@@ -197,7 +198,7 @@
         'Select a palette color in the current palette',
         '123456789'.split(''),
         '1 to 9'
-      )
+      ),
     },
 
     DEBUG: {
@@ -205,9 +206,9 @@
         'move-left',
         'Move viewport left',
         'ctrl+alt+R'
-      )
+      ),
     },
 
-    CATEGORIES: ['TOOL', 'SELECTION', 'MISC', 'STORAGE', 'COLOR']
+    CATEGORIES: ['TOOL', 'SELECTION', 'MISC', 'STORAGE', 'COLOR'],
   };
 })();

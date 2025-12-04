@@ -1,4 +1,4 @@
-var ns = $.namespace('pskl.tools');
+const ns = $.namespace('pskl.tools');
 
 ns.ToolsHelper = {
   /**
@@ -13,12 +13,12 @@ ns.ToolsHelper = {
    * @return {Array[Frame]} list of Frame instances, can be empty
    */
   getTargetFrames: function (useAllLayers, useAllFrames) {
-    var currentFrameIndex = pskl.app.piskelController.getCurrentFrameIndex();
-    var layers = useAllLayers ?
+    const currentFrameIndex = pskl.app.piskelController.getCurrentFrameIndex();
+    const layers = useAllLayers ?
       pskl.app.piskelController.getLayers() :
       [pskl.app.piskelController.getCurrentLayer()];
-    return layers.reduce(function (previous, layer) {
-      var frames = useAllFrames ?
+    return layers.reduce((previous, layer) => {
+      const frames = useAllFrames ?
         layer.getFrames() :
         [layer.getFrameAt(currentFrameIndex)];
       return previous.concat(frames);

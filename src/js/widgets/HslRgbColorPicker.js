@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.widgets');
+  const ns = $.namespace('pskl.widgets');
 
   ns.HslRgbColorPicker = function (container, colorUpdatedCallback) {
     this.container = container;
@@ -13,10 +13,10 @@
   };
 
   ns.HslRgbColorPicker.prototype.init = function () {
-    var isFirefox = pskl.utils.UserAgent.isFirefox;
-    var isChrome = pskl.utils.UserAgent.isChrome;
+    const isFirefox = pskl.utils.UserAgent.isFirefox;
+    const isChrome = pskl.utils.UserAgent.isChrome;
 
-    var changeEvent = isChrome || isFirefox ? 'input' : 'change';
+    const changeEvent = isChrome || isFirefox ? 'input' : 'change';
     pskl.utils.Event.addEventListener(
       this.container,
       changeEvent,
@@ -62,11 +62,11 @@
    * Handle change event on all color inputs
    */
   ns.HslRgbColorPicker.prototype.onPickerChange_ = function (evt) {
-    var target = evt.target;
+    const target = evt.target;
     if (target.dataset.dimension) {
-      var model = target.dataset.model;
-      var dimension = target.dataset.dimension;
-      var value = target.value;
+      const model = target.dataset.model;
+      const dimension = target.dataset.dimension;
+      const value = target.value;
 
       this.updateColor_(value, model, dimension);
     }
@@ -76,17 +76,17 @@
    * Handle up/down arrow keydown on text inputs
    */
   ns.HslRgbColorPicker.prototype.onKeydown_ = function (evt) {
-    var target = evt.target;
+    const target = evt.target;
 
-    var isInputText = target.getAttribute('type').toLowerCase() === 'text';
+    const isInputText = target.getAttribute('type').toLowerCase() === 'text';
     if (isInputText && target.dataset.dimension) {
-      var model = target.dataset.model;
+      const model = target.dataset.model;
 
       if (model === 'rgb' || model === 'hsv') {
-        var increment = this.getIncrement_(evt);
+        const increment = this.getIncrement_(evt);
         if (increment) {
-          var dimension = target.dataset.dimension;
-          var value = parseInt(target.value, 10);
+          const dimension = target.dataset.dimension;
+          const value = parseInt(target.value, 10);
           this.updateColor_(value + increment, model, dimension);
         }
       }
@@ -94,8 +94,8 @@
   };
 
   ns.HslRgbColorPicker.prototype.getIncrement_ = function (evt) {
-    var increment = 0;
-    var key = pskl.service.keyboard.KeycodeTranslator.toChar(evt.keyCode);
+    let increment = 0;
+    const key = pskl.service.keyboard.KeycodeTranslator.toChar(evt.keyCode);
     if (key === 'up') {
       increment = 1;
     } else if (key === 'down') {
@@ -114,10 +114,10 @@
     model,
     dimension
   ) {
-    var value = this.toModelValue_(inputValue, model, dimension);
+    const value = this.toModelValue_(inputValue, model, dimension);
     if (model === 'hsv' || model === 'rgb') {
       if (!isNaN(value)) {
-        var color = this.getColor_(model);
+        const color = this.getColor_(model);
         color[dimension] = this.normalizeDimension_(value, dimension);
         this.setColor(color);
       }
@@ -129,12 +129,12 @@
   };
 
   ns.HslRgbColorPicker.prototype.onBlur_ = function (evt) {
-    var target = evt.target;
+    const target = evt.target;
 
-    var isInputText = target.getAttribute('type').toLowerCase() === 'text';
+    const isInputText = target.getAttribute('type').toLowerCase() === 'text';
     if (isInputText && target.dataset.dimension) {
-      var model = target.dataset.model;
-      var dimension = target.dataset.dimension;
+      const model = target.dataset.model;
+      const dimension = target.dataset.dimension;
       target.value = this.toInputValue_(model, dimension);
     }
   };
@@ -157,14 +157,14 @@
   };
 
   ns.HslRgbColorPicker.prototype.updateInputs = function () {
-    var inputs = this.container.querySelectorAll('input');
+    const inputs = this.container.querySelectorAll('input');
 
-    for (var i = 0; i < inputs.length; i++) {
-      var input = inputs[i];
-      var dimension = input.dataset.dimension;
-      var model = input.dataset.model;
+    for (let i = 0; i < inputs.length; i++) {
+      const input = inputs[i];
+      const dimension = input.dataset.dimension;
+      const model = input.dataset.model;
 
-      var value = this.toInputValue_(model, dimension);
+      const value = this.toInputValue_(model, dimension);
       if (input.value != value) {
         input.value = value;
       }
@@ -175,10 +175,10 @@
   };
 
   ns.HslRgbColorPicker.prototype.toInputValue_ = function (model, dimension) {
-    var value;
+    let value;
 
     if (model === 'rgb' || model === 'hsv') {
-      var color = this.getColor_(model);
+      const color = this.getColor_(model);
       value = color[dimension];
 
       if (dimension === 'v' || dimension === 's') {
@@ -197,7 +197,7 @@
     model,
     dimension
   ) {
-    var modelValue;
+    let modelValue;
 
     if (model === 'rgb' || model === 'hsv') {
       modelValue = parseInt(value, 10);
@@ -212,7 +212,7 @@
   };
 
   ns.HslRgbColorPicker.prototype.toTinyColor_ = function (color) {
-    var isTinyColor =
+    const isTinyColor =
       typeof color == 'object' && color.hasOwnProperty('_tc_id');
     if (isTinyColor) {
       return color;
@@ -222,7 +222,7 @@
   };
 
   ns.HslRgbColorPicker.prototype.toHsvColor_ = function (color) {
-    var isHsvColor = ['h', 's', 'v'].every(color.hasOwnProperty.bind(color));
+    const isHsvColor = ['h', 's', 'v'].every(color.hasOwnProperty.bind(color));
     if (isHsvColor) {
       return {
         h: this.normalizeDimension_(color.h, 'h'),
@@ -238,7 +238,7 @@
     value,
     dimension
   ) {
-    var range = this.getDimensionRange_(dimension);
+    const range = this.getDimensionRange_(dimension);
     return Math.max(range[0], Math.min(range[1], value));
   };
 
@@ -246,14 +246,14 @@
    * Update background colors for range inputs
    */
   ns.HslRgbColorPicker.prototype.updateSliderBackground = function (slider) {
-    var dimension = slider.dataset.dimension;
-    var model = slider.dataset.model;
+    const dimension = slider.dataset.dimension;
+    const model = slider.dataset.model;
 
-    var start;
-    var end;
-    var isHueSlider = dimension === 'h';
+    let start;
+    let end;
+    const isHueSlider = dimension === 'h';
     if (!isHueSlider) {
-      var colors = this.getSliderBackgroundColors_(model, dimension);
+      const colors = this.getSliderBackgroundColors_(model, dimension);
       slider.style.backgroundImage =
         'linear-gradient(to right, ' +
         colors.start +
@@ -267,11 +267,11 @@
     model,
     dimension
   ) {
-    var color = this.getColor_(model);
-    var start = pskl.utils.copy(color);
-    var end = pskl.utils.copy(color);
+    const color = this.getColor_(model);
+    const start = pskl.utils.copy(color);
+    const end = pskl.utils.copy(color);
 
-    var range = this.getDimensionRange_(dimension);
+    const range = this.getDimensionRange_(dimension);
     start[dimension] = range[0];
     end[dimension] = range[1];
 
@@ -292,7 +292,7 @@
   };
 
   ns.HslRgbColorPicker.prototype.getColor_ = function (model) {
-    var color;
+    let color;
     if (model === 'hsv') {
       color = this.hsvColor;
     } else if (model === 'rgb') {

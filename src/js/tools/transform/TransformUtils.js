@@ -1,15 +1,15 @@
 (function () {
-  var ns = $.namespace('pskl.tools.transform');
+  const ns = $.namespace('pskl.tools.transform');
 
   ns.TransformUtils = {
     VERTICAL: 'VERTICAL',
     HORIZONTAL: 'HORIZONTAL',
     flip: function (frame, axis) {
-      var clone = frame.clone();
-      var w = frame.getWidth();
-      var h = frame.getHeight();
+      const clone = frame.clone();
+      const w = frame.getWidth();
+      const h = frame.getHeight();
 
-      clone.forEachPixel(function (color, x, y) {
+      clone.forEachPixel((color, x, y) => {
         if (axis === ns.TransformUtils.VERTICAL) {
           x = w - x - 1;
         } else if (axis === ns.TransformUtils.HORIZONTAL) {
@@ -24,25 +24,25 @@
     CLOCKWISE: 'clockwise',
     COUNTERCLOCKWISE: 'counterclockwise',
     rotate: function (frame, direction) {
-      var clone = frame.clone();
-      var w = frame.getWidth();
-      var h = frame.getHeight();
+      const clone = frame.clone();
+      const w = frame.getWidth();
+      const h = frame.getHeight();
 
-      var max = Math.max(w, h);
-      var xDelta = Math.ceil((max - w) / 2);
-      var yDelta = Math.ceil((max - h) / 2);
+      const max = Math.max(w, h);
+      const xDelta = Math.ceil((max - w) / 2);
+      const yDelta = Math.ceil((max - h) / 2);
 
-      frame.forEachPixel(function (color, x, y) {
-        var _x = x;
-        var _y = y;
+      frame.forEachPixel((color, x, y) => {
+        const _x = x;
+        const _y = y;
 
         // Convert to square coords
         x = x + xDelta;
         y = y + yDelta;
 
         // Perform the rotation
-        var tmpX = x;
-        var tmpY = y;
+        const tmpX = x;
+        const tmpY = y;
         if (direction === ns.TransformUtils.CLOCKWISE) {
           x = tmpY;
           y = max - 1 - tmpX;
@@ -65,17 +65,17 @@
     },
 
     getBoundaries: function (frames) {
-      var minx = +Infinity;
-      var miny = +Infinity;
-      var maxx = 0;
-      var maxy = 0;
+      let minx = +Infinity;
+      let miny = +Infinity;
+      let maxx = 0;
+      let maxy = 0;
 
-      var transparentColorInt = pskl.utils.colorToInt(
+      const transparentColorInt = pskl.utils.colorToInt(
         Constants.TRANSPARENT_COLOR
       );
 
-      frames.forEach(function (frame) {
-        frame.forEachPixel(function (color, x, y) {
+      frames.forEach((frame) => {
+        frame.forEachPixel((color, x, y) => {
           if (color !== transparentColorInt) {
             minx = Math.min(minx, x);
             maxx = Math.max(maxx, x);
@@ -94,10 +94,10 @@
     },
 
     moveFramePixels: function (frame, dx, dy) {
-      var clone = frame.clone();
-      frame.forEachPixel(function (color, x, y) {
-        var _x = x;
-        var _y = y;
+      const clone = frame.clone();
+      frame.forEachPixel((color, x, y) => {
+        const _x = x;
+        const _y = y;
 
         x -= dx;
         y -= dy;
@@ -112,16 +112,16 @@
 
     center: function (frame) {
       // Figure out the boundary
-      var boundaries = ns.TransformUtils.getBoundaries([frame]);
+      const boundaries = ns.TransformUtils.getBoundaries([frame]);
 
       // Calculate how much to move the pixels
-      var bw = (boundaries.maxx - boundaries.minx + 1) / 2;
-      var bh = (boundaries.maxy - boundaries.miny + 1) / 2;
-      var fw = frame.width / 2;
-      var fh = frame.height / 2;
+      const bw = (boundaries.maxx - boundaries.minx + 1) / 2;
+      const bh = (boundaries.maxy - boundaries.miny + 1) / 2;
+      const fw = frame.width / 2;
+      const fh = frame.height / 2;
 
-      var dx = Math.floor(fw - bw - boundaries.minx);
-      var dy = Math.floor(fh - bh - boundaries.miny);
+      const dx = Math.floor(fw - bw - boundaries.minx);
+      const dy = Math.floor(fh - bh - boundaries.miny);
 
       // Actually move the pixels
 

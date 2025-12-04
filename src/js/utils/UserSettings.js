@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl');
+  const ns = $.namespace('pskl');
 
   ns.UserSettings = {
     GRID_COLOR: 'GRID_COLOR',
@@ -24,6 +24,10 @@
     COLOR_FORMAT: 'COLOR_FORMAT',
     TRANSFORM_SHOW_MORE: 'TRANSFORM_SHOW_MORE',
     PREFERENCES_TAB: 'PREFERENCES_TAB',
+    IGNORE_WARNINGS: 'IGNORE_WARNINGS',
+    ANIMATED_PREVIEW_ENABLED: 'ANIMATED_PREVIEW_ENABLED',
+    WINDOW_SIZE: 'WINDOW_SIZE',
+    WINDOW_POSITION: 'WINDOW_POSITION',
     KEY_TO_DEFAULT_VALUE_MAP_: {
       GRID_COLOR: Constants.TRANSPARENT_COLOR,
       GRID_ENABLED: false,
@@ -32,7 +36,7 @@
       MAX_FPS: 24,
       DEFAULT_SIZE: {
         width: Constants.DEFAULT.WIDTH,
-        height: Constants.DEFAULT.HEIGHT
+        height: Constants.DEFAULT.HEIGHT,
       },
       CANVAS_BACKGROUND: 'lowcont-dark-canvas-background',
       SELECTED_PALETTE: Constants.CURRENT_COLORS_PALETTE_ID,
@@ -49,11 +53,15 @@
       RESIZE_SETTINGS: {
         maintainRatio: true,
         resizeContent: false,
-        origin: 'TOPLEFT'
+        origin: 'TOPLEFT',
       },
       COLOR_FORMAT: 'hex',
       TRANSFORM_SHOW_MORE: false,
-      PREFERENCES_TAB: 'misc'
+      PREFERENCES_TAB: 'misc',
+      IGNORE_WARNINGS: false,
+      ANIMATED_PREVIEW_ENABLED: false,
+      WINDOW_SIZE: { width: 800, height: 600 },
+      WINDOW_POSITION: { x: 100, y: 100 },
     },
 
     /**
@@ -68,7 +76,7 @@
     get: function (key) {
       this.checkKeyValidity_(key);
       if (!(key in this.cache_)) {
-        var storedValue = this.readFromLocalStorage_(key);
+        const storedValue = this.readFromLocalStorage_(key);
         if (typeof storedValue !== 'undefined' && storedValue !== null) {
           this.cache_[key] = storedValue;
         } else {
@@ -90,7 +98,7 @@
      * @private
      */
     readFromLocalStorage_: function (key) {
-      var value = window.localStorage[key];
+      let value = window.localStorage[key];
       if (typeof value != 'undefined') {
         value = JSON.parse(value);
       }
@@ -122,12 +130,12 @@
         return true;
       }
 
-      var isValidKey = key in this.KEY_TO_DEFAULT_VALUE_MAP_;
+      const isValidKey = key in this.KEY_TO_DEFAULT_VALUE_MAP_;
       if (!isValidKey) {
         console.error(
           'UserSettings key <' + key + '> not found in supported keys.'
         );
       }
-    }
+    },
   };
 })();

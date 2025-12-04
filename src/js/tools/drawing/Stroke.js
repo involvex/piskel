@@ -4,7 +4,7 @@
  * @require pskl.utils
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing');
+  const ns = $.namespace('pskl.tools.drawing');
 
   ns.Stroke = function () {
     this.toolId = 'tool-stroke';
@@ -47,9 +47,9 @@
   ns.Stroke.prototype.moveToolAt = function (col, row, frame, overlay, event) {
     overlay.clear();
 
-    var penSize = pskl.app.penSizeService.getPenSize();
-    var isStraight = event.shiftKey;
-    var color = this.getToolColor();
+    const penSize = pskl.app.penSizeService.getPenSize();
+    const isStraight = event.shiftKey;
+    let color = this.getToolColor();
     if (color == Constants.TRANSPARENT_COLOR) {
       // When mousemoving the stroke tool, we draw in the canvas overlay above the drawing canvas.
       // If the stroke color is transparent, we won't be
@@ -73,9 +73,9 @@
     overlay,
     event
   ) {
-    var penSize = pskl.app.penSizeService.getPenSize();
-    var isStraight = event.shiftKey;
-    var color = this.getToolColor();
+    const penSize = pskl.app.penSizeService.getPenSize();
+    const isStraight = event.shiftKey;
+    const color = this.getToolColor();
 
     // The user released the tool to draw a line. We will compute the pixel coordinate, impact
     // the model and draw them in the drawing canvas (not the fake overlay anymore)
@@ -103,7 +103,7 @@
     penSize,
     isStraight
   ) {
-    var linePixels;
+    let linePixels;
     if (isStraight) {
       linePixels = pskl.PixelUtils.getUniformLinePixels(
         this.startCol,
@@ -123,20 +123,20 @@
       linePixels[0].col,
       linePixels[0].row,
       penSize
-    ).forEach(function (point) {
+    ).forEach((point) => {
       targetFrame.setPixel(point[0], point[1], color);
     });
     pskl.PixelUtils.resizePixel(
       linePixels[linePixels.length - 1].col,
       linePixels[linePixels.length - 1].row,
       penSize
-    ).forEach(function (point) {
+    ).forEach((point) => {
       targetFrame.setPixel(point[0], point[1], color);
     });
 
     //for each step along the line, draw an x centered on that pixel of size penSize
-    linePixels.forEach(function (point) {
-      for (var i = 0; i < penSize; i++) {
+    linePixels.forEach((point) => {
+      for (let i = 0; i < penSize; i++) {
         targetFrame.setPixel(
           point.col - Math.floor(penSize / 2) + i,
           point.row - Math.floor(penSize / 2) + i,

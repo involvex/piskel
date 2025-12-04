@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.model');
+  const ns = $.namespace('pskl.model');
 
   ns.Layer = function (name) {
     if (!name) {
@@ -19,7 +19,7 @@
    * @return {pskl.model.Layer}
    */
   ns.Layer.fromFrames = function (name, frames) {
-    var layer = new ns.Layer(name);
+    const layer = new ns.Layer(name);
     frames.forEach(layer.addFrame.bind(layer));
     return layer;
   };
@@ -67,7 +67,7 @@
   };
 
   ns.Layer.prototype.removeFrame = function (frame) {
-    var index = this.frames.indexOf(frame);
+    const index = this.frames.indexOf(frame);
     this.removeFrameAt(index);
   };
 
@@ -83,13 +83,13 @@
   };
 
   ns.Layer.prototype.moveFrame = function (fromIndex, toIndex) {
-    var frame = this.frames.splice(fromIndex, 1)[0];
+    const frame = this.frames.splice(fromIndex, 1)[0];
     this.frames.splice(toIndex, 0, frame);
   };
 
   ns.Layer.prototype.swapFramesAt = function (fromIndex, toIndex) {
-    var fromFrame = this.frames[fromIndex];
-    var toFrame = this.frames[toIndex];
+    const fromFrame = this.frames[fromIndex];
+    const toFrame = this.frames[toIndex];
     if (fromFrame && toFrame) {
       this.frames[toIndex] = fromFrame;
       this.frames[fromIndex] = toFrame;
@@ -102,14 +102,14 @@
   };
 
   ns.Layer.prototype.duplicateFrame = function (frame) {
-    var index = this.frames.indexOf(frame);
+    const index = this.frames.indexOf(frame);
     this.duplicateFrameAt(index);
   };
 
   ns.Layer.prototype.duplicateFrameAt = function (index) {
-    var frame = this.frames[index];
+    const frame = this.frames[index];
     if (frame) {
-      var clone = frame.clone();
+      const clone = frame.clone();
       this.addFrameAt(clone, index);
     } else {
       console.error('Frame not found in duplicateFrameAt (at %s)', index);
@@ -122,7 +122,7 @@
 
   ns.Layer.prototype.getHash = function () {
     return this.frames
-      .map(function (frame) {
+      .map((frame) => {
         return frame.getHash();
       })
       .join('-');

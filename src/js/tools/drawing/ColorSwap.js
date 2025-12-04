@@ -3,7 +3,7 @@
  *
  */
 (function () {
-  var ns = $.namespace('pskl.tools.drawing');
+  const ns = $.namespace('pskl.tools.drawing');
 
   ns.ColorSwap = function () {
     this.toolId = 'tool-colorswap';
@@ -29,13 +29,13 @@
     event
   ) {
     if (frame.containsPixel(col, row)) {
-      var oldColor = frame.getPixel(col, row);
-      var newColor = this.getToolColor();
+      const oldColor = frame.getPixel(col, row);
+      const newColor = this.getToolColor();
 
-      var allLayers = pskl.utils.UserAgent.isMac ?
+      const allLayers = pskl.utils.UserAgent.isMac ?
         event.metaKey :
         event.ctrlKey;
-      var allFrames = event.shiftKey;
+      const allFrames = event.shiftKey;
       this.swapColors_(oldColor, newColor, allLayers, allFrames);
 
       this.raiseSaveStateEvent({
@@ -61,20 +61,20 @@
     allLayers,
     allFrames
   ) {
-    var currentFrameIndex = pskl.app.piskelController.getCurrentFrameIndex();
-    var layers = allLayers ?
+    const currentFrameIndex = pskl.app.piskelController.getCurrentFrameIndex();
+    const layers = allLayers ?
       pskl.app.piskelController.getLayers() :
       [pskl.app.piskelController.getCurrentLayer()];
     layers.forEach(
-      function (layer) {
-        var frames = allFrames ?
+      (layer) => {
+        const frames = allFrames ?
           layer.getFrames() :
           [layer.getFrameAt(currentFrameIndex)];
         frames.forEach(
-          function (frame) {
+          (frame) => {
             this.applyToolOnFrame_(frame, oldColor, newColor);
-          }.bind(this));
-      }.bind(this));
+          });
+      });
   };
 
   ns.ColorSwap.prototype.applyToolOnFrame_ = function (
@@ -84,7 +84,7 @@
   ) {
     oldColor = pskl.utils.colorToInt(oldColor);
     newColor = pskl.utils.colorToInt(newColor);
-    frame.forEachPixel(function (color, col, row) {
+    frame.forEachPixel((color, col, row) => {
       if (color !== null && color == oldColor) {
         frame.setPixel(col, row, newColor);
       }

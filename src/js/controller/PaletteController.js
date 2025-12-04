@@ -1,5 +1,5 @@
 (function () {
-  var ns = $.namespace('pskl.controller');
+  const ns = $.namespace('pskl.controller');
 
   /**
    * The PaletteController is responsible for handling the two color picker
@@ -17,14 +17,14 @@
     $.subscribe(
       Events.SELECT_SECONDARY_COLOR,
       this.onColorSelected_.bind(this, { isPrimary: false }));
-    var shortcuts = pskl.service.keyboard.Shortcuts;
+    const shortcuts = pskl.service.keyboard.Shortcuts;
     pskl.app.shortcutService.registerShortcut(
       shortcuts.COLOR.SWAP,
       this.swapColors.bind(this));
     pskl.app.shortcutService.registerShortcut(
       shortcuts.COLOR.RESET,
       this.resetColors.bind(this));
-    var spectrumCfg = {
+    const spectrumCfg = {
       showPalette: true,
       showButtons: false,
       showInput: true,
@@ -37,13 +37,13 @@
     };
 
     // Initialize colorpickers:
-    var colorPicker = $('#color-picker');
+    const colorPicker = $('#color-picker');
     colorPicker.spectrum(
       $.extend({ color: Constants.DEFAULT_PEN_COLOR }, spectrumCfg));
     colorPicker.change({ isPrimary: true }, this.onPickerChange_.bind(this));
     this.setTitleOnPicker_(Constants.DEFAULT_PEN_COLOR, colorPicker.get(0));
 
-    var secondaryColorPicker = $('#secondary-color-picker');
+    const secondaryColorPicker = $('#secondary-color-picker');
     secondaryColorPicker.spectrum(
       $.extend({ color: Constants.TRANSPARENT_COLOR }, spectrumCfg));
     secondaryColorPicker.change(
@@ -52,7 +52,7 @@
     this.setTitleOnPicker_(
       Constants.TRANSPARENT_COLOR,
       secondaryColorPicker.get(0));
-    var swapColorsIcon = document.querySelector('.swap-colors-button');
+    const swapColorsIcon = document.querySelector('.swap-colors-button');
     swapColorsIcon.addEventListener('click', this.swapColors.bind(this));
   };
 
@@ -60,8 +60,8 @@
    * @private
    */
   ns.PaletteController.prototype.onPickerChange_ = function (evt) {
-    var inputPicker = evt.target;
-    var color = inputPicker.value;
+    const inputPicker = evt.target;
+    let color = inputPicker.value;
 
     if (color != Constants.TRANSPARENT_COLOR) {
       // Unless the color is TRANSPARENT_COLOR, format it to hexstring, as
@@ -104,7 +104,7 @@
   };
 
   ns.PaletteController.prototype.swapColors = function () {
-    var primaryColor = pskl.app.selectedColorsService.getPrimaryColor();
+    const primaryColor = pskl.app.selectedColorsService.getPrimaryColor();
     this.setPrimaryColor_(pskl.app.selectedColorsService.getSecondaryColor());
     this.setSecondaryColor_(primaryColor);
   };
@@ -121,7 +121,7 @@
     color,
     colorPicker
   ) {
-    var jqueryColorPicker = $(colorPicker);
+    const jqueryColorPicker = $(colorPicker);
     if (color == Constants.TRANSPARENT_COLOR) {
       // We can set the current palette color to transparent.
       // You can then combine this transparent color with an advanced
@@ -144,7 +144,7 @@
     title,
     colorPicker
   ) {
-    var parent = colorPicker.parentNode;
+    const parent = colorPicker.parentNode;
     title = parent.dataset.initialTitle + '<br/>' + title;
     parent.dataset.originalTitle = title;
   };
