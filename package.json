@@ -51,6 +51,8 @@
     "electron:start": "npm run electron:build && npx electron ./electron",
     "electron:build": "grunt build",
     "electron:build:app": "npm run build && grunt build && electron-builder",
+    "electron:pack": "npm run build && electron-builder --dir",
+    "electron:dist": "npm run build && electron-builder",
     "e2e": "npx playwright test",
     "e2e:interactive": "npx playwright test --ui",
     "unit-tests": "karma start",

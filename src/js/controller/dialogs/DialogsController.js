@@ -18,6 +18,10 @@
       template: 'templates/dialogs/import.html',
       controller: ns.importwizard.ImportWizard
     },
+    'tileset-import': {
+      template: 'templates/dialogs/tileset-import.html',
+      controller: ns.importwizard.steps.TilesetImport
+    },
     'performance-info': {
       template: 'templates/dialogs/performance-info.html',
       controller: ns.PerformanceInfoController

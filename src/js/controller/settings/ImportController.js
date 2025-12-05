@@ -28,6 +28,10 @@
       '.file-input-button',
       'click',
       this.onFileInputClick_);
+    this.addEventListener(
+      '.tileset-import-button',
+      'click',
+      this.onTilesetImportClick_);
     // different handlers, depending on the Environment
     if (pskl.utils.Environment.detectNodeWebkit()) {
       this.addEventListener(
@@ -83,6 +87,13 @@
   ns.ImportController.prototype.onBrowseBackupsClick_ = function (evt) {
     $.publish(Events.DIALOG_SHOW, {
       dialogId: 'browse-backups'
+    });
+    this.closeDrawer_();
+  };
+
+  ns.ImportController.prototype.onTilesetImportClick_ = function (evt) {
+    $.publish(Events.DIALOG_SHOW, {
+      dialogId: 'tileset-import'
     });
     this.closeDrawer_();
   };

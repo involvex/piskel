@@ -1,0 +1,165 @@
+<div class="tileset-import-section">
+  <div class="tileset-settings">
+    <div class="setting-group">
+      <label for="tile-width">Tile Width:</label>
+      <input type="number" name="tile-width" min="1" max="256" value="32" class="tile-size-input">
+    </div>
+    
+    <div class="setting-group">
+      <label for="tile-height">Tile Height:</label>
+      <input type="number" name="tile-height" min="1" max="256" value="32" class="tile-size-input">
+    </div>
+    
+    <div class="setting-group">
+      <label for="tile-columns">Columns:</label>
+      <input type="number" name="tile-columns" min="1" max="32" value="4" class="grid-size-input">
+    </div>
+    
+    <div class="setting-group">
+      <label for="tile-rows">Rows:</label>
+      <input type="number" name="tile-rows" min="1" max="32" value="4" class="grid-size-input">
+    </div>
+    
+    <div class="setting-group">
+      <label>
+        <input type="checkbox" name="include-empty-tiles" class="include-empty-checkbox">
+        Include empty tiles
+      </label>
+    </div>
+  </div>
+  
+  <div class="tileset-preview-container">
+    <!-- Preview will be rendered here -->
+  </div>
+  
+  <div class="tileset-actions">
+    <button class="create-tileset-button button button-primary">Create Tileset</button>
+    <button class="export-tileset-button button button-secondary">Export as ZIP</button>
+  </div>
+</div>
+
+<style>
+.tileset-import-section {
+  padding: 20px;
+}
+
+.tileset-settings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.setting-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.setting-group label {
+  font-weight: bold;
+  color: #333;
+}
+
+.tile-size-input,
+.grid-size-input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.include-empty-checkbox {
+  margin-right: 8px;
+}
+
+.tileset-preview-container {
+  margin: 20px 0;
+  padding: 15px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  min-height: 200px;
+  position: relative;
+}
+
+.tileset-preview-canvas {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tileset-grid-overlay {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  pointer-events: none;
+}
+
+.no-tiles-message {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  margin: 50px 0;
+}
+
+.tileset-info {
+  margin-top: 10px;
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+}
+
+.tile-count {
+  color: #2196F3;
+  font-weight: bold;
+}
+
+.empty-tiles {
+  color: #FF9800;
+  font-weight: bold;
+}
+
+.tileset-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.button-primary {
+  background-color: #2196F3;
+  color: white;
+}
+
+.button-primary:hover {
+  background-color: #1976D2;
+}
+
+.button-secondary {
+  background-color: #757575;
+  color: white;
+}
+
+.button-secondary:hover {
+  background-color: #616161;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+</style>

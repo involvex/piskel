@@ -241,12 +241,22 @@
     }
 
     const filename = this.file_.name;
+    
+    // Check if PlaydateUtils is available
+    if (!pskl.utils.PlaydateUtils || !pskl.utils.PlaydateUtils.parseImagetableFilename) {
+      console.warn('PlaydateUtils not available, skipping imagetable detection');
+      return;
+    }
+
     const playdateInfo =
       pskl.utils.PlaydateUtils.parseImagetableFilename(filename);
 
     if (playdateInfo) {
-      this.playdateFrameSize_ = playdateInfo.frameSize;
-      this.playdateFrameCount_ = playdateInfo.frameCount;
+      this.playdateFrameSize_ = {
+        width: playdateInfo.frameWidth,
+        height: playdateInfo.frameHeight
+      };
+      this.playdateFrameCount_ = playdateInfo.frames;
       console.log('Playdate imagetable detected:', playdateInfo);
     }
   };

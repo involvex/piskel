@@ -12,6 +12,11 @@
       'dragover',
       this.onFileDragOver.bind(this),
       false);
+
+    // Handle Electron file drops
+    if (window.electronAPI) {
+      window.electronAPI.onFileDropped = this.handleElectronFileDrop.bind(this);
+    }
   };
 
   ns.FileDropperService.prototype.onFileDragOver = function (event) {
@@ -33,7 +38,7 @@
     this.isMultipleFiles_ = files.length > 1;
 
     for (let i = 0; i < files.length; i++) {
-      var file = files[i];
+      const file = files[i];
       const isImage = file.type.indexOf('image') === 0;
       const isPiskel = /\.piskel$/i.test(file.name);
       const isPalette = /\.(gpl|txt|pal)$/i.test(file.name);
@@ -69,6 +74,62 @@
 
   ns.FileDropperService.prototype.onPiskelFileError_ = function (reason) {
     $.publish(Events.PISKEL_FILE_IMPORT_FAILED, [reason]);
+  };
+
+  ns.FileDropperService.prototype.handleElectronFileDrop = function (filePath) {
+    // Handle file drops from Electron main process
+    if (window.electronAPI && window.electronAPI.fs) {
+      window.electronAPI.fs.readFile(filePath, 'base64').then(result => {
+        if (result.success) {
+          const extension = filePath.split('.').pop().toLowerCase();
+          const fileName = filePath.split('\\').pop() || filePath.split('/').pop();
+
+          if (extension === 'piskel') {
+            // Handle .piskel files
+            this.handlePiskelFile(result.data, fileName);
+          } else if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'].includes(extension)) {
+            // Handle image files
+            this.handleImageFile(result.data, fileName);
+          } else if (['gpl', 'txt', 'pal'].includes(extension)) {
+            // Handle palette files
+            this.handlePaletteFile(result.data, fileName);
+          }
+        }
+      }).catch(error => {
+        console.error('Error reading file:', error);
+      });
+    }
+  };
+
+  ns.FileDropperService.prototype.handleImageFile = function (base64Data, fileName) {
+    const img = new Image();
+    img.onload = () => {
+      this.dropPosition_ = { x: 0, y: 0 }; // Default position for Electron drops
+      this.onImageLoaded_(img, { name: fileName });
+    };
+    img.src = 'data:image/png;base64,' + base64Data;
+  };
+
+  ns.FileDropperService.prototype.handlePiskelFile = function (data, fileName) {
+    try {
+      const piskelData = JSON.parse(atob(data));
+      const piskel = pskl.utils.PiskelFileUtils.createFromPiskelData(piskelData);
+      this.onPiskelFileLoaded_(piskel);
+    } catch (error) {
+      console.error('Error parsing .piskel file:', error);
+      this.onPiskelFileError_(error.message);
+    }
+  };
+
+  ns.FileDropperService.prototype.handlePaletteFile = function (data, fileName) {
+    // Create a mock file object for palette processing
+    const mockFile = new Blob([data], { type: 'text/plain' });
+    mockFile.name = fileName;
+
+    pskl.app.paletteImportService.read(
+      mockFile,
+      this.onPaletteLoaded_.bind(this)
+    );
   };
 
   ns.FileDropperService.prototype.onImageLoaded_ = function (

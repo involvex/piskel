@@ -1,8 +1,4 @@
-const electron = require("electron");
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const Menu = electron.Menu;
-const dialog = electron.dialog;
+const { app, BrowserWindow, Menu, dialog, ipcMain } = require("electron");
 const path = require("path");
 const fs = require("fs");
 const isDev = process.env.NODE_ENV === "development";
@@ -212,10 +208,108 @@ app.on("window-all-closed", () => {
   }
 });
 
+// IPC handlers for file operations
+ipcMain.handle("dialog:showOpenDialog", async (event, options) => {
+  const result = await dialog.showOpenDialog(mainWindow, options);
+  return result;
+});
+
+ipcMain.handle("dialog:showSaveDialog", async (event, options) => {
+  const result = await dialog.showSaveDialog(mainWindow, options);
+  return result;
+});
+
+ipcMain.handle("dialog:showMessageBox", async (event, options) => {
+  const result = await dialog.showMessageBox(mainWindow, options);
+  return result;
+});
+
+ipcMain.handle("app:getVersion", async () => {
+  return app.getVersion();
+});
+
+ipcMain.handle("app:getName", async () => {
+  return app.getName();
+});
+
+ipcMain.handle("window:minimize", async () => {
+  if (mainWindow) mainWindow.minimize();
+});
+
+ipcMain.handle("window:maximize", async () => {
+  if (mainWindow) {
+    if (mainWindow.isMaximized()) {
+      mainWindow.unmaximize();
+    } else {
+      mainWindow.maximize();
+    }
+  }
+});
+
+ipcMain.handle("window:close", async () => {
+  if (mainWindow) mainWindow.close();
+});
+
+ipcMain.handle("fs:readFile", async (event, filePath, encoding) => {
+  try {
+    const data = await fs.promises.readFile(filePath, encoding);
+    return { success: true, data };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+});
+
+ipcMain.handle("fs:writeFile", async (event, filePath, data) => {
+  try {
+    await fs.promises.writeFile(filePath, data);
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+});
+
+ipcMain.handle("fs:exists", async (event, filePath) => {
+  try {
+    await fs.promises.access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
+});
+
+ipcMain.handle("clipboard:writeText", async (event, text) => {
+  const { clipboard } = require("electron");
+  clipboard.writeText(text);
+  return true;
+});
+
+ipcMain.handle("clipboard:readText", async () => {
+  const { clipboard } = require("electron");
+  return clipboard.readText();
+});
+
 // Security: Prevent new window creation
 app.on("web-contents-created", (event, contents) => {
   contents.on("new-window", (event, navigationUrl) => {
     event.preventDefault();
     require("electron").shell.openExternal(navigationUrl);
   });
+  
+  // Handle file drag and drop
+  contents.on("will-navigate", (event, navigationUrl) => {
+    const parsedUrl = new URL(navigationUrl);
+    if (parsedUrl.protocol === "file:") {
+      event.preventDefault();
+      // Handle file drop here
+      contents.send("file-dropped", decodeURIComponent(parsedUrl.pathname));
+    }
+  });
+});
+
+// Handle file drops from external sources
+app.on("open-file", (event, filePath) => {
+  event.preventDefault();
+  if (mainWindow) {
+    mainWindow.webContents.send("file-dropped", filePath);
+  }
 });

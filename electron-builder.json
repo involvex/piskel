@@ -2,21 +2,51 @@
   "appId": "com.piskelapp.piskel",
   "productName": "Piskel",
   "directories": {
-    "output": "electron-dist"
+    "output": "electron-dist",
+    "buildResources": "misc/desktop"
   },
-  "files": ["dest/prod/**/*", "electron/**/*", "package.json"],
+  "files": [
+    "dest/prod/**/*",
+    "electron/**/*",
+    "package.json",
+    "node_modules/**/*"
+  ],
+  "extraResources": [
+    {
+      "from": "src",
+      "to": "src"
+    }
+  ],
   "mac": {
     "category": "public.app-category.graphics-design",
-    "target": "dmg",
-    "icon": "dest/prod/logo.png"
+    "target": [
+      {
+        "target": "dmg",
+        "arch": ["x64", "arm64"]
+      }
+    ],
+    "icon": "misc/desktop/logo.icns",
+    "hardenedRuntime": true,
+    "entitlements": "misc/desktop/entitlements.mac.plist",
+    "entitlementsInherit": "misc/desktop/entitlements.mac.plist"
   },
   "win": {
-    "target": "nsis",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ],
     "icon": "dest/prod/logo.png"
   },
   "linux": {
-    "target": "AppImage",
-    "icon": "dest/prod/logo.png",
+    "target": [
+      {
+        "target": "AppImage",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "misc/desktop/logo.png",
     "category": "Graphics"
   },
   "nsis": {
